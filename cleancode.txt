@@ -1,0 +1,56 @@
+src/
+├── api/                         // Handles API interactions and data fetching.
+│   ├── services/                // Contains service modules for different API endpoints.
+│   ├── models/                  // Defines data models and schemas for API responses.
+│   └── endpoints/               // Manages API endpoint configurations.
+
+
+├── assets/                      // Stores static assets such as fonts, images, and animations.
+│   ├── fonts/                   // Contains font files used in the application.
+│   ├── images/                  // Stores image files.
+│   │   ├── machines/            // Images related to machines.
+│   │   ├── icons/               // Various icon files.
+│   │   └── logos/               // Logo images.
+│   └── animations/              // Animation files.
+
+├── components/                  // Contains reusable UI components.
+│   ├── common/                  // Commonly used components across different screens.
+│   ├── auth/                    // Components specific to authentication screens.
+│   ├── exporter/                // Components specific to exporter features.
+│   ├── manufacturer/            // Components specific to manufacturer features.
+│   └── payment/                 // Components related to payment features.
+├── screens/                     // Contains the main screen components of the application.
+│   ├── auth/                    // Authentication-related screens.
+│   ├── exporter/                // Screens specific to exporter functionalities.
+│   ├── manufacturer/            // Screens specific to manufacturer functionalities.
+│   ├── common/                  // Commonly shared screens.
+│   └── settings/                // Screens related to app settings.
+├── styles/                      // Manages styling resources.
+│   ├── themes/                  // Defines themes including colors and fonts.
+│   ├── components/              // Styles specific to components.
+│   ├── screens/                 // Styles specific to screens.
+│   └── utilities/               // Utility styles used across the app.
+└── utils/                       // Utility functions and helpers.
+    ├── calculations/            // Functions for calculations.
+    ├── validators/              // Validation logic for data.
+    ├── constants/               // Constant values used across the app.
+    └── helpers/                 // Helper functions for various tasks.
+
+├── navigation/                  // Manages navigation configurations and state.
+│   ├── navigators/              // Sets up different navigators for the app.
+│   ├── state/                   // Manages navigation-related state using Context API.
+│   └── utils/                   // Utility functions for navigation.
+├── context/                     // Manages global state with Context API and Hooks.
+│   ├── providers/               // Contains context providers.
+│   ├── state/                   // Contains state management logic.
+│   └── hooks/                   // Custom hooks for accessing Context API.
+
+
+
+For State management I am using context API and hooks
+
+React native floating navigation bar
+react native navigation drawer
+
+
+
