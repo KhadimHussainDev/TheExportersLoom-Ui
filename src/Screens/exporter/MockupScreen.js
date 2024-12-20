@@ -9,12 +9,11 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import MockupScreenStyles from "../../Styles/Screens/Exporter/MockupScreenStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
-import { colors } from "../../Styles/Themes/colors";
 
 const { width, height } = getWindowDimensions();
 const styles = MockupScreenStyles(width, height);
 
-const MockupScreen = () => (
+const MockupScreen = ({ navigation }) => (
   <View style={styles.container}>
     <Text style={styles.labelprojectdetail}>Project Details</Text>
     <View style={styles.inputContainer}>
@@ -35,7 +34,10 @@ const MockupScreen = () => (
       textAlignVertical="top"
     />
 
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate("MockupDetailsGathering")}
+      style={styles.button}
+    >
       <Text style={styles.buttonText}>Estimate Cost </Text>
     </TouchableOpacity>
   </View>
