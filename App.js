@@ -1,9 +1,17 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import AppNavigator from "./src/Navigations/Navigators/AppNavigator"; // Adjust the path accordingly
+import { View, StyleSheet } from "react-native";
+import ProfileScreen from "./src/Screens/Common/ProfileScreen";
 
-const App = () => {
-  return <AppNavigator />;
-};
+export default function App() {
+  return (
+    <View style={styles1.container}>
+      <ProfileScreen />
+    </View>
+  );
+}
 
-export default App;
+const styles1 = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
