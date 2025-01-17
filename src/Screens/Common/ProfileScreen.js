@@ -11,8 +11,9 @@ import { createProfileScreenStyles } from "../../Styles/Screens/ProfileScreenSty
 import * as ImagePicker from "expo-image-picker";
 
 const { width, height } = Dimensions.get("window");
+const styles = createProfileScreenStyles(width, height);
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [name, setName] = useState("Azman Shakir");
@@ -39,8 +40,6 @@ const ProfileScreen = () => {
 
     getPermission();
   }, []);
-
-  const styles = createProfileScreenStyles(width, height);
 
   return (
     <View style={styles.container}>

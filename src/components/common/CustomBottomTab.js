@@ -9,6 +9,7 @@ import MockupScreen from "../../Screens/exporter/MockupScreen";
 import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
 import { colors } from "../../Styles/Themes/colors";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
 
 const Tab = createBottomTabNavigator();
 const { width, height } = getWindowDimensions();
@@ -33,9 +34,9 @@ const AnalyticsScreen = () => (
   </View>
 );
 
-const SettingsScreen = () => (
+const SerachScreen = () => (
   <View style={styles.container}>
-    <Text style={styles.text}>Settings Screen</Text>
+    <Text style={styles.text}>Search Screen</Text>
   </View>
 );
 
@@ -63,8 +64,8 @@ const BottomTabs = () => (
           iconName = "home";
         } else if (route.name === "Chats") {
           iconName = "comments";
-        } else if (route.name === "Settings") {
-          iconName = "cogs";
+        } else if (route.name === "Serach") {
+          iconName = "search";
         } else if (route.name === "line-chart") {
           iconName = "line-chart";
         }
@@ -92,7 +93,7 @@ const BottomTabs = () => (
         ),
       }}
     />
-    <Tab.Screen name="Settings" component={SettingsScreen} />
+    <Tab.Screen name="Serach" component={SearchManufacturerList} />
     <Tab.Screen name="line-chart" component={AnalyticsScreen} />
   </Tab.Navigator>
 );

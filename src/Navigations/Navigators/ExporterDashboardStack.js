@@ -19,7 +19,7 @@ const ExporterDashboardStack = ({ navigation }) => (
             leftIconName="bars"
             rightIconName="user-circle"
             onLefttIconPress={() => navigation.toggleDrawer()}
-            onRightIconPress={() => alert("Profile Icon Clicked")}
+            onRightIconPress={() => navigation.navigate("ProfileScreen")}
           />
         ),
       }}

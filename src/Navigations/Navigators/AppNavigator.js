@@ -10,6 +10,8 @@ import ExporterDashboardStack from "./ExporterDashboardStack";
 import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
 import CostEstimationBreakdown from "../../Screens/exporter/CostEstimationBreakdown";
 import ManufacturerSelection from "../../Screens/exporter/ManufacturerSelection";
+import ProfileScreen from "../../Screens/Common/ProfileScreen";
+import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -33,9 +35,19 @@ const MainStackNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="ForgetPassword"
         component={ForgetPassword}
         options={{ headerShown: true, title: "Forgot Password" }}
+      />
+      <Stack.Screen
+        name="SearchManufacturerList"
+        component={SearchManufacturerList}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="MockupDetailsGathering"
@@ -65,6 +77,16 @@ const AppNavigator = () => {
             name="MainStackNavigator"
             component={MainStackNavigator}
             options={{ headerShown: false, title: "Dashboard" }}
+          />
+          <Drawer.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{ headerShown: true, title: "Profile Screen" }}
+          />
+          <Drawer.Screen
+            name="SearchManufacturerList"
+            component={SearchManufacturerList}
+            options={{ headerShown: true, title: "Search Manufacturer" }}
           />
         </Drawer.Navigator>
       </NavigationContainer>
