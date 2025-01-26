@@ -1,546 +1,340 @@
-import React, { useState } from "react";
+import React from "react";
 import {
+  StyleSheet,
   View,
   Text,
-  StyleSheet,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Modal,
-  Alert,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import { Ionicons } from "@expo/vector-icons";
-import RatingStars from "./src/components/common/RatingStars";
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
-const reviews = [
+const projectsList = [
   {
-    name: "User 1",
-    projectName: "Project Alpha",
-    comment:
-      "Amazing work, highly recommended! What are you ding now a days you do not even tell me what is happening",
-    rating: 5,
+    projectName: "Winter Collection 2025",
+    customerName: "Client Alpha",
+    totalCost: 2750,
+    priority: "High",
+    modules: [1, 2, 3, 4, 5],
+    daysLeft: 15,
+    progress: "75%",
+    modulesSummary: {
+      completed: 2,
+      ongoing: 1,
+      todo: 2,
+    },
   },
   {
-    name: "User 2",
-    projectName: "Project Beta",
-    comment: "Good quality and delivered on time.",
-    rating: 4,
+    projectName: "Summer T-Shirts",
+    customerName: "Client Beta",
+    totalCost: 1750,
+    priority: "Medium",
+    modules: [2, 5, 6, 7],
+    daysLeft: 30,
+    progress: "50%",
+    modulesSummary: {
+      completed: 1,
+      ongoing: 1,
+      todo: 2,
+    },
   },
   {
-    name: "User 3",
-    projectName: "Project Gamma",
-    comment: "Satisfactory results, but room for improvement.",
-    rating: 3,
+    projectName: "Custom Hoodies",
+    customerName: "Client Gamma",
+    totalCost: 3400,
+    priority: "High",
+    modules: [1, 3, 5, 6, 8],
+    daysLeft: 10,
+    progress: "90%",
+    modulesSummary: {
+      completed: 3,
+      ongoing: 1,
+      todo: 1,
+    },
   },
   {
-    name: "User 4",
-    projectName: "Project Delta",
-    comment: "Excellent attention to detail.",
-    rating: 5,
+    projectName: "Sportswear Batch 1",
+    customerName: "Client Delta",
+    totalCost: 2200,
+    priority: "Low",
+    modules: [4, 5, 7],
+    daysLeft: 20,
+    progress: "30%",
+    modulesSummary: {
+      completed: 1,
+      ongoing: 0,
+      todo: 2,
+    },
   },
   {
-    name: "User 5",
-    projectName: "Project Epsilon",
-    comment: "Decent work, met expectations.",
-    rating: 4,
+    projectName: "Festival Merchandise",
+    customerName: "Client Epsilon",
+    totalCost: 3100,
+    priority: "Medium",
+    modules: [1, 2, 3, 6, 8],
+    daysLeft: 25,
+    progress: "65%",
+    modulesSummary: {
+      completed: 2,
+      ongoing: 2,
+      todo: 1,
+    },
   },
   {
-    name: "User 6",
-    projectName: "Project Zeta",
-    comment: "Not satisfied with the results.",
-    rating: 2,
+    projectName: "Festival Merchandise",
+    customerName: "Client Epsilon",
+    totalCost: 3100,
+    priority: "Medium",
+    modules: [1, 2, 3, 6, 8],
+    daysLeft: 25,
+    progress: "65%",
+    modulesSummary: {
+      completed: 2,
+      ongoing: 2,
+      todo: 1,
+    },
   },
   {
-    name: "User 7",
-    projectName: "Project Eta",
-    comment: "Great experience, would hire again.",
-    rating: 5,
-  },
-  {
-    name: "User 8",
-    projectName: "Project Theta",
-    comment: "Good work, but a bit delayed.",
-    rating: 3,
-  },
-  {
-    name: "User 9",
-    projectName: "Project Iota",
-    comment: "Fantastic job, exceeded expectations!",
-    rating: 5,
-  },
-  {
-    name: "User 10",
-    projectName: "Project Kappa",
-    comment: "Average work, nothing extraordinary.",
-    rating: 3,
+    projectName: "Festival Merchandise",
+    customerName: "Client Epsilon",
+    totalCost: 3100,
+    priority: "Medium",
+    modules: [1, 2, 3, 6, 8],
+    daysLeft: 25,
+    progress: "65%",
+    modulesSummary: {
+      completed: 2,
+      ongoing: 2,
+      todo: 1,
+    },
   },
 ];
 
-const ReviewList = () => {
+const ProjectCard = ({ project }) => {
+  const {
+    projectName,
+    customerName,
+    totalCost,
+    priority,
+    daysLeft,
+    progress,
+    modulesSummary,
+  } = project;
+
   return (
-    <ScrollView style={styleReviews.container}>
-      {reviews.map((review, index) => (
-        <View key={index} style={styleReviews.card}>
-          <Image
-            source={require("././src/assets/images/Profile.png")}
-            style={styleReviews.profileImage}
-          />
-          <View style={styleReviews.textContainer}>
-            <Text style={styleReviews.userName}>{review.name}</Text>
-            <Text style={styleReviews.projectName}>{review.projectName}</Text>
-            <Text style={styleReviews.comment}>{review.comment}</Text>
-          </View>
-          <View style={styleReviews.ratingContainer}>
-            <RatingStars rating={review.rating} />
+    <View style={styles.card}>
+      {/* Main Card Content */}
+      <View style={styles.cardContent}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <Text style={styles.projectName}>{projectName}</Text>
+          <View style={styles.iconsLeft}>
+            <TouchableOpacity style={styles.chatIcon}>
+              <FontAwesome5 name="comment-alt" size={18} color="#004d66" />
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>8x</Text>
+              </View>
+            </TouchableOpacity>
+            <MaterialIcons name="attach-file" size={20} color="#004d66" />
           </View>
         </View>
-      ))}
-    </ScrollView>
+
+        {/* Details Section */}
+        <View style={styles.details}>
+          <Text style={styles.detailText}>Customer Name: {customerName}</Text>
+          <View style={styles.row}>
+            <Text style={styles.detailText}>Cost: {totalCost} $</Text>
+            <Text style={styles.detailText}>
+              Priority:{" "}
+              <Text style={{ color: priority === "High" ? "red" : "green" }}>
+                {priority}
+              </Text>
+            </Text>
+            <Text style={styles.detailText}>
+              Modules:{" "}
+              {modulesSummary.completed +
+                modulesSummary.ongoing +
+                modulesSummary.todo}
+            </Text>
+          </View>
+
+          {/* Progress Section */}
+          <View style={styles.progressContainer}>
+            <Text style={styles.progressText}>
+              ✅ {modulesSummary.completed} Done &nbsp;&nbsp; 🔄{" "}
+              {modulesSummary.ongoing} In Progress &nbsp;&nbsp; ⏳{" "}
+              {modulesSummary.todo} To Do
+            </Text>
+            <View style={styles.progressBarContainer}>
+              <View
+                style={[
+                  styles.progressBar,
+                  {
+                    width: `${(modulesSummary.completed / 8) * 100}%`,
+                    backgroundColor: "#3cb371",
+                  },
+                ]}
+              />
+              <View
+                style={[
+                  styles.progressBar,
+                  {
+                    width: `${(modulesSummary.ongoing / 8) * 100}%`,
+                    backgroundColor: "#ffcc00",
+                  },
+                ]}
+              />
+              <View
+                style={[
+                  styles.progressBar,
+                  {
+                    width: `${(modulesSummary.todo / 8) * 100}%`,
+                    backgroundColor: "#cccccc",
+                  },
+                ]}
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* Footer Section */}
+        <View style={styles.footer}>
+          <Text style={styles.daysLeft}>{daysLeft} days left</Text>
+        </View>
+      </View>
+
+      {/* Right Side Bar */}
+      <View style={styles.rightBar}>
+        <MaterialIcons
+          name="chevron-right" // or "arrow-forward"
+          size={18}
+          color="#ffffff"
+          style={styles.arrowIcon}
+        />
+      </View>
+    </View>
   );
 };
 
-const ProfileScreen = () => {
-  const [image, setImage] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [name, setName] = useState("Azman Shakir");
-  const [email, setEmail] = useState("azmansha1234@gmail.com");
-  const [phone, setPhone] = useState("+923091571051");
-  const [address, setAddress] = useState(
-    "Muhala Harar China Chowk Sialkot, Pakistan"
-  );
-  const [aboutMe, setAboutMe] = useState(
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-  );
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const pickImage = async () => {
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
-      Alert.alert(
-        "Permission Denied",
-        "You need to enable permissions to access the gallery."
-      );
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaType.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const handleSave = () => {
-    if (newPassword !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
-    } else {
-      Alert.alert(
-        "Profile Updated",
-        "Your profile has been updated successfully!"
-      );
-      setIsModalVisible(false);
-    }
-  };
-
-  const handleIconPress = (iconName) => {
-    Alert.alert("Icon Pressed", `${iconName} icon was pressed.`);
-  };
-
+const App = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.profileSection}>
-        <TouchableOpacity onPress={pickImage}>
-          <Image
-            source={
-              image
-                ? { uri: image }
-                : require("././src/assets/images/Profile.png")
-            }
-            style={styles.profileImage}
-          />
-        </TouchableOpacity>
-        <View style={styles.infoSection}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.email}>{email}</Text>
-          <Text style={styles.phone}>{phone}</Text>
-          <Text
-            style={[
-              styles.address,
-              { fontSize: address.length > 30 ? 12 : 14 },
-            ]}
-          >
-            {address}
-          </Text>
-        </View>
-        <TouchableOpacity
-          onPress={() => setIsModalVisible(true)}
-          style={styles.editIcon}
-        >
-          <Ionicons name="pencil" size={20} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.statsSection}>
-        <Text>⭐ 5.0</Text>
-        <Text>💬 0</Text>
-        <Text>🚀 50%</Text>
-      </View>
-
-      <View style={styles.verifications}>
-        <TouchableOpacity onPress={() => handleIconPress("User")}>
-          <Ionicons name="person" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleIconPress("Phone")}>
-          <Ionicons name="call" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleIconPress("Document")}>
-          <Ionicons name="document" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleIconPress("Mail")}>
-          <Ionicons name="mail" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleIconPress("Facebook")}>
-          <Ionicons name="logo-facebook" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.aboutMeSection}>
-        <Text style={styles.aboutMeTitle}>About Me</Text>
-        <Text style={styles.aboutMeText}>{aboutMe}</Text>
-      </View>
-      <View>
-        <Text style={styles.ReviewText}>Reviews</Text>
-      </View>
-      <ReviewList />
-      <Modal visible={isModalVisible} animationType="slide">
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Edit Profile</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Name"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Phone Number"
-            value={phone}
-            onChangeText={(text) => setPhone(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Address"
-            value={address}
-            onChangeText={(text) => setAddress(text)}
-          />
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="Old Password"
-              secureTextEntry={!showOldPassword}
-              value={oldPassword}
-              onChangeText={(text) => setOldPassword(text)}
-            />
-            <TouchableOpacity
-              onPress={() => setShowOldPassword(!showOldPassword)}
-            >
-              <Ionicons
-                name={showOldPassword ? "eye" : "eye-off"}
-                size={20}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="New Password"
-              secureTextEntry={!showNewPassword}
-              value={newPassword}
-              onChangeText={(text) => setNewPassword(text)}
-            />
-            <TouchableOpacity
-              onPress={() => setShowNewPassword(!showNewPassword)}
-            >
-              <Ionicons
-                name={showNewPassword ? "eye" : "eye-off"}
-                size={20}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="Confirm New Password"
-              secureTextEntry={!showConfirmPassword}
-              value={confirmPassword}
-              onChangeText={(text) => setConfirmPassword(text)}
-            />
-            <TouchableOpacity
-              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              <Ionicons
-                name={showConfirmPassword ? "eye" : "eye-off"}
-                size={20}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </View>
-          <TextInput
-            style={styles.aboutMeInput}
-            placeholder="About Me"
-            value={aboutMe}
-            onChangeText={(text) => setAboutMe(text)}
-            multiline
-          />
-          <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-              <Text style={styles.buttonText}>Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.saveButton, { backgroundColor: "red" }]}
-              onPress={() => setIsModalVisible(false)}
-            >
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    </View>
+    <ScrollView style={styles.container}>
+      {projectsList.map((project, index) => (
+        <ProjectCard key={index} project={project} />
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
-    backgroundColor: "#F9F9F9",
-  },
-  profileSection: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-    paddingHorizontal: 20,
-  },
-  profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 10,
-  },
-  infoSection: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  email: {
-    fontSize: 12,
-    color: "gray",
-  },
-  phone: {
-    fontSize: 12,
-    color: "gray",
-  },
-  address: {
-    fontSize: 14,
-    color: "blue",
-  },
-  editIcon: {
-    marginLeft: 10,
-  },
-  statsSection: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  modalContent: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "center",
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#CCC",
-    borderRadius: 5,
+    backgroundColor: "#f9f9f9",
     padding: 10,
-    marginBottom: 15,
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#CCC",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-  },
-  passwordInput: {
-    flex: 1,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  verifications: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "#013240",
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 10,
-    marginHorizontal: 25,
-  },
-  aboutMeInput: {
-    borderWidth: 1,
-    borderColor: "#CCC",
-    borderRadius: 5,
-    padding: 10,
-    height: 100,
-    textAlignVertical: "top",
-    marginBottom: 15,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  saveButton: {
-    flex: 1,
-    marginHorizontal: 5,
-    backgroundColor: "#004c99",
-    paddingVertical: 10,
-    borderRadius: 20,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
-  aboutMeSection: {
-    backgroundColor: "#fff", // Keep existing background color
-    borderRadius: 8,
-    padding: 10, // Match the padding from verifications
-    marginVertical: 10, // Match the vertical margin from verifications
-    marginHorizontal: 10, // Match the horizontal margin from verifications
-    shadowColor: "#000", // Existing shadow styling
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  aboutMeTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "#013240",
-  },
-  aboutMeText: {
-    fontSize: 14,
-    color: "#333",
-    lineHeight: 20,
-  },
-  ReviewText: {
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "#013240",
-    marginLeft: 20,
-  },
-});
-const styleReviews = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: "#f5f5f5",
   },
   card: {
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 8,
+    backgroundColor: "#e6f7ff",
+    borderRadius: 10,
+    marginBottom: 15,
+    overflow: "hidden",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+    height: 140, // Reduced height for the card
   },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-  textContainer: {
+  cardContent: {
     flex: 1,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
   },
-  userName: {
-    fontWeight: "bold",
-    fontSize: 16,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   projectName: {
-    color: "#555",
-    marginVertical: 2,
-    fontSize: 14,
+    fontSize: 16,
+    color: "#004d66",
+    fontWeight: "bold",
   },
-  comment: {
-    color: "#777",
-    marginVertical: 2,
-    fontSize: 10,
-  },
-  ratingContainer: {
+  iconsLeft: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  chatIcon: {
+    position: "relative",
+    marginRight: 10,
+  },
+  badge: {
+    position: "absolute",
+    top: -5,
+    right: -8,
+    backgroundColor: "red",
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  badgeText: {
+    color: "white",
+    fontSize: 10,
+    fontWeight: "bold",
+  },
+  details: {
+    marginTop: 1,
+  },
+  detailText: {
+    fontSize: 12,
+    color: "#333",
+  },
+  progressContainer: {
+    marginTop: 10,
+    alignItems: "flex-start",
+  },
+  progressText: {
+    fontSize: 12,
+    color: "#666",
+    marginBottom: 5,
+  },
+  progressBarContainer: {
+    flexDirection: "row",
+    height: 8,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 4,
+    overflow: "hidden",
+    width: "80%",
+  },
+  progressBar: {
+    height: "100%",
+  },
+  footer: {
+    flexDirection: "row",
     justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  daysLeft: {
+    fontSize: 14,
+    color: "red",
+    fontWeight: "bold",
+  },
+  rightBar: {
+    width: 30,
+    backgroundColor: "#013240",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  arrowIcon: {
+    alignSelf: "center",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 5,
   },
 });
-export default function App() {
-  return (
-    <View style={styles1.container}>
-      <ProfileScreen />
-    </View>
-  );
-}
 
-const styles1 = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-// import React from "react";
-// import { NavigationContainer } from "@react-navigation/native";
-// import AppNavigator from "./src/Navigations/Navigators/AppNavigator"; // Adjust the path accordingly
-
-// const App = () => {
-//   return <AppNavigator />;
-// };
-
-// export default App;In this code I want the Modal Form Functionality to be in separate Screen and also styles related to modal form should also be separate file .  
+export default App;

@@ -10,6 +10,7 @@ import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGatherin
 import { colors } from "../../Styles/Themes/colors";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
+import Analytics from "../../Screens/Common/Analytics";
 
 const Tab = createBottomTabNavigator();
 const { width, height } = getWindowDimensions();
@@ -66,7 +67,7 @@ const BottomTabs = () => (
           iconName = "comments";
         } else if (route.name === "Serach") {
           iconName = "search";
-        } else if (route.name === "line-chart") {
+        } else if (route.name === "Analytics") {
           iconName = "line-chart";
         }
 
@@ -94,7 +95,7 @@ const BottomTabs = () => (
       }}
     />
     <Tab.Screen name="Serach" component={SearchManufacturerList} />
-    <Tab.Screen name="line-chart" component={AnalyticsScreen} />
+    <Tab.Screen name="Analytics" component={Analytics} />
   </Tab.Navigator>
 );
 

@@ -1,18 +1,29 @@
+// import React from "react";
+// import { StyleSheet, View } from "react-native";
+// import ModuleCardsList from "./src/Screens/exporter/ModuleCardsList";
+
+// export default function App() {
+//   return (
+//     <View style={styles.container}>
+//       <ModuleCardsList />
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+// });
+
+// App.js
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import CardComponent from "./src/Screens/exporter/SearchManufacturerList";
-import AppNavigator from "./src/Navigations/Navigators/AppNavigator";
+import { StyleSheet, View } from "react-native";
+import OrderList from "./src/components/common/OrderList";
+import AppNavigator from "../ExporterLoom/src/Navigations/Navigators/AppNavigator";
 
-export default function App() {
-  return (
-    <View style={styles1.container}>
-      <AppNavigator />
-    </View>
-  );
-}
+const App = () => {
+  return <AppNavigator />;
+};
 
-const styles1 = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+export default App;
