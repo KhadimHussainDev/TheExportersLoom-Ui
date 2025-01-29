@@ -298,7 +298,7 @@ const MockupDetailsGathering = ({ navigation }) => {
           )}
 
           <TouchableOpacity
-            onPress={handleSubmit}
+            onPress={() => navigation.navigate("CostEstimationBreakdown")}
             style={styles.buttonCalculateCost}
           >
             <Text style={styles.buttonTextculateCost}>Caclulate Cost</Text>

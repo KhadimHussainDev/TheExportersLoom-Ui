@@ -8,6 +8,7 @@ import SignUpScreen from "../../Screens/auth/SignUpScreen";
 import ForgetPassword from "../../Screens/auth/ForgetPassword";
 import ExporterDashboardStack from "./ExporterDashboardStack";
 import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
+import CostEstimationBreakdown from "../../Screens/exporter/CostEstimationBreakdown";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -39,6 +40,11 @@ const MainStackNavigator = () => {
         name="MockupDetailsGathering"
         component={MockupDetailsGathering}
         options={{ headerShown: true, title: "Mockup Details" }}
+      />
+      <Stack.Screen
+        name="CostEstimationBreakdown"
+        component={CostEstimationBreakdown}
+        options={{ headerShown: true, title: "Cost Estimation" }}
       />
     </Stack.Navigator>
   );
