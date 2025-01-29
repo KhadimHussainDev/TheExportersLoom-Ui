@@ -12,6 +12,8 @@ import CostEstimationBreakdown from "../../Screens/exporter/CostEstimationBreakd
 import ManufacturerSelection from "../../Screens/exporter/ManufacturerSelection";
 import ProfileScreen from "../../Screens/Common/ProfileScreen";
 import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
+import Analytics from "../../Screens/Common/Analytics";
+import ModuleCardsList from "../../Screens/exporter/ModuleCardsList";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,6 +49,16 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="SearchManufacturerList"
         component={SearchManufacturerList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Analytics"
+        component={Analytics}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ModuleCardsList"
+        component={ModuleCardsList}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -87,6 +99,11 @@ const AppNavigator = () => {
             name="SearchManufacturerList"
             component={SearchManufacturerList}
             options={{ headerShown: true, title: "Search Manufacturer" }}
+          />
+          <Drawer.Screen
+            name="Analytics"
+            component={Analytics}
+            options={{ headerShown: true, title: "Analytics" }}
           />
         </Drawer.Navigator>
       </NavigationContainer>
