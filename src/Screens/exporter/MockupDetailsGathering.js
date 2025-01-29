@@ -123,9 +123,7 @@ const MockupDetailsGathering = ({ navigation }) => {
             listMode="SCROLLVIEW"
             zIndex={5000}
           />
-
           <Text style={styles.label}>Fabric Type</Text>
-
           <DropDownPicker
             open={openFabricType}
             value={fabricType}
@@ -169,7 +167,6 @@ const MockupDetailsGathering = ({ navigation }) => {
           <TouchableOpacity onPress={addSize} style={styles.button}>
             <Text style={styles.buttonText}>Add Size</Text>
           </TouchableOpacity>
-
           <View style={styles.container}>
             <Text style={styles.label}>Number of Logos</Text>
             <View style={styles.pickerContainer}>
@@ -226,7 +223,6 @@ const MockupDetailsGathering = ({ navigation }) => {
               </View>
             ))}
           </View>
-
           <Text style={styles.label}>Pattern Required</Text>
           <Switch
             value={patternRequired}
@@ -237,7 +233,6 @@ const MockupDetailsGathering = ({ navigation }) => {
                 : styles.switchOFThumbColor
             }
           />
-
           <Text style={styles.label}>Labels Required</Text>
           <Switch
             value={labelsRequired}
@@ -261,7 +256,6 @@ const MockupDetailsGathering = ({ navigation }) => {
               zIndex={5000}
             />
           )}
-
           <Text style={styles.label}>Tag Cards Required</Text>
           <Switch
             value={tagCardsRequired}
@@ -272,7 +266,6 @@ const MockupDetailsGathering = ({ navigation }) => {
                 : styles.switchOFThumbColor
             }
           />
-
           <Text style={styles.label}>Packaging Required</Text>
           <Switch
             value={packagingRequired}
@@ -296,7 +289,6 @@ const MockupDetailsGathering = ({ navigation }) => {
               zIndex={700}
             />
           )}
-
           <TouchableOpacity
             onPress={() => navigation.navigate("CostEstimationBreakdown")}
             style={styles.buttonCalculateCost}

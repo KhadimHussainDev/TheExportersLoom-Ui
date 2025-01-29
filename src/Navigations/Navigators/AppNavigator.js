@@ -9,6 +9,7 @@ import ForgetPassword from "../../Screens/auth/ForgetPassword";
 import ExporterDashboardStack from "./ExporterDashboardStack";
 import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
 import CostEstimationBreakdown from "../../Screens/exporter/CostEstimationBreakdown";
+import ManufacturerSelection from "../../Screens/exporter/ManufacturerSelection";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -45,6 +46,11 @@ const MainStackNavigator = () => {
         name="CostEstimationBreakdown"
         component={CostEstimationBreakdown}
         options={{ headerShown: true, title: "Cost Estimation" }}
+      />
+      <Stack.Screen
+        name="ManufacturerSelection"
+        component={ManufacturerSelection}
+        options={{ headerShown: true, title: "Manufacturer Selection" }}
       />
     </Stack.Navigator>
   );

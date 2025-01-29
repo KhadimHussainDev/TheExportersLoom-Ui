@@ -5,7 +5,7 @@ import CustomModuleCard from "../../components/exporter/CustomModuleCard";
 import ModuleData from "../../utils/Data/ModuleData";
 import CostEstimationBreakdownStyles from "../../Styles/Screens/Exporter/CostEstimationBreakdownStyles";
 
-const CostEstimationBreakdown = () => {
+const CostEstimationBreakdown = ({ navigation }) => {
   const [selectedModule, setSelectedModule] = useState(null);
 
   const totalCost = ModuleData.reduce((sum, item) => sum + item.cost, 0);
@@ -15,7 +15,7 @@ const CostEstimationBreakdown = () => {
       image={item.image}
       leadingText={item.leadingText}
       trailingText={item.trailingText}
-      onPress={() => setSelectedModule(item.leadingText)}
+      onPress={() => navigation.navigate("ManufacturerSelection")}
     />
   );
 
@@ -24,7 +24,7 @@ const CostEstimationBreakdown = () => {
       {selectedModule ? (
         <SelectedModule
           moduleName={selectedModule}
-          onGoBack={() => setSelectedModule(null)}
+          onGoBack={() => navigation.navigate("CostEstimationBreakdown")}
         />
       ) : (
         <>
