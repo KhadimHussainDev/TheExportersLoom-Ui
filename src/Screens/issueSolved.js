@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Picker, StyleSheet, Button } from 'react-native';
+import React, { useState } from "react";
+import { View, StyleSheet, Button, Text, Alert } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 const SamplePage = () => {
   const [numberOfLogos, setNumberOfLogos] = useState(0);
@@ -35,55 +36,63 @@ const SamplePage = () => {
       type: selectedTypes[index] || "Not selected",
     }));
 
+    const formattedMessage = selectedData
+      .map(
+        (data) =>
+          `${data.logo}: Position - ${data.position}, Type - ${data.type}`
+      )
+      .join("\n");
+
     // Log the structured data to the console
-    console.log("Selected Data:", selectedData);
+    Alert.alert("Selected Data", formattedMessage, [{ text: "OK" }]);
   };
 
   return (
     <View style={styles.container}>
-      {/* Number of Logos Dropdown */}
-      <Picker
-        selectedValue={numberOfLogos.toString()}
-        onValueChange={handleNumberOfLogosChange}
-        style={styles.picker}
-      >
-        <Picker.Item label="Select Number of Logos" value="0" />
-        <Picker.Item label="1" value="1" />
-        <Picker.Item label="2" value="2" />
-        <Picker.Item label="3" value="3" />
-      </Picker>
-
-      {/* Dynamic Dropdowns for Logo Position and Type */}
+      <Text style={styles.label}>Number of Logos</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={numberOfLogos.toString()}
+          onValueChange={handleNumberOfLogosChange}
+          style={styles.picker}
+        >
+          <Picker.Item label="Select Number of Logos" value="0" />
+          <Picker.Item label="1" value="1" />
+          <Picker.Item label="2" value="2" />
+          <Picker.Item label="3" value="3" />
+        </Picker>
+      </View>
       {Array.from({ length: numberOfLogos }, (_, index) => (
         <View key={index} style={styles.dropdownRow}>
-          {/* Logo Position Dropdown */}
-          <Picker
-            selectedValue={selectedPositions[index]}
-            onValueChange={(value) => handlePositionChange(value, index)}
-            style={styles.picker}
-          >
-            <Picker.Item label={`Logo ${index + 1} Position`} value="" />
-            <Picker.Item label="Top" value="top" />
-            <Picker.Item label="Bottom" value="bottom" />
-            <Picker.Item label="Left" value="left" />
-            <Picker.Item label="Right" value="right" />
-          </Picker>
-
-          {/* Logo Type Dropdown */}
-          <Picker
-            selectedValue={selectedTypes[index]}
-            onValueChange={(value) => handleTypeChange(value, index)}
-            style={styles.picker}
-          >
-            <Picker.Item label={`Logo ${index + 1} Type`} value="" />
-            <Picker.Item label="Type 1" value="type1" />
-            <Picker.Item label="Type 2" value="type2" />
-            <Picker.Item label="Type 3" value="type3" />
-          </Picker>
+          <Text style={styles.label}>Logo {index + 1} Position</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={selectedPositions[index]}
+              onValueChange={(value) => handlePositionChange(value, index)}
+              style={styles.picker}
+            >
+              <Picker.Item label={`Select Position`} value="" />
+              <Picker.Item label="Top" value="top" />
+              <Picker.Item label="Bottom" value="bottom" />
+              <Picker.Item label="Left" value="left" />
+              <Picker.Item label="Right" value="right" />
+            </Picker>
+          </View>
+          <Text style={styles.label}>Logo {index + 1} Type</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={selectedTypes[index]}
+              onValueChange={(value) => handleTypeChange(value, index)}
+              style={styles.picker}
+            >
+              <Picker.Item label={`Select Type`} value="" />
+              <Picker.Item label="Type 1" value="type1" />
+              <Picker.Item label="Type 2" value="type2" />
+              <Picker.Item label="Type 3" value="type3" />
+            </Picker>
+          </View>
         </View>
       ))}
-
-      {/* Submit Button */}
       <Button title="Submit" onPress={handleSubmit} />
     </View>
   );
@@ -94,14 +103,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    marginVertical: 2,
+  },
   picker: {
-    height: 50,
-    width: '100%',
+    height: 60,
+    width: 300,
   },
   dropdownRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginVertical: 10,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "bold",
   },
 });
 

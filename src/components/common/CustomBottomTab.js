@@ -1,14 +1,15 @@
 import React from "react";
-import ExporterDashboard from "../../Screens/exporter/ExporterDashboard";
 import { View, Text, TextInput, Dimensions } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FloatingAction } from "react-native-floating-action";
 import BottomTabsStyles from "../../Styles/Components/CutsomBottomTabStyles";
 import MockupScreen from "../../Screens/exporter/MockupScreen";
+import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
 import { colors } from "../../Styles/Themes/colors";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+
 const Tab = createBottomTabNavigator();
 const { width, height } = getWindowDimensions();
 const styles = BottomTabsStyles(width, height);
@@ -19,29 +20,37 @@ const HomeScreen = () => (
     <TextInput style={styles.input} placeholder="Type here..." />
   </View>
 );
+
 const ChatsScreen = () => (
   <View style={styles.container}>
     <Text style={styles.text}>Chats Screen</Text>
   </View>
 );
+
 const AnalyticsScreen = () => (
   <View style={styles.container}>
     <Text style={styles.text}>Analytics Screen</Text>
   </View>
 );
+
 const SettingsScreen = () => (
   <View style={styles.container}>
     <Text style={styles.text}>Settings Screen</Text>
   </View>
 );
-const AddButton = (props) => (
-  <FloatingAction
-    color="#013240"
-    floatingIcon={<Icon name="plus" size={20} color="#fff" />}
-    showBackground={false}
-    onPressMain={() => alert("Add Button Pressed")}
-  />
-);
+
+const AddButton = () => {
+  const navigation = useNavigation(); // Access the navigation object
+
+  return (
+    <FloatingAction
+      color="#013240"
+      floatingIcon={<Icon name="plus" size={20} color="#fff" />}
+      showBackground={false}
+      onPressMain={() => navigation.navigate("MockupDetailsGathering")}
+    />
+  );
+};
 
 const BottomTabs = () => (
   <Tab.Navigator
