@@ -7,6 +7,17 @@ const manufacturers = [
     price: 4.15,
     rating: 5,
     days: 7,
+    about:
+      "Experienced manufacturer specializing in custom garments with expertise in DTF DTG printing, screen printing, and intricate embroidery. Known for high-quality cutting and reliable stitching, perfect for any custom order.",
+    level: 3,
+    location: "Ugoki, Sialkot",
+    labels: [
+      "DTF DTG",
+      "Screen Printing",
+      "Embroidery",
+      "Cutting",
+      "Stitching",
+    ],
   },
   {
     id: "2",
@@ -16,6 +27,11 @@ const manufacturers = [
     price: 3.75,
     rating: 4,
     days: 10,
+    about:
+      "Provides high-quality stitching and embroidery services with a focus on eco-friendly washing processes. Specializes in packaging and accessories to complete the product's look and feel.",
+    level: 2,
+    location: "Cantt, Sialkot",
+    labels: ["Stitching", "Embroidery", "Washing", "Packaging", "Accessories"],
   },
   {
     id: "3",
@@ -25,6 +41,11 @@ const manufacturers = [
     price: 6.0,
     rating: 5,
     days: 3,
+    about:
+      "Quick turnaround with expertise in bulk orders. Specializes in high-quality screen printing, DTF DTG, and cutting-edge embroidery. Reliable for large-scale projects.",
+    level: 4,
+    location: "Murray College Road, Sialkot",
+    labels: ["Screen Printing", "DTF DTG", "Embroidery", "Cutting"],
   },
   {
     id: "4",
@@ -34,6 +55,11 @@ const manufacturers = [
     price: 3.2,
     rating: 4,
     days: 8,
+    about:
+      "Specialist in eco-friendly apparel production with a focus on screen printing, cutting, and stitching. Offers comprehensive packaging solutions and attention to detail.",
+    level: 2,
+    location: "Model Town, Sialkot",
+    labels: ["Screen Printing", "Cutting", "Stitching", "Packaging"],
   },
   {
     id: "5",
@@ -43,6 +69,11 @@ const manufacturers = [
     price: 5.5,
     rating: 3,
     days: 14,
+    about:
+      "Focused on premium-quality sportswear with top-notch embroidery, washing, and stitching. Known for precise cutting and reliable packaging services.",
+    level: 3,
+    location: "Saddar, Sialkot",
+    labels: ["Embroidery", "Washing", "Stitching", "Cutting", "Packaging"],
   },
   {
     id: "6",
@@ -52,6 +83,17 @@ const manufacturers = [
     price: 4.8,
     rating: 5,
     days: 5,
+    about:
+      "Reliable partner for export-grade manufacturing with expertise in screen printing, washing, cutting, stitching, and accessories. Ensures high-quality production for all orders.",
+    level: 4,
+    location: "Shahabpura, Sialkot",
+    labels: [
+      "Screen Printing",
+      "Washing",
+      "Cutting",
+      "Stitching",
+      "Accessories",
+    ],
   },
   {
     id: "7",
@@ -61,6 +103,19 @@ const manufacturers = [
     price: 4.2,
     rating: 5,
     days: 9,
+    about:
+      "Known for intricate designs and attention to detail, specializing in DTF DTG, screen printing, embroidery, washing, and cutting. Offers comprehensive packaging and accessory services.",
+    level: 3,
+    location: "Hajipura, Sialkot",
+    labels: [
+      "DTF DTG",
+      "Screen Printing",
+      "Embroidery",
+      "Washing",
+      "Cutting",
+      "Packaging",
+      "Accessories",
+    ],
   },
   {
     id: "8",
@@ -70,6 +125,19 @@ const manufacturers = [
     price: 5.1,
     rating: 4,
     days: 6,
+    about:
+      "Offers diverse manufacturing options for startups with expertise in DTF DTG, screen printing, embroidery, and washing. Focused on high-quality cutting, stitching, and packaging.",
+    level: 2,
+    location: "Kashmir Road, Sialkot",
+    labels: [
+      "DTF DTG",
+      "Screen Printing",
+      "Embroidery",
+      "Washing",
+      "Cutting",
+      "Stitching",
+      "Packaging",
+    ],
   },
   {
     id: "9",
@@ -79,6 +147,11 @@ const manufacturers = [
     price: 3.6,
     rating: 5,
     days: 11,
+    about:
+      "Specializes in women’s wear with customizations, providing high-quality embroidery, washing, and cutting. Offers reliable stitching and packaging services.",
+    level: 3,
+    location: "Paris Road, Sialkot",
+    labels: ["Embroidery", "Washing", "Cutting", "Stitching", "Packaging"],
   },
   {
     id: "10",
@@ -88,6 +161,96 @@ const manufacturers = [
     price: 4.9,
     rating: 4,
     days: 7,
+    about:
+      "Expert in producing durable and stylish apparel with a focus on screen printing, embroidery, washing, and cutting. Offers comprehensive packaging solutions.",
+    level: 4,
+    location: "Neka Pura, Sialkot",
+    labels: [
+      "Screen Printing",
+      "Embroidery",
+      "Washing",
+      "Cutting",
+      "Packaging",
+    ],
+  },
+  {
+    id: "11",
+    name: "Rehan",
+    profileImage: require("../../assets/images/Profile.png"),
+    distance: 3.8,
+    price: 4.3,
+    rating: 4,
+    days: 5,
+    about:
+      "Experienced in producing high-quality garments with expertise in DTF DTG, screen printing, embroidery, washing, and cutting. Focused on providing reliable packaging and stitching services.",
+    level: 3,
+    location: "Mochipura, Sialkot",
+    labels: [
+      "DTF DTG",
+      "Screen Printing",
+      "Embroidery",
+      "Washing",
+      "Cutting",
+      "Stitching",
+      "Packaging",
+    ],
+  },
+  {
+    id: "12",
+    name: "Nadia",
+    profileImage: require("../../assets/images/Profile.png"),
+    distance: 2.7,
+    price: 4.0,
+    rating: 5,
+    days: 10,
+    about:
+      "Specialist in custom embroidery and high-quality washing processes. Offers comprehensive cutting, stitching, and packaging services for all types of apparel.",
+    level: 4,
+    location: "Khanpur, Sialkot",
+    labels: ["Embroidery", "Washing", "Cutting", "Stitching", "Packaging"],
+  },
+  {
+    id: "13",
+    name: "Yasir",
+    profileImage: require("../../assets/images/Profile.png"),
+    distance: 4.2,
+    price: 5.6,
+    rating: 3,
+    days: 8,
+    about:
+      "Focuses on premium sportswear manufacturing with expertise in DTF DTG, screen printing, embroidery, and washing. Known for precise cutting, reliable stitching, and comprehensive packaging solutions.",
+    level: 3,
+    location: "Ghazi Town, Sialkot",
+    labels: [
+      "DTF DTG",
+      "Screen Printing",
+      "Embroidery",
+      "Washing",
+      "Cutting",
+      "Stitching",
+      "Packaging",
+    ],
+  },
+  {
+    id: "14",
+    name: "Sana",
+    profileImage: require("../../assets/images/Profile.png"),
+    distance: 3.1,
+    price: 4.4,
+    rating: 4,
+    days: 9,
+    about:
+      "Expert in eco-friendly apparel production with a focus on DTF DTG, screen printing, and high-quality embroidery. Offers cutting, stitching, and packaging services for all orders.",
+    level: 4,
+    location: "Chowk Allahwala, Sialkot",
+    labels: [
+      "DTF DTG",
+      "Screen Printing",
+      "Embroidery",
+      "Cutting",
+      "Stitching",
+      "Packaging",
+    ],
   },
 ];
 

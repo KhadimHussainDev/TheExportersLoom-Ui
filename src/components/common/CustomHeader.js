@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import { colors } from "../../Styles/Themes/colors";
 import CustomHeaderStyles from "../../Styles/Components/CustomHeaderStyles";
+import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
 
 const { width, height } = getWindowDimensions();
 

@@ -8,7 +8,7 @@ const styles = SortButtonStyle(width, height);
 
 const SortButton = ({ label, isActive, onPress }) => (
   <TouchableOpacity
-    style={[styles.sortButton, isActive && { backgroundColor: colors.primary }]}
+    style={[styles.sortButton, isActive && { backgroundColor: "#007BFF" }]}
     onPress={onPress}
   >
     <Text style={styles.buttonText}>{label}</Text>
