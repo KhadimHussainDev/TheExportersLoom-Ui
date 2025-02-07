@@ -3,8 +3,9 @@ import { View, Text, Image, ScrollView, Dimensions } from "react-native";
 import RatingStars from "./RatingStars";
 import ReviewsListStyle from "../../Styles/Components/ReviewsListStyle";
 import { reviews } from "../../utils/Data/ReviewsData";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = ReviewsListStyle(width, height);
 
 const ReviewsList = () => {

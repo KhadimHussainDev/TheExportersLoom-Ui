@@ -9,8 +9,9 @@ import EditProfile from "./EditProfile";
 import ReviewsList from "../../components/common/ReviewsList";
 import { createProfileScreenStyles } from "../../Styles/Screens/ProfileScreenStyles";
 import * as ImagePicker from "expo-image-picker";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = createProfileScreenStyles(width, height);
 
 const ProfileScreen = ({ navigation }) => {

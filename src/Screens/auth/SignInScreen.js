@@ -1,20 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
 import AuthScreen from "./AuthScreen";
 import { AuthContext } from "../../context/providers/AuthContext";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import createSignInStyles from "../../Styles/Screens/SignInStyle";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { IMAGES } from "../../utils/contants/images";
-
 const { width, height } = getWindowDimensions();
 const styles = createSignInStyles(width, height);
 

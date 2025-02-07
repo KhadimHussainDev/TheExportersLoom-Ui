@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../Themes/colors";
 
 export const createProfileImageStyles = (width, height) =>
   StyleSheet.create({
@@ -8,6 +9,6 @@ export const createProfileImageStyles = (width, height) =>
       borderRadius: (width * 0.25) / 2,
       marginRight: width * 0.05,
       borderWidth: 2,
-      borderColor: "#000",
+      borderColor: colors.Text, // Updated border color
     },
   });

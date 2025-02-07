@@ -6,8 +6,9 @@ import SearchNewManufacturerCard from "../../components/manufacturer/SearchNewMa
 import { SearchManufacturerStyle } from "../../Styles/Screens/Exporter/SearchManufacturerStyle";
 import { Dimensions } from "react-native";
 import labelsList from "../../utils/Data/LabelsList";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = SearchManufacturerStyle(width, height);
 
 const SearchManufacturerList = ({ navigation }) => {

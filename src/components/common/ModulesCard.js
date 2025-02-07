@@ -9,14 +9,13 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ModuleCardStyles from "../../Styles/Components/ModuleCardStyles";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = ModuleCardStyles(width, height); // Get screen dimensions
 
 const ModuleCard = ({ data }) => {
   const [expanded, setExpanded] = useState(false);
-
-  // Get the styles dynamically by passing width and height
 
   const handleToggle = () => {
     setExpanded((prev) => !prev);

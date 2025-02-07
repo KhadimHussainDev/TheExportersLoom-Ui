@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import OrderCardStyles from "../../Styles/Components/OrderCardStyles";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 
 const styles = OrderCardStyles(width, height);
 

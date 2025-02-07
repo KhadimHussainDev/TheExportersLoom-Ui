@@ -3,8 +3,9 @@ import { View, ScrollView, Text, Dimensions } from "react-native";
 import ModuleCard from "../../components/common/ModulesCard";
 import ModuleData from "../../utils/Data/ModuleData";
 import ModuleCardsListStyles from "../../Styles/Screens/Exporter/ModuleCardsListStyles";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = ModuleCardsListStyles(width, height); // Get dynamic styles // Get screen width and height
 
 const ModuleCardsList = () => {

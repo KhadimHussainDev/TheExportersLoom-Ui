@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../Themes/colors"; // Adjust the path as necessary
 
 // Function to generate styles dynamically based on screen width and height
 const ModuleCardStyles = (width, height) => {
@@ -7,13 +8,13 @@ const ModuleCardStyles = (width, height) => {
       borderRadius: width * 0.03, // Use width for calculation
       padding: width * 0.04, // Dynamic padding based on width
       marginVertical: height * 0.02, // Margin proportional to height
-      shadowColor: "#000",
+      shadowColor: colors.Text, // Updated shadow color
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
       elevation: 3,
       borderWidth: 1,
-      borderColor: "#BFDCE5",
+      borderColor: colors.border, // Updated border color
       maxWidth: width * 0.99, // 90% of the screen width
     },
     header: {
@@ -33,27 +34,27 @@ const ModuleCardStyles = (width, height) => {
       marginRight: width * 0.03,
     },
     leadingText: {
-      fontSize: width * 0.04,
+      fontSize: width * 0.04, // Dynamic font size based on width
       fontWeight: "bold",
-      color: "#013240",
+      color: colors.primary, // Updated text color
     },
     middleText: {
-      fontSize: width * 0.035,
+      fontSize: width * 0.035, // Dynamic font size based on width
       fontWeight: "600",
-      color: "#333333",
+      color: colors.Text, // Updated text color
       marginBottom: height * 0.005,
     },
     status: {
-      fontSize: width * 0.03,
-      color: "#76AAB5",
+      fontSize: width * 0.03, // Dynamic font size based on width
+      color: colors.secondary, // Updated text color
       marginBottom: height * 0.01,
     },
     body: {
       marginTop: height * 0.02,
     },
     description: {
-      fontSize: width * 0.035,
-      color: "#666",
+      fontSize: width * 0.035, // Dynamic font size based on width
+      color: colors.PlaceholderText, // Updated text color
       marginBottom: height * 0.02,
     },
     footer: {
@@ -62,14 +63,14 @@ const ModuleCardStyles = (width, height) => {
       marginTop: height * 0.02,
     },
     cost: {
-      fontSize: width * 0.035,
+      fontSize: width * 0.035, // Dynamic font size based on width
       fontWeight: "600",
-      color: "#333",
+      color: colors.Text, // Updated text color
     },
     assigned: {
-      fontSize: width * 0.035,
+      fontSize: width * 0.035, // Dynamic font size based on width
       fontWeight: "600",
-      color: "#333",
+      color: colors.Text, // Updated text color
     },
   });
 };

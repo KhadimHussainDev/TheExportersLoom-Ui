@@ -1,3 +1,5 @@
+import { colors } from "../Themes/colors"; // Adjust the path as necessary
+
 export const FilterButtonStyle = (width, height) => ({
   button: {
     paddingVertical: height * 0.015,
@@ -6,13 +8,13 @@ export const FilterButtonStyle = (width, height) => ({
     marginHorizontal: width * 0.02,
   },
   defaultButton: {
-    backgroundColor: "#ccc",
+    backgroundColor: colors.PlaceholderText, // Updated color
   },
   activeButton: {
-    backgroundColor: "#007BFF",
+    backgroundColor: colors.info, // Updated color
   },
   buttonText: {
-    color: "#fff",
+    color: colors.whiteborder, // Updated color
     fontWeight: "bold",
     textAlign: "center",
   },

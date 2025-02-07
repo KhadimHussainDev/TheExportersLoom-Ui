@@ -3,8 +3,9 @@ import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import RatingStars from "../common/RatingStars";
 import Icon from "react-native-vector-icons/Ionicons";
 import ManufacturerCardStyle from "../../Styles/Components/ManufacturerCardStyle";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = ManufacturerCardStyle(width, height);
 
 const ManufacturerCard = ({
