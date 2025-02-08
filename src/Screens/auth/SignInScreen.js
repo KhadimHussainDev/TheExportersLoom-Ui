@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from "react-native-vector-icons/FontAwesome";
-import signIn from "../../api/auth";
+import {signIn} from "../../api/auth";
 import { AuthContext } from "../../context/providers/AuthContext";
 import createSignInStyles from "../../Styles/Screens/SignInStyle";
-import { IMAGES } from "../../utils/contants/images";
+import { IMAGES, ROLES } from "../../utils/contants/images";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import AuthScreen from "./AuthScreen";
 import {decodeJWT} from '../../utils/helpers/jwtUtils';
@@ -82,10 +82,10 @@ const SignInScreen = ({ navigation }) => {
       await AsyncStorage.setItem('access_token', data.access_token); // Store the access token
       console.log('Decoded Token:', decodedToken); // Log the decoded token for debugging
       Alert.alert('Sign-In Successful', `Welcome ${decodedToken.username}`);
-      if (decodedToken.userType == "manufacturer"){
+      if (decodedToken.userType == ROLES.manufacturer){
         //Goto manufecturer dashboard
 
-      }else{
+      }else if (decodedToken.userType == ROLES.exporter){
         //Goto exporter dashboard
         navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
       }
