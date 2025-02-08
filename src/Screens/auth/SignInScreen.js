@@ -1,25 +1,31 @@
+import jwtDecode from 'jwt-decode';
 import React, { useContext, useEffect, useState } from "react";
 import {
-  View,
+  Alert,
+  Image,
   Text,
   TextInput,
-  Button,
-  StyleSheet,
-  Image,
   TouchableOpacity,
+  View
 } from "react-native";
-import AuthScreen from "./AuthScreen";
-import { AuthContext } from "../../context/providers/AuthContext";
-import getWindowDimensions from "../../utils/helpers/dimensions";
-import createSignInStyles from "../../Styles/Screens/SignInStyle";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from "react-native-vector-icons/FontAwesome";
+import signIn from "../../api/auth";
+import { AuthContext } from "../../context/providers/AuthContext";
+import createSignInStyles from "../../Styles/Screens/SignInStyle";
 import { IMAGES } from "../../utils/contants/images";
+import getWindowDimensions from "../../utils/helpers/dimensions";
+import AuthScreen from "./AuthScreen";
+import {decodeJWT} from '../../utils/helpers/jwtUtils';
 
 const { width, height } = getWindowDimensions();
 const styles = createSignInStyles(width, height);
 
 const SignInScreen = ({ navigation }) => {
   const { setAuthType, setCustomComponent } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   useEffect(() => {
     setAuthType("Sign In");
     const CustomComponent = () => (
@@ -33,6 +39,10 @@ const SignInScreen = ({ navigation }) => {
             style={styles.input}
             placeholder="Email or Phone Number"
             placeholderTextColor="#aaa"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
         </View>
         <View style={styles.inputContainer}>
@@ -44,9 +54,11 @@ const SignInScreen = ({ navigation }) => {
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("ForgetPassword")}>
@@ -61,7 +73,29 @@ const SignInScreen = ({ navigation }) => {
       </View>
     );
     setCustomComponent(<CustomComponent />);
-  }, [setAuthType, setCustomComponent, navigation]);
+  }, [setAuthType, setCustomComponent, navigation, email, password]);
+
+  const handleSignIn = async () => {
+    try {
+      const data = await signIn(email, password);
+      const decodedToken = decodeJWT(data.access_token); // Manually decode the access token
+      await AsyncStorage.setItem('access_token', data.access_token); // Store the access token
+      console.log('Decoded Token:', decodedToken); // Log the decoded token for debugging
+      Alert.alert('Sign-In Successful', `Welcome ${decodedToken.username}`);
+      if (decodedToken.userType == "manufacturer"){
+        //Goto manufecturer dashboard
+
+      }else{
+        //Goto exporter dashboard
+        navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
+      }
+    } catch (error) {
+      Alert.alert('Sign-In Failed', 'Invalid email or password');
+      console.error('Sign-In Error:', error);
+    }
+  };
+
+
   return <AuthScreen />;
 };
 
