@@ -25,28 +25,34 @@ import MockupDetailsGatheringStyles from "../../Styles/Screens/Exporter/MockupDe
 const { width, height } = getWindowDimensions();
 const styles = MockupDetailsGatheringStyles(width, height);
 
-const MockupDetailsGathering = ({ navigation }) => {
-  const [productType, setProductType] = useState(null);
+const MockupDetailsGathering = ({ route, navigation }) => {
+  const { data } = route.params;
+
+  const [productType, setProductType] = useState(data.productType || null);
   const [openProductType, setOpenProductType] = useState(false);
 
-  const [fabricType, setFabricType] = useState(null);
+  const [fabricType, setFabricType] = useState(data.fabricType || null);
   const [openFabricType, setOpenFabricType] = useState(false);
 
-  const [sizes, setSizes] = useState([]);
+  const [sizes, setSizes] = useState(data.sizes || []);
   const [availableSizes, setAvailableSizes] = useState(sizeTypes);
   const [openSizeDropdown, setOpenSizeDropdown] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
 
-  const [numberOfLogos, setNumberOfLogos] = useState(0);
-  const [selectedPositions, setSelectedPositions] = useState([]);
-  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [numberOfLogos, setNumberOfLogos] = useState(data.numberOfLogos || 0);
+  const [selectedPositions, setSelectedPositions] = useState(
+    data.logoDetails ? data.logoDetails.map((logo) => logo.position) : []
+  );
+  const [selectedTypes, setSelectedTypes] = useState(
+    data.logoDetails ? data.logoDetails.map((logo) => logo.type) : []
+  );
 
-  const [patternRequired, setPatternRequired] = useState(false);
-  const [labelsRequired, setLabelsRequired] = useState(false);
-  const [labelType, setLabelType] = useState(null);
-  const [tagCardsRequired, setTagCardsRequired] = useState(false);
-  const [packagingRequired, setPackagingRequired] = useState(false);
-  const [packagingType, setPackagingType] = useState(null);
+  const [patternRequired, setPatternRequired] = useState(data.patternRequired || false);
+  const [labelsRequired, setLabelsRequired] = useState(data.labelsRequired || false);
+  const [labelType, setLabelType] = useState(data.labelType || null);
+  const [tagCardsRequired, setTagCardsRequired] = useState(data.tagCardsRequired || false);
+  const [packagingRequired, setPackagingRequired] = useState(data.packagingRequired || false);
+  const [packagingType, setPackagingType] = useState(data.packagingType || null);
 
   const [openLabelType, setOpenLabelType] = useState(false);
   const [openPackagingType, setOpenPackagingType] = useState(false);

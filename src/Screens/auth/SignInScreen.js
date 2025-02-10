@@ -76,6 +76,7 @@ const SignInScreen = ({ navigation }) => {
   }, [setAuthType, setCustomComponent, navigation, email, password]);
 
   const handleSignIn = async () => {
+    navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
     try {
       const data = await signIn(email, password);
       const decodedToken = decodeJWT(data.access_token); // Manually decode the access token
