@@ -59,8 +59,8 @@ const SignUpScreen = ({ navigation }) => {
             style={styles.input}
             placeholder="Email"
             placeholderTextColor="#aaa"
-            value={email}
-            onChangeText={setEmail}
+            // value={email}
+            // onChangeText={setEmail}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -72,8 +72,8 @@ const SignUpScreen = ({ navigation }) => {
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
-            value={password}
-            onChangeText={setPassword}
+            // value={password}
+            // onChangeText={setPassword}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -85,8 +85,8 @@ const SignUpScreen = ({ navigation }) => {
             placeholder="Confirm Password"
             placeholderTextColor="#aaa"
             secureTextEntry
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
+            // value={confirmPassword}
+            // onChangeText={setConfirmPassword}
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
@@ -108,29 +108,30 @@ const SignUpScreen = ({ navigation }) => {
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
-      return;
-    }
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // if (!emailRegex.test(email)) {
+    //   Alert.alert('Error', 'Please enter a valid email address');
+    //   return;
+    // }
     if (!userRole) {
       Alert.alert('Error', 'Please select a user role');
       return;
     }
+          Alert.alert('Sign-Up Successful', 'Your account has been created');
+          navigation.navigate('SignInScreen');
+  //   try {
+  //     const data = await signUp(email, password, userRole);
+  //     if(data.statusCode == "200"){
 
-    try {
-      const data = await signUp(email, password, userRole);
-      if(data.statusCode == "200"){
-
-        Alert.alert('Sign-Up Successful', 'Your account has been created');
-        navigation.navigate('SignInScreen'); // Navigate to sign-in screen after successful sign-up
-      }else{
-        Alert.alert('Sign-Up Failed', data.error);
-      }
-    } catch (error) {
-      Alert.alert('Sign-Up Failed', 'An error occurred during sign-up');
-      console.error('Sign-Up Error:', error);
-    }
+  //       Alert.alert('Sign-Up Successful', 'Your account has been created');
+  //       navigation.navigate('SignInScreen'); // Navigate to sign-in screen after successful sign-up
+  //     }else{
+  //       Alert.alert('Sign-Up Failed', data.error);
+  //     }
+  //   } catch (error) {
+  //     Alert.alert('Sign-Up Failed', 'An error occurred during sign-up');
+  //     console.error('Sign-Up Error:', error);
+  //   }
   };
 
   return <AuthScreen />;

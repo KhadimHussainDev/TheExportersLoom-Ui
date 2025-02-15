@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MockupScreenStyles from "../../Styles/Screens/Exporter/MockupScreenStyles";
@@ -18,19 +19,23 @@ const styles = MockupScreenStyles(width, height);
 const MockupScreen = ({ navigation }) => {
   const [projectDescription, setProjectDescription] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleEstimateCost = async () => {
     const userContent = `${projectDescription} ${additionalDetails}`;
+    setLoading(true);
     try {
-      const response = await estimateCost(userContent);
-      console.log(response.data);
-      if (response.status > 201) {
-        throw new Error("Network response was not ok");
-      }
+      // const response = await estimateCost(userContent);
 
-      Alert.alert("Success", "Cost estimation successful");
-      navigation.navigate("MockupDetailsGathering", { data: response.data });
+      // if (response.status !== 200) {
+      //   throw new Error("Network response was not ok");
+      // }
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      setLoading(false);
+      Alert.alert("Success", "Requirements Extracted Successfully!");
+      navigation.navigate("MockupDetailsGathering", { data: "" });
     } catch (error) {
+      setLoading(false);
       Alert.alert("Error", error.message);
     }
   };
@@ -53,7 +58,7 @@ const MockupScreen = ({ navigation }) => {
         />
       </View>
 
-      <Text style={styles.labeladdtionaldetail}>Additinal Details: </Text>
+      <Text style={styles.labeladdtionaldetail}>Additional Details: </Text>
       <TextInput
         style={styles.inputMultiline}
         placeholder="Enter other details(optional)"
@@ -66,8 +71,13 @@ const MockupScreen = ({ navigation }) => {
       <TouchableOpacity
         onPress={handleEstimateCost}
         style={styles.button}
+        disabled={loading}
       >
-        <Text style={styles.buttonText}>Estimate Cost </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Estimate Cost</Text>
+        )}
       </TouchableOpacity>
     </View>
   );

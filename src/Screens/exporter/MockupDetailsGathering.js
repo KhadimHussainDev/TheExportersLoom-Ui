@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from "react";
+import { Picker } from "@react-native-picker/picker";
+import React, { useState } from "react";
 import {
-  View,
+  ActivityIndicator,
+  FlatList,
+  Switch,
   Text,
   TextInput,
-  Switch,
-  FlatList,
+  Alert,
   TouchableOpacity,
+  View
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { Picker } from "@react-native-picker/picker";
-import getWindowDimensions from "../../utils/helpers/dimensions";
-import {
-  productTypes,
-  fabricTypes,
-  sizeTypes,
-  logoNumbers,
-  positionOptions,
-  typeOptions,
-  labelTypes,
-  packagingTypes,
-} from "../../utils/Data/CostCalculation";
 import MockupDetailsGatheringStyles from "../../Styles/Screens/Exporter/MockupDetailsGatheringStyle";
+import {
+  fabricTypes,
+  labelTypes,
+  logoNumbers,
+  packagingTypes,
+  positionOptions,
+  productTypes,
+  sizeTypes,
+  typeOptions,
+} from "../../utils/Data/CostCalculation";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
 const { width, height } = getWindowDimensions();
 const styles = MockupDetailsGatheringStyles(width, height);
@@ -28,35 +30,37 @@ const styles = MockupDetailsGatheringStyles(width, height);
 const MockupDetailsGathering = ({ route, navigation }) => {
   const { data } = route.params;
 
-  const [productType, setProductType] = useState(data.productType || null);
+  const [productType, setProductType] = useState(productTypes[0].value); // Sweat shirt
   const [openProductType, setOpenProductType] = useState(false);
 
-  const [fabricType, setFabricType] = useState(data.fabricType || null);
+  const [fabricType, setFabricType] = useState(fabricTypes[0].value); // Cotton
   const [openFabricType, setOpenFabricType] = useState(false);
 
-  const [sizes, setSizes] = useState(data.sizes || []);
-  const [availableSizes, setAvailableSizes] = useState(sizeTypes);
+  const [sizes, setSizes] = useState([
+    { size: "M", quantity: 50 },
+    { size: "S", quantity: 70 },
+  ]);
+  const [availableSizes, setAvailableSizes] = useState(
+    sizeTypes.filter((size) => size.value !== "M" && size.value !== "S")
+  );
   const [openSizeDropdown, setOpenSizeDropdown] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
 
-  const [numberOfLogos, setNumberOfLogos] = useState(data.numberOfLogos || 0);
-  const [selectedPositions, setSelectedPositions] = useState(
-    data.logoDetails ? data.logoDetails.map((logo) => logo.position) : []
-  );
-  const [selectedTypes, setSelectedTypes] = useState(
-    data.logoDetails ? data.logoDetails.map((logo) => logo.type) : []
-  );
+  const [numberOfLogos, setNumberOfLogos] = useState(1);
+  const [selectedPositions, setSelectedPositions] = useState(["Chest"]);
+  const [selectedTypes, setSelectedTypes] = useState(["Screen Printing"]);
 
-  const [patternRequired, setPatternRequired] = useState(data.patternRequired || false);
-  const [labelsRequired, setLabelsRequired] = useState(data.labelsRequired || false);
-  const [labelType, setLabelType] = useState(data.labelType || null);
-  const [tagCardsRequired, setTagCardsRequired] = useState(data.tagCardsRequired || false);
-  const [packagingRequired, setPackagingRequired] = useState(data.packagingRequired || false);
-  const [packagingType, setPackagingType] = useState(data.packagingType || null);
+  const [patternRequired, setPatternRequired] = useState(true);
+  const [labelsRequired, setLabelsRequired] = useState(false);
+  const [labelType, setLabelType] = useState(null);
+  const [tagCardsRequired, setTagCardsRequired] = useState(true);
+  const [packagingRequired, setPackagingRequired] = useState(false);
+  const [packagingType, setPackagingType] = useState(null);
 
   const [openLabelType, setOpenLabelType] = useState(false);
   const [openPackagingType, setOpenPackagingType] = useState(false);
   const [quantity, setQuantity] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const addSize = () => {
     if (selectedSize && quantity) {
@@ -91,7 +95,7 @@ const MockupDetailsGathering = ({ route, navigation }) => {
     setSelectedTypes(updatedTypes);
   };
 
-  const handleSubmit = () => {
+  const handleCalculateCost = async () => {
     const formData = {
       productType,
       fabricType,
@@ -110,6 +114,12 @@ const MockupDetailsGathering = ({ route, navigation }) => {
     };
 
     console.log("Form Data:", formData);
+    setLoading(true);
+
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    setLoading(false);
+    Alert.alert("Success", "Cost Calculated Successfully!");
+    navigation.navigate("CostEstimationBreakdown")
   };
 
   return (
@@ -296,10 +306,14 @@ const MockupDetailsGathering = ({ route, navigation }) => {
             />
           )}
           <TouchableOpacity
-            onPress={() => navigation.navigate("CostEstimationBreakdown")}
+            onPress={handleCalculateCost}
             style={styles.buttonCalculateCost}
           >
-            <Text style={styles.buttonTextculateCost}>Caclulate Cost</Text>
+            {loading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.buttonTextculateCost}>Caclulate Cost</Text>
+            )}
           </TouchableOpacity>
         </View>
       )}

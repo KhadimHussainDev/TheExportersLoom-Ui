@@ -12,7 +12,7 @@ const projectsList = [
   {
     projectName: "Winter Collection 2025",
     customerName: "Client Alpha",
-    totalCost: 2750,
+    totalCost: 505,
     priority: "High",
     modules: [1, 2, 3, 4, 5],
     daysLeft: 15,

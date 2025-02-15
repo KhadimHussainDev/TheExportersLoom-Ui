@@ -39,8 +39,8 @@ const SignInScreen = ({ navigation }) => {
             style={styles.input}
             placeholder="Email or Phone Number"
             placeholderTextColor="#aaa"
-            value={email}
-            onChangeText={setEmail}
+            // value={email}
+            // onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
           />
@@ -54,8 +54,8 @@ const SignInScreen = ({ navigation }) => {
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
-            value={password}
-            onChangeText={setPassword}
+            // value={password}
+            // onChangeText={setPassword}
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleSignIn}>
@@ -76,24 +76,25 @@ const SignInScreen = ({ navigation }) => {
   }, [setAuthType, setCustomComponent, navigation, email, password]);
 
   const handleSignIn = async () => {
+    Alert.alert('Sign-In Successful', `Welcome Khadim!`);
     navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
-    try {
-      const data = await signIn(email, password);
-      const decodedToken = decodeJWT(data.access_token); // Manually decode the access token
-      await AsyncStorage.setItem('access_token', data.access_token); // Store the access token
-      console.log('Decoded Token:', decodedToken); // Log the decoded token for debugging
-      Alert.alert('Sign-In Successful', `Welcome ${decodedToken.username}`);
-      if (decodedToken.userType == ROLES.manufacturer){
-        //Goto manufecturer dashboard
+    // try {
+    //   const data = await signIn(email, password);
+    //   const decodedToken = decodeJWT(data.access_token); // Manually decode the access token
+    //   await AsyncStorage.setItem('access_token', data.access_token); // Store the access token
+    //   console.log('Decoded Token:', decodedToken); // Log the decoded token for debugging
+    //   Alert.alert('Sign-In Successful', `Welcome ${decodedToken.username}`);
+    //   if (decodedToken.userType == ROLES.manufacturer){
+    //     //Goto manufecturer dashboard
 
-      }else if (decodedToken.userType == ROLES.exporter){
-        //Goto exporter dashboard
-        navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
-      }
-    } catch (error) {
-      Alert.alert('Sign-In Failed', 'Invalid email or password');
-      console.error('Sign-In Error:', error);
-    }
+    //   }else if (decodedToken.userType == ROLES.exporter){
+    //     //Goto exporter dashboard
+    //     navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
+    //   }
+    // } catch (error) {
+    //   Alert.alert('Sign-In Failed', 'Invalid email or password');
+    //   console.error('Sign-In Error:', error);
+    // }
   };
 
 

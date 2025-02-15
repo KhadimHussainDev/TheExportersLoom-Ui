@@ -16,14 +16,14 @@ const styles = createProfileScreenStyles(width, height);
 const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [name, setName] = useState("Azman Shakir");
-  const [email, setEmail] = useState("azmansha1234@gmail.com");
-  const [phone, setPhone] = useState("+923091571051");
+  const [name, setName] = useState("Khadim Hussain");
+  const [email, setEmail] = useState("devKhadimHussain@gmail.com");
+  const [phone, setPhone] = useState("+923434052098");
   const [address, setAddress] = useState(
     "Muhala Harar China Chowk Sialkot, Pakistan"
   );
   const [aboutMe, setAboutMe] = useState(
-    "Amazing work, highly recommended! What are you doing nowadays? You do not even tell me what is happening. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    "We are a leading manufacturer specializing in high-quality products with a commitment to innovation and excellence. Our team is dedicated to providing the best solutions to meet our customers' needs."
   );
 
   useEffect(() => {
