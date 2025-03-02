@@ -14,6 +14,8 @@ import ProfileScreen from "../../Screens/Common/ProfileScreen";
 import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
 import Analytics from "../../Screens/Common/Analytics";
 import ModuleCardsList from "../../Screens/exporter/ModuleCardsList";
+import OverviewScreen from "../../Screens/exporter/OverviewScreen";
+import NeedHelpScreen from "../../Screens/Common/NeedHelpScreen";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,7 +23,7 @@ const Stack = createNativeStackNavigator();
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="SignInScreen"
         component={SignInScreen}
         options={{ headerShown: false }}
@@ -30,7 +32,7 @@ const MainStackNavigator = () => {
         name="SignUpScreen"
         component={SignUpScreen}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="ExporterDashboardStack"
         component={ExporterDashboardStack}
@@ -91,19 +93,14 @@ const AppNavigator = () => {
             options={{ headerShown: false, title: "Dashboard" }}
           />
           <Drawer.Screen
-            name="ProfileScreen"
-            component={ProfileScreen}
-            options={{ headerShown: true, title: "Profile Screen" }}
+            name="OverviewScreen"
+            component={OverviewScreen}
+            options={{ headerShown: true, title: "Overview" }}
           />
           <Drawer.Screen
-            name="SearchManufacturerList"
-            component={SearchManufacturerList}
-            options={{ headerShown: true, title: "Search Manufacturer" }}
-          />
-          <Drawer.Screen
-            name="Analytics"
-            component={Analytics}
-            options={{ headerShown: true, title: "Analytics" }}
+            name="NeedHelpScreen"
+            component={NeedHelpScreen}
+            options={{ headerShown: true, title: "Register Your Complain" }}
           />
         </Drawer.Navigator>
       </NavigationContainer>

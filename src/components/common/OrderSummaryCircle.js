@@ -3,10 +3,9 @@ import { View, Text } from "react-native";
 import Svg, { G, Circle } from "react-native-svg";
 import { calculateOrderSummary } from "../../utils/helpers/orderUtils";
 import orderSummaryCircleStyles from "../../Styles/Components/orderSummaryCircleStyles";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-import { Dimensions } from "react-native";
-const { width, height } = Dimensions.get("window");
-
+const { width, height } = getWindowDimensions();
 const styles = orderSummaryCircleStyles(width, height);
 
 const OrderSummaryCircle = () => {

@@ -50,6 +50,7 @@ const CostEstimationBreakdown = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={CostEstimationBreakdownStyles.buttonCalculateCost}
+            onPress={() => navigation.navigate("MockupDetailsGathering")}
           >
             <Text style={CostEstimationBreakdownStyles.buttonTextculateCost}>
               Recaclulate Cost

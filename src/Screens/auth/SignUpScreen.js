@@ -1,32 +1,61 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
-  StyleSheet,
-  Image,
   TouchableOpacity,
+  Image,
+  Alert,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import AuthScreen from "./AuthScreen";
 import { AuthContext } from "../../context/providers/AuthContext";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { IMAGES } from "../../utils/contants/images";
 import createSignUpStyles from "../../Styles/Screens/SignUpStyle";
+import { ROLES } from "../../utils/Data/ROLES";
 
 const { width, height } = getWindowDimensions();
 const styles = createSignUpStyles(width, height);
 
 const SignUpScreen = ({ navigation }) => {
   const { setAuthType, setCustomComponent } = useContext(AuthContext);
-  useEffect(() => {
-    setAuthType("Sign up");
-    const CustomComponent = () => (
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userRole, setUserRole] = useState("");
+
+  const handleSignUp = () => {
+    if (!email || !password || !confirmPassword || !userRole) {
+      Alert.alert("Error", "All fields are required!");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match!");
+      return;
+    }
+
+    const signUpData = {
+      email,
+      password,
+      userRole,
+    };
+
+    console.log("Sign Up Data:", JSON.stringify(signUpData, null, 2));
+
+    Alert.alert("Success", "Account created successfully!");
+    navigation.replace("SignInScreen");
+  };
+
+  // Define CustomComponent inside useCallback so it doesn't recreate unnecessarily
+  const CustomComponent = useCallback(() => {
+    return (
       <View style={styles.scrollContent}>
         <Text style={styles.signUpText}>
-          Already Registerd?
-          <TouchableOpacity onPress={() => navigation.navigate("SignInScreen")}>
+          Already Registered?{" "}
+          <TouchableOpacity onPress={() => navigation.replace("SignInScreen")}>
             <Text style={styles.signUpLink}>Sign In</Text>
           </TouchableOpacity>
         </Text>
@@ -35,11 +64,15 @@ const SignUpScreen = ({ navigation }) => {
           <Text>
             <Icon name="user" size={width * 0.06} color="#aaa" />
           </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="User Role"
-            placeholderTextColor="#aaa"
-          />
+          <Picker
+            selectedValue={userRole}
+            style={styles.DropDown}
+            onValueChange={(itemValue) => setUserRole(itemValue)}
+          >
+            <Picker.Item label="Select User Role" value="" />
+            <Picker.Item label="Manufacturer" value={ROLES.manufacturer} />
+            <Picker.Item label="Exporter" value={ROLES.exporter} />
+          </Picker>
         </View>
         <View style={styles.inputContainer}>
           <Text>
@@ -49,6 +82,11 @@ const SignUpScreen = ({ navigation }) => {
             style={styles.input}
             placeholder="Email"
             placeholderTextColor="#aaa"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -60,6 +98,8 @@ const SignUpScreen = ({ navigation }) => {
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -68,18 +108,15 @@ const SignUpScreen = ({ navigation }) => {
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="Conifrm Password"
+            placeholder="Confirm Password"
             placeholderTextColor="#aaa"
             secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
         </View>
-        <TouchableOpacity style={styles.button}>
-          <Text
-            style={styles.buttonText}
-            onPress={() => navigation.navigate("ExporterDashboardStack")}
-          >
-            Sign Up
-          </Text>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+          <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
         <Text style={styles.ortext}>Or</Text>
         <TouchableOpacity style={styles.GoogleButton}>
@@ -88,8 +125,13 @@ const SignUpScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     );
-    setCustomComponent(<CustomComponent />);
-  }, [setAuthType, setCustomComponent, navigation]);
+  }, [navigation, userRole, email, password, confirmPassword]);
+
+  useEffect(() => {
+    setAuthType("Sign up");
+    setCustomComponent(CustomComponent); // Pass function instead of JSX
+  }, [setAuthType, setCustomComponent, CustomComponent]);
+
   return <AuthScreen />;
 };
 

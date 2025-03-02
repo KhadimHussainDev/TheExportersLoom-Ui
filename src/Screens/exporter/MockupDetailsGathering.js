@@ -13,6 +13,7 @@ import getWindowDimensions from "../../utils/helpers/dimensions";
 import {
   productTypes,
   fabricTypes,
+  subFabricTypes,
   sizeTypes,
   logoNumbers,
   positionOptions,
@@ -31,6 +32,10 @@ const MockupDetailsGathering = ({ navigation }) => {
 
   const [fabricType, setFabricType] = useState(null);
   const [openFabricType, setOpenFabricType] = useState(false);
+
+  const [subFabricType, setSubFabricType] = useState(null);
+  const [openSubFabricType, setOpenSubFabricType] = useState(false);
+  const [availableSubFabricTypes, setAvailableSubFabricTypes] = useState([]);
 
   const [sizes, setSizes] = useState([]);
   const [availableSizes, setAvailableSizes] = useState(sizeTypes);
@@ -85,10 +90,18 @@ const MockupDetailsGathering = ({ navigation }) => {
     setSelectedTypes(updatedTypes);
   };
 
+  useEffect(() => {
+    if (fabricType) {
+      setAvailableSubFabricTypes(subFabricTypes[fabricType] || []);
+      setSubFabricType(null);
+    }
+  }, [fabricType]);
+
   const handleSubmit = () => {
     const formData = {
       productType,
       fabricType,
+      subFabricType,
       sizes,
       numberOfLogos,
       logoDetails: selectedPositions.map((position, index) => ({
@@ -121,7 +134,7 @@ const MockupDetailsGathering = ({ navigation }) => {
             containerStyle={styles.dropdown}
             placeholder="Select product type"
             listMode="SCROLLVIEW"
-            zIndex={5000}
+            zIndex={10000}
           />
           <Text style={styles.label}>Fabric Type</Text>
           <DropDownPicker
@@ -135,6 +148,22 @@ const MockupDetailsGathering = ({ navigation }) => {
             listMode="SCROLLVIEW"
             zIndex={5000}
           />
+          {fabricType && availableSubFabricTypes.length > 0 && (
+            <>
+              <Text style={styles.label}>Sub-Fabric Type</Text>
+              <DropDownPicker
+                open={openSubFabricType}
+                value={subFabricType}
+                items={availableSubFabricTypes}
+                setOpen={setOpenSubFabricType}
+                setValue={setSubFabricType}
+                containerStyle={styles.dropdown}
+                placeholder="Select sub-fabric type"
+                listMode="SCROLLVIEW"
+                zIndex={10000}
+              />
+            </>
+          )}
           <Text style={styles.label}>Sizes and Quantities</Text>
           <FlatList
             data={sizes}
@@ -167,6 +196,7 @@ const MockupDetailsGathering = ({ navigation }) => {
           <TouchableOpacity onPress={addSize} style={styles.button}>
             <Text style={styles.buttonText}>Add Size</Text>
           </TouchableOpacity>
+
           <View style={styles.container}>
             <Text style={styles.label}>Number of Logos</Text>
             <View style={styles.pickerContainer}>
@@ -290,7 +320,10 @@ const MockupDetailsGathering = ({ navigation }) => {
             />
           )}
           <TouchableOpacity
-            onPress={() => navigation.navigate("CostEstimationBreakdown")}
+            onPress={() => {
+              handleSubmit();
+              navigation.navigate("CostEstimationBreakdown");
+            }}
             style={styles.buttonCalculateCost}
           >
             <Text style={styles.buttonTextculateCost}>Caclulate Cost</Text>
