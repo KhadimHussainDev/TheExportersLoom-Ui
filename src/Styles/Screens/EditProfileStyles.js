@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../Themes/colors";
 
 const EditProfileStyles = (width, height) => {
   return StyleSheet.create({
@@ -6,20 +7,23 @@ const EditProfileStyles = (width, height) => {
       flex: 1,
       padding: 20,
       justifyContent: "center",
+      backgroundColor: colors.background, // Added background color
     },
     modalTitle: {
       fontSize: 20,
       fontWeight: "bold",
       marginBottom: 20,
       textAlign: "center",
+      color: colors.primary, // Updated color
     },
     input: {
       borderWidth: 1,
-      borderColor: "#CCC",
+      borderColor: colors.border, // Updated border color
       borderRadius: 5,
       padding: 10,
       marginBottom: 15,
       width: width * 0.9,
+      color: colors.Text, // Updated text color
     },
     passwordContainer: {
       flexDirection: "row",
@@ -38,13 +42,13 @@ const EditProfileStyles = (width, height) => {
     saveButton: {
       flex: 1,
       marginHorizontal: 5,
-      backgroundColor: "#004c99",
+      backgroundColor: colors.primary, // Updated background color
       paddingVertical: height * 0.015,
       borderRadius: 20,
       alignItems: "center",
     },
     buttonText: {
-      color: "white",
+      color: colors.whiteborder, // Updated text color
       fontWeight: "bold",
     },
   });

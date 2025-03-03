@@ -2,8 +2,9 @@ import React from "react";
 import { TouchableOpacity, Text, Dimensions } from "react-native";
 import SortButtonStyle from "../../Styles/Components/SortButtonStyle";
 import { colors } from "../../Styles/Themes/colors";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = SortButtonStyle(width, height);
 
 const SortButton = ({ label, isActive, onPress }) => (

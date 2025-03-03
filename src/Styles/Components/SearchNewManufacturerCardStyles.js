@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../Themes/colors"; // Adjust the path as necessary
 
 const SearchNewManufacturerCardStyles = (width, height) => {
   return StyleSheet.create({
     card: {
-      backgroundColor: "#e7f7f8",
+      backgroundColor: colors.AdditonalDetailstextbox,
       borderRadius: 10,
       padding: width * 0.04, // Dynamically adjust padding based on width
       margin: width * 0.02, // Dynamically adjust margin based on width
@@ -32,24 +33,26 @@ const SearchNewManufacturerCardStyles = (width, height) => {
     name: {
       fontWeight: "bold",
       fontSize: width * 0.04, // Dynamic font size
+      color: colors.Text, // Updated text color
     },
     location: {
       fontSize: width * 0.03,
-      color: "#666",
+      color: colors.PlaceholderText, // Updated text color
     },
     level: {
       fontSize: width * 0.035,
+      color: colors.Text, // Updated text color
     },
     description: {
       fontSize: width * 0.035,
-      color: "#333",
+      color: colors.Text, // Updated text color
       marginBottom: height * 0.01,
     },
     chatIconContainer: {
       position: "absolute",
       bottom: height * 0.02,
       right: width * 0.04,
-      backgroundColor: "#013240",
+      backgroundColor: colors.primary,
       borderRadius: 50,
       padding: width * 0.02,
       justifyContent: "center",
@@ -64,14 +67,14 @@ const SearchNewManufacturerCardStyles = (width, height) => {
       flexWrap: "wrap",
     },
     label: {
-      backgroundColor: "#b2ebf2", // Light blue background for labels
+      backgroundColor: colors.GoogleButtonBorder, // Light blue background for labels
       paddingVertical: height * 0.006,
       paddingHorizontal: width * 0.025,
       borderRadius: 20,
       marginBottom: height * 0.01,
       marginRight: width * 0.02,
       fontSize: width * 0.03,
-      color: "#333",
+      color: colors.Text, // Updated text color
     },
   });
 };

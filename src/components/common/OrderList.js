@@ -3,9 +3,9 @@ import { ScrollView } from "react-native";
 import orderList from "../../utils/Data/Orders"; // Ensure this file contains your order data
 import OrderCard from "./OrderCard";
 import OrderListStyles from "../../Styles/Components/OrderListStyles";
-import { Dimensions } from "react-native";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 
 const styles = OrderListStyles(width, height);
 

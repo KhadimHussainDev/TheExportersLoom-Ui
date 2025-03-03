@@ -3,7 +3,8 @@ import { View, Text, Image, Dimensions } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import RatingStars from "../common/RatingStars";
 import SearchNewManufacturerCardStyles from "../../Styles/Components/SearchNewManufacturerCardStyles";
-const { width, height } = Dimensions.get("window"); // Get screen dimensions
+import getWindowDimensions from "../../utils/helpers/dimensions";
+const { width, height } = getWindowDimensions(); // Get screen dimensions
 const styles = SearchNewManufacturerCardStyles(width, height);
 
 const SearchNewManufacturerCard = ({ manufacturer, navigation }) => {

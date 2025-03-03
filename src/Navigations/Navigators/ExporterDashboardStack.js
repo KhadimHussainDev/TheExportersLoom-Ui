@@ -1,6 +1,5 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ExporterDashboard from "../../Screens/exporter/ExporterDashboard";
 import CustomHeader from "../../components/common/CustomHeader";
 import BottomTabs from "../../components/common/CustomBottomTab";
 

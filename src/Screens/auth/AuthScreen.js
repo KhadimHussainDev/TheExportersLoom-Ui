@@ -12,7 +12,6 @@ import getWindowDimensions from "../../utils/helpers/dimensions";
 import { IMAGES } from "../../utils/contants/images";
 import createAuthStyles from "../../Styles/Screens/AuthStyle";
 import useToggleAnimation from "../../utils/helpers/useToggleAnimation";
-import { colors } from "../../Styles/Themes/colors";
 import { AuthContext } from "../../context/providers/AuthContext";
 
 const { width, height } = getWindowDimensions();
