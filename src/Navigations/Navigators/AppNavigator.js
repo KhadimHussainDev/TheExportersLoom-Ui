@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator();
 const MainStackNavigator = () => {
   return (
     <Stack.Navigator>
-      {/* <Stack.Screen
+      <Stack.Screen
         name="SignInScreen"
         component={SignInScreen}
         options={{ headerShown: false }}
@@ -32,7 +32,7 @@ const MainStackNavigator = () => {
         name="SignUpScreen"
         component={SignUpScreen}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Stack.Screen
         name="ExporterDashboardStack"
         component={ExporterDashboardStack}

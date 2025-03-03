@@ -12,7 +12,7 @@ import AuthScreen from "./AuthScreen";
 import { AuthContext } from "../../context/providers/AuthContext";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { IMAGES, ROLES } from "../../utils/contants/images";
+import { IMAGES } from "../../utils/contants/images";
 import createSignUpStyles from "../../Styles/Screens/SignUpStyle";
 import { ROLES } from "../../utils/Data/ROLES";
 
