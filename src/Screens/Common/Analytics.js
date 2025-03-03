@@ -4,9 +4,9 @@ import OrderSummaryCircle from "../../components/common/OrderSummaryCircle";
 import SummaryOverview from "../../components/common/SummaryOverview";
 import OrderList from "../../components/common/OrderList";
 import Analyticstyles from "../../Styles/Screens/Analyticstyles";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-import { Dimensions } from "react-native";
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 
 const styles = Analyticstyles(width, height);
 

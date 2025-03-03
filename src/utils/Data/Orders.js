@@ -15,7 +15,7 @@ const orderList = [
   },
   {
     orderName: "Summer T-Shirts",
-    customerName: "Client Beta",
+    customerName: "Exporter Beta",
     totalCost: 1750,
     priority: "Medium",
     modules: [2, 5, 6, 7],
@@ -29,7 +29,7 @@ const orderList = [
   },
   {
     orderName: "Custom Hoodies",
-    customerName: "Client Gamma",
+    customerName: "Exporter Gamma",
     totalCost: 3400,
     priority: "High",
     modules: [1, 3, 5, 6, 8],
@@ -43,7 +43,7 @@ const orderList = [
   },
   {
     orderName: "Sportswear Batch 1",
-    customerName: "Client Delta",
+    customerName: "Exporter Delta",
     totalCost: 2200,
     priority: "Low",
     modules: [4, 5, 7],
@@ -57,7 +57,7 @@ const orderList = [
   },
   {
     orderName: "Festival Merchandise",
-    customerName: "Client Epsilon",
+    customerName: "Exporter Epsilon",
     totalCost: 3100,
     priority: "Medium",
     modules: [1, 2, 3, 6, 8],
@@ -71,7 +71,7 @@ const orderList = [
   },
   {
     orderName: "Autumn Jackets",
-    customerName: "Client Zeta",
+    customerName: "Exporter Zeta",
     totalCost: 2850,
     priority: "High",
     modules: [2, 4, 6],
@@ -85,7 +85,7 @@ const orderList = [
   },
   {
     orderName: "Spring Collection",
-    customerName: "Client Eta",
+    customerName: "Exporter Eta",
     totalCost: 1950,
     priority: "Medium",
     modules: [1, 3, 7, 8],
@@ -99,7 +99,7 @@ const orderList = [
   },
   {
     orderName: "Corporate Uniforms",
-    customerName: "Client Theta",
+    customerName: "Exporter Theta",
     totalCost: 4000,
     priority: "High",
     modules: [1, 2, 4, 5],
@@ -113,7 +113,7 @@ const orderList = [
   },
   {
     orderName: "Athleisure Wear",
-    customerName: "Client Iota",
+    customerName: "Exporter Iota",
     totalCost: 2300,
     priority: "Medium",
     modules: [2, 5, 6, 7],
@@ -127,7 +127,7 @@ const orderList = [
   },
   {
     orderName: "Summer Dresses",
-    customerName: "Client Kappa",
+    customerName: "Exporter Kappa",
     totalCost: 3200,
     priority: "High",
     modules: [3, 6, 7, 8],
@@ -141,7 +141,7 @@ const orderList = [
   },
   {
     orderName: "Promotional T-Shirts",
-    customerName: "Client Lambda",
+    customerName: "Exporter Lambda",
     totalCost: 1500,
     priority: "Low",
     modules: [1, 5, 7],
@@ -155,7 +155,7 @@ const orderList = [
   },
   {
     orderName: "Kids' Apparel",
-    customerName: "Client Mu",
+    customerName: "Exporter Mu",
     totalCost: 2100,
     priority: "Medium",
     modules: [2, 4, 6, 7],
@@ -169,7 +169,7 @@ const orderList = [
   },
   {
     orderName: "Workwear Batch 1",
-    customerName: "Client Nu",
+    customerName: "Exporter Nu",
     totalCost: 3100,
     priority: "High",
     modules: [1, 2, 3, 6],
@@ -183,7 +183,7 @@ const orderList = [
   },
   {
     orderName: "Rain Jackets",
-    customerName: "Client Xi",
+    customerName: "Exporter Xi",
     totalCost: 2500,
     priority: "Medium",
     modules: [4, 5, 6],
@@ -197,7 +197,7 @@ const orderList = [
   },
   {
     orderName: "Winter Hats",
-    customerName: "Client Omicron",
+    customerName: "Exporter Omicron",
     totalCost: 1200,
     priority: "Low",
     modules: [2, 3, 4],
@@ -211,7 +211,7 @@ const orderList = [
   },
   {
     orderName: "Beachwear",
-    customerName: "Client Pi",
+    customerName: "Exporter Pi",
     totalCost: 1900,
     priority: "Medium",
     modules: [1, 3, 5, 7],
@@ -225,7 +225,7 @@ const orderList = [
   },
   {
     orderName: "Winter Gloves",
-    customerName: "Client Rho",
+    customerName: "Exporter Rho",
     totalCost: 1300,
     priority: "Low",
     modules: [3, 5, 6],
@@ -239,7 +239,7 @@ const orderList = [
   },
   {
     orderName: "Formal Suits",
-    customerName: "Client Sigma",
+    customerName: "Exporter Sigma",
     totalCost: 4500,
     priority: "High",
     modules: [2, 4, 6, 8],
@@ -253,7 +253,7 @@ const orderList = [
   },
   {
     orderName: "Polo Shirts",
-    customerName: "Client Tau",
+    customerName: "Exporter Tau",
     totalCost: 2200,
     priority: "Medium",
     modules: [1, 2, 5],
@@ -267,7 +267,7 @@ const orderList = [
   },
   {
     orderName: "Denim Jackets",
-    customerName: "Client Upsilon",
+    customerName: "Exporter Upsilon",
     totalCost: 3700,
     priority: "High",
     modules: [1, 3, 5, 7],

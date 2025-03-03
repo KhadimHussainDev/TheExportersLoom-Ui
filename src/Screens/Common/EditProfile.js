@@ -10,8 +10,10 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import EditProfileStyles from "../../Styles/Screens/EditProfileStyles";
+import getWindowDimensions from "../../utils/helpers/dimensions";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = EditProfileStyles(width, height);
 
 const EditProfile = ({

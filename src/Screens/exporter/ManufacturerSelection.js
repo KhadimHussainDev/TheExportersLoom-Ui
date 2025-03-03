@@ -5,8 +5,9 @@ import ManufacturerCard from "../../components/manufacturer/ManufacturerCard";
 import SortButton from "../../components/common/SortButton";
 import manufacturers from "../../utils/Data/Manufacturers";
 import ManufacturerSelectionStyle from "../../Styles/Screens/Exporter/ManufacturerSelectionStyle";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = ManufacturerSelectionStyle(width, height);
 
 const ManufacturerSelection = () => {

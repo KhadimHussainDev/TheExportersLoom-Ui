@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../Themes/colors";
 
 export const createProfileScreenStyles = (width, height) =>
   StyleSheet.create({
     container: {
       flex: 1,
       padding: width * 0.05,
-      backgroundColor: "#f7f7f7",
+      backgroundColor: colors.background,
     },
     profileSection: {
       flexDirection: "row",
@@ -20,21 +21,19 @@ export const createProfileScreenStyles = (width, height) =>
     statsSection: {
       flexDirection: "row",
       justifyContent: "space-between",
-      //marginTop: height * 0.02,
       paddingHorizontal: width * 0.05,
     },
     statsText: {
-      fontSize: width * 0.04, // Adjust this value for desired size
-      // fontWeight: "bold", // Optional for emphasis
+      fontSize: width * 0.04,
       textAlign: "center",
     },
     verifications: {
       flexDirection: "row",
       justifyContent: "space-around",
       marginVertical: height * 0.02,
-      backgroundColor: "#013240",
+      backgroundColor: colors.primary,
     },
-    ReviewText: {
+    reviewText: {
       fontSize: width * 0.045,
       fontWeight: "bold",
       marginBottom: height * 0.015,

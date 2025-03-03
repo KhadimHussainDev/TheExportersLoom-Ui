@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, Dimensions } from "react-native";
 import ModuleDescriptionStyle from "../../Styles/Components/ModuleDescriptionStyle";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = ModuleDescriptionStyle(width, height);
 
 const ModuleDescription = () => (

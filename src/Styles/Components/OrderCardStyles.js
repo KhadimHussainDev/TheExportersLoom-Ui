@@ -1,24 +1,25 @@
 import { StyleSheet } from "react-native";
+import { colors } from "../Themes/colors"; // Adjust the path as necessary
 
 const OrderCardStyles = (width, height) =>
   StyleSheet.create({
     card: {
       flexDirection: "row",
-      backgroundColor: "#e6f7ff",
+      backgroundColor: colors.AdditonalDetailstextbox, // Updated background color
       borderRadius: 10,
-      marginBottom: 15,
+      marginBottom: height * 0.02, // Adjusted margin based on height
       overflow: "hidden",
-      shadowColor: "#000",
+      shadowColor: colors.Text, // Updated shadow color
       shadowOpacity: 0.1,
       shadowRadius: 6,
       shadowOffset: { width: 0, height: 2 },
       elevation: 3,
-      height: 140, // Reduced height for the card
+      height: height * 0.2, // Adjusted height for the card
     },
     cardContent: {
       flex: 1,
-      paddingHorizontal: 15,
-      paddingVertical: 5,
+      paddingHorizontal: width * 0.04, // Adjusted padding based on width
+      paddingVertical: height * 0.01, // Adjusted padding based on height
     },
     header: {
       flexDirection: "row",
@@ -26,8 +27,8 @@ const OrderCardStyles = (width, height) =>
       alignItems: "center",
     },
     orderName: {
-      fontSize: 16,
-      color: "#004d66",
+      fontSize: width * 0.04, // Adjusted font size based on width
+      color: colors.primary, // Updated text color
       fontWeight: "bold",
     },
     iconsLeft: {
@@ -36,44 +37,44 @@ const OrderCardStyles = (width, height) =>
     },
     chatIcon: {
       position: "relative",
-      marginRight: 10,
+      marginRight: width * 0.03, // Adjusted margin based on width
     },
     badge: {
       position: "absolute",
-      top: -5,
-      right: -8,
-      backgroundColor: "red",
-      width: 16,
-      height: 16,
-      borderRadius: 8,
+      top: -height * 0.007, // Adjusted based on height
+      right: -width * 0.02, // Adjusted based on width
+      backgroundColor: colors.error,
+      width: width * 0.04, // Adjusted size based on width
+      height: width * 0.04, // Adjusted size based on width
+      borderRadius: (width * 0.04) / 2, // Circular badge
       justifyContent: "center",
       alignItems: "center",
     },
     badgeText: {
-      color: "white",
-      fontSize: 10,
+      color: colors.whiteborder, // Updated text color
+      fontSize: width * 0.025, // Adjusted font size based on width
       fontWeight: "bold",
     },
     details: {
-      marginTop: 1,
+      marginTop: height * 0.001, // Adjusted based on height
     },
     detailText: {
-      fontSize: 12,
-      color: "#333",
+      fontSize: width * 0.03, // Adjusted font size based on width
+      color: colors.Text, // Updated text color
     },
     progressContainer: {
-      marginTop: 10,
+      marginTop: height * 0.01, // Adjusted based on height
       alignItems: "flex-start",
     },
     progressText: {
-      fontSize: 12,
-      color: "#666",
-      marginBottom: 5,
+      fontSize: width * 0.03, // Adjusted font size based on width
+      color: colors.PlaceholderText, // Updated text color
+      marginBottom: height * 0.005, // Adjusted margin based on height
     },
     progressBarContainer: {
       flexDirection: "row",
-      height: 8,
-      backgroundColor: "#e0e0e0",
+      height: height * 0.01, // Adjusted height based on height
+      backgroundColor: colors.AdditonalDetailstextbox, // Updated background color
       borderRadius: 4,
       overflow: "hidden",
       width: "80%",
@@ -85,16 +86,16 @@ const OrderCardStyles = (width, height) =>
       flexDirection: "row",
       justifyContent: "flex-end",
       alignItems: "center",
-      marginTop: 10,
+      marginTop: height * 0.01, // Adjusted based on height
     },
     daysLeft: {
-      fontSize: 14,
-      color: "red",
+      fontSize: width * 0.035, // Adjusted font size based on width
+      color: colors.error, // Updated text color
       fontWeight: "bold",
     },
     rightBar: {
-      width: 30,
-      backgroundColor: "#013240",
+      width: width * 0.08, // Adjusted width based on width
+      backgroundColor: colors.primary,
       justifyContent: "center",
       alignItems: "center",
     },
@@ -104,7 +105,7 @@ const OrderCardStyles = (width, height) =>
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
-      marginTop: 5,
+      marginTop: height * 0.005, // Adjusted margin based on height
     },
   });
 

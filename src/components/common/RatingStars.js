@@ -2,8 +2,9 @@ import React from "react";
 import { View, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import RatingStarsStyle from "../../Styles/Components/RatingStarsStyle";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 const styles = RatingStarsStyle(width, height);
 
 const RatingStars = ({ rating }) => (
