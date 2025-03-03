@@ -6,12 +6,10 @@ import {
   TouchableOpacity,
   Modal,
   Alert,
-  Dimensions,
+  ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import EditProfileStyles from "../../Styles/Screens/EditProfileStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const { width, height } = getWindowDimensions();
 const styles = EditProfileStyles(width, height);
@@ -27,19 +25,34 @@ const EditProfile = ({
   setPhone,
   address,
   setAddress,
+  username,
+  setUsername,
+  companyName,
+  setCompanyName,
+  cnic,
+  setCnic,
+  aboutMe,
+  setAboutMe,
 }) => {
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [localUsername, setLocalUsername] = useState(username);
+  const [localCompanyName, setLocalCompanyName] = useState(companyName);
+  const [localCnic, setLocalCnic] = useState(cnic);
+  const [localName, setLocalName] = useState(name);
+  const [localEmail, setLocalEmail] = useState(email);
+  const [localPhone, setLocalPhone] = useState(phone);
+  const [localAddress, setLocalAddress] = useState(address);
+  const [localAboutMe, setLocalAboutMe] = useState(aboutMe);
 
   const handleSave = () => {
-    if (newPassword !== confirmPassword) {
-      Alert.alert("Error", "New Password and Confirm Password must match.");
-      return;
-    }
+    setUsername(localUsername);
+    setCompanyName(localCompanyName);
+    setCnic(localCnic);
+    setName(localName);
+    setEmail(localEmail);
+    setPhone(localPhone);
+    setAddress(localAddress);
+    setAboutMe(localAboutMe);
+
     Alert.alert(
       "Profile Updated",
       "Your profile has been updated successfully!"
@@ -47,100 +60,60 @@ const EditProfile = ({
     setIsModalVisible(false);
   };
 
-  const togglePasswordVisibility = (setter) => setter((prev) => !prev);
-
   return (
     <Modal visible={isModalVisible} animationType="slide">
-      <View style={styles.modalContent}>
-        <Text style={styles.modalTitle}>Edit Profile</Text>
+      <ScrollView contentContainerStyle={styles.modalContent}>
+        <Text style={styles.modalTitle}>Edit Your Information</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          value={localUsername}
+          onChangeText={setLocalUsername}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Company Name"
+          value={localCompanyName}
+          onChangeText={setLocalCompanyName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="National ID Number"
+          value={localCnic}
+          onChangeText={setLocalCnic}
+          keyboardType="numeric"
+        />
         <TextInput
           style={styles.input}
           placeholder="Name"
-          value={name}
-          onChangeText={setName}
+          value={localName}
+          onChangeText={setLocalName}
         />
         <TextInput
           style={styles.input}
           placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
+          value={localEmail}
+          onChangeText={setLocalEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="Phone Number"
-          value={phone}
-          onChangeText={setPhone}
+          value={localPhone}
+          onChangeText={setLocalPhone}
         />
         <TextInput
           style={styles.input}
           placeholder="Address"
-          value={address}
-          onChangeText={setAddress}
+          value={localAddress}
+          onChangeText={setLocalAddress}
         />
-
-        {/* Old Password */}
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Old Password"
-            secureTextEntry={!showOldPassword}
-            value={oldPassword}
-            onChangeText={setOldPassword}
-          />
-          <TouchableOpacity
-            onPress={() => togglePasswordVisibility(setShowOldPassword)}
-            style={styles.eyeIcon}
-          >
-            <Ionicons
-              name={showOldPassword ? "eye" : "eye-off"}
-              size={24}
-              color="gray"
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* New Password */}
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="New Password"
-            secureTextEntry={!showNewPassword}
-            value={newPassword}
-            onChangeText={setNewPassword}
-          />
-          <TouchableOpacity
-            onPress={() => togglePasswordVisibility(setShowNewPassword)}
-            style={styles.eyeIcon}
-          >
-            <Ionicons
-              name={showNewPassword ? "eye" : "eye-off"}
-              size={24}
-              color="gray"
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* Confirm New Password */}
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm New Password"
-            secureTextEntry={!showConfirmPassword}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-          />
-          <TouchableOpacity
-            onPress={() => togglePasswordVisibility(setShowConfirmPassword)}
-            style={styles.eyeIcon}
-          >
-            <Ionicons
-              name={showConfirmPassword ? "eye" : "eye-off"}
-              size={24}
-              color="gray"
-            />
-          </TouchableOpacity>
-        </View>
-
+        <TextInput
+          style={[styles.input, { height: 100, textAlignVertical: "top" }]}
+          placeholder="About Me"
+          value={localAboutMe}
+          onChangeText={setLocalAboutMe}
+          multiline
+        />
         <View style={styles.buttonRow}>
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
             <Text style={styles.buttonText}>Save</Text>
@@ -152,7 +125,7 @@ const EditProfile = ({
             <Text style={styles.buttonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };

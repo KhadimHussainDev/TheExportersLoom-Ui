@@ -29,6 +29,12 @@ const createSignUpStyles = (width, height) =>
       fontSize: width * 0.035,
       marginLeft: width * 0.025,
     },
+    DropDown: {
+      height: height * 0.07,
+      flex: 1,
+      fontSize: width * 0.015,
+      marginLeft: width * 0.025,
+    },
     button: {
       backgroundColor: colors.primary,
       padding: height * 0.01,

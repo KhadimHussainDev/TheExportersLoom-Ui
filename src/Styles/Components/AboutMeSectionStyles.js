@@ -4,7 +4,7 @@ import { colors } from "../Themes/colors"; // Adjust the path as necessary
 export const createAboutMeSectionStyles = (width, height) =>
   StyleSheet.create({
     aboutMeSection: {
-      marginTop: height * 0.02,
+      marginTop: height * 0.001,
     },
     aboutMeTitle: {
       fontSize: width * 0.045, // Dynamic font size based on width

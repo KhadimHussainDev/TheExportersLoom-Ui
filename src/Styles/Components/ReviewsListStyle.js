@@ -13,13 +13,14 @@ const ReviewsListStyle = (width, height) =>
       alignItems: "center",
       backgroundColor: colors.whiteborder, // Updated background color
       padding: height * 0.015, // Adjust padding based on height
-      marginVertical: height * 0.005, // Adjust margin based on height
+      marginVertical: height * 0.005,
+      marginHorizontal: height * 0.001, // Adjust margin based on height
       borderRadius: 8,
       shadowColor: colors.Text, // Updated shadow color
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
-      elevation: 2,
+      elevation: 4,
     },
     profileImage: {
       width: width * 0.13, // Adjust image size based on width
@@ -36,7 +37,7 @@ const ReviewsListStyle = (width, height) =>
       color: colors.Text, // Updated text color
     },
     projectName: {
-      color: colors.PlaceholderText, // Updated text color
+      color: colors.Text, // Updated text color
       marginVertical: height * 0.003, // Adjust margin based on height
       fontSize: width * 0.04, // Adjust font size based on width
     },

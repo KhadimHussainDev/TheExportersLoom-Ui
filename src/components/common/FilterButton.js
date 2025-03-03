@@ -1,7 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { FilterButtonStyle } from "../../Styles/Components/FilterButtonStyle";
-import { Dimensions } from "react-native";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 
 const { width, height } = getWindowDimensions();

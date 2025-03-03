@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Dimensions,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MockupScreenStyles from "../../Styles/Screens/Exporter/MockupScreenStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
@@ -17,32 +9,33 @@ const { width, height } = getWindowDimensions();
 const styles = MockupScreenStyles(width, height);
 
 const MockupScreen = ({ navigation }) => {
+  // State variables for input fields
   const [projectDescription, setProjectDescription] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const handleEstimateCost = async () => {
-    const userContent = `${projectDescription} ${additionalDetails}`;
-    setLoading(true);
-    try {
-      // const response = await estimateCost(userContent);
+  // Function to handle cost estimation
+  const handleEstimateCost = () => {
+    // JSON object to store mockup details
+    const mockupData = {
+      projectDescription: projectDescription.trim(),
+      additionalDetails: additionalDetails.trim(),
+    };
 
-      // if (response.status !== 200) {
-      //   throw new Error("Network response was not ok");
-      // }
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      setLoading(false);
-      Alert.alert("Success", "Requirements Extracted Successfully!");
-      navigation.navigate("MockupDetailsGathering", { data: "" });
-    } catch (error) {
-      setLoading(false);
-      Alert.alert("Error", error.message);
-    }
+    // Log the JSON data in console
+    console.log("Mockup Data:", JSON.stringify(mockupData, null, 2));
+
+    // Alert confirmation
+    Alert.alert("Success", "Your mockup details have been saved!");
+
+    // Navigate to next screen
+    navigation.navigate("MockupDetailsGathering");
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.labelprojectdetail}>Project Details</Text>
+
+      {/* Project Description Input */}
       <View style={styles.inputContainer}>
         <Icon
           name="paperclip"
@@ -58,26 +51,20 @@ const MockupScreen = ({ navigation }) => {
         />
       </View>
 
-      <Text style={styles.labeladdtionaldetail}>Additional Details: </Text>
+      {/* Additional Details Input */}
+      <Text style={styles.labeladdtionaldetail}>Additional Details:</Text>
       <TextInput
         style={styles.inputMultiline}
-        placeholder="Enter other details(optional)"
-        multiline
-        textAlignVertical="top"
+        placeholder="Enter other details (optional)"
         value={additionalDetails}
         onChangeText={setAdditionalDetails}
+        multiline
+        textAlignVertical="top"
       />
 
-      <TouchableOpacity
-        onPress={handleEstimateCost}
-        style={styles.button}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator size="small" color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Estimate Cost</Text>
-        )}
+      {/* Estimate Cost Button */}
+      <TouchableOpacity onPress={handleEstimateCost} style={styles.button}>
+        <Text style={styles.buttonText}>Estimate Cost</Text>
       </TouchableOpacity>
     </View>
   );
