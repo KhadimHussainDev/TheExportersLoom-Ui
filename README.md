@@ -5,15 +5,15 @@ Welcome to **Exporter Loom**, the ultimate platform that brings **exporters, man
 ---
 
 ## 📌 Table of Contents
-- [🔥 Overview](#🔥-overview)
-- [🎯 Features](#🎯-features)
-- [📂 Directory Structure](#📂-structure)
-- [⚡ Installation](#⚡-installation)
-- [🚀 Usage](#🚀-usage)
-- [📚 Project Resources](#📚-project-resources)
-- [🖥 Backend Repository](#🖥-backend-repository)
-- [🤝 Contributing](#🤝-contributing)
-- [📜 License](#📜-license)
+- [🔥 Overview](#-overview)
+- [🎯 Features](#-features)
+- [📂 Directory Structure](#-structure)
+- [⚡ Installation](#-installation)
+- [🚀 Usage](#-usage)
+- [📚 Project Resources](#-project-resources)
+- [🖥 Backend Repository](#-backend-repository)
+- [🤝 Contributing](#-contributing)
+- [📜 License](#-license)
 
 ---
 
