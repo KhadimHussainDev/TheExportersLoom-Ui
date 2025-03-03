@@ -56,6 +56,7 @@ const MockupDetailsGathering = ({ navigation }) => {
   const [openLabelType, setOpenLabelType] = useState(false);
   const [openPackagingType, setOpenPackagingType] = useState(false);
   const [quantity, setQuantity] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const addSize = () => {
     if (selectedSize && quantity) {
@@ -117,6 +118,12 @@ const MockupDetailsGathering = ({ navigation }) => {
     };
 
     console.log("Form Data:", formData);
+    // setLoading(true);
+
+    // await new Promise(resolve => setTimeout(resolve, 3000));
+    // setLoading(false);
+    // Alert.alert("Success", "Cost Calculated Successfully!");
+    // navigation.navigate("CostEstimationBreakdown")
   };
 
   return (

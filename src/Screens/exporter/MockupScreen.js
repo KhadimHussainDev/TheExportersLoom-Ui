@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MockupScreenStyles from "../../Styles/Screens/Exporter/MockupScreenStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import estimateCost from "../../api/costEstimation";
 
 const { width, height } = getWindowDimensions();
 const styles = MockupScreenStyles(width, height);

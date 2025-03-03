@@ -17,9 +17,9 @@ const styles = createProfileScreenStyles(width, height);
 const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [name, setName] = useState("Azman Shakir");
-  const [email, setEmail] = useState("azmansha1234@gmail.com");
-  const [phone, setPhone] = useState("+923091571051");
+  const [name, setName] = useState("Khadim Hussain");
+  const [email, setEmail] = useState("devKhadimHussain@gmail.com");
+  const [phone, setPhone] = useState("+923434052098");
   const [address, setAddress] = useState(
     "Muhala Harar China Chowk Sialkot, Pakistan"
   );

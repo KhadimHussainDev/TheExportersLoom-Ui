@@ -20,3 +20,14 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
+// import React from "react";
+// import { StyleSheet, View } from "react-native";
+// import OrderList from "./src/components/common/OrderList";
+// import AppNavigator from "./src/Navigations/Navigators/AppNavigator";
+
+// const App = () => {
+//   return <AppNavigator />;
+// };
+
+// export default App;

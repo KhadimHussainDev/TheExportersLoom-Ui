@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
@@ -93,6 +94,27 @@ const SignInScreen = ({ navigation }) => {
     navigation.navigate("ExporterDashboardStack");
   };
 
+  // const handleSignIn = async () => {
+  //   Alert.alert('Sign-In Successful', `Welcome Khadim!`);
+  //   navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
+  //   // try {
+  //   //   const data = await signIn(email, password);
+  //   //   const decodedToken = decodeJWT(data.access_token); // Manually decode the access token
+  //   //   await AsyncStorage.setItem('access_token', data.access_token); // Store the access token
+  //   //   console.log('Decoded Token:', decodedToken); // Log the decoded token for debugging
+  //   //   Alert.alert('Sign-In Successful', `Welcome ${decodedToken.username}`);
+  //   //   if (decodedToken.userType == ROLES.manufacturer){
+  //   //     //Goto manufecturer dashboard
+
+  //   //   }else if (decodedToken.userType == ROLES.exporter){
+  //   //     //Goto exporter dashboard
+  //   //     navigation.navigate('ExporterDashboardStack'); // Replace 'Home' with your target screen
+  //   //   }
+  //   // } catch (error) {
+  //   //   Alert.alert('Sign-In Failed', 'Invalid email or password');
+  //   //   console.error('Sign-In Error:', error);
+  //   // }
+  // };
   return <AuthScreen />;
 };
 

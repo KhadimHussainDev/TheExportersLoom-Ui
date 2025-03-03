@@ -12,7 +12,7 @@ import AuthScreen from "./AuthScreen";
 import { AuthContext } from "../../context/providers/AuthContext";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { IMAGES } from "../../utils/contants/images";
+import { IMAGES, ROLES } from "../../utils/contants/images";
 import createSignUpStyles from "../../Styles/Screens/SignUpStyle";
 import { ROLES } from "../../utils/Data/ROLES";
 
@@ -132,6 +132,37 @@ const SignUpScreen = ({ navigation }) => {
     setCustomComponent(CustomComponent); // Pass function instead of JSX
   }, [setAuthType, setCustomComponent, CustomComponent]);
 
+  // const handleSignUp = async () => {
+  //   if (password !== confirmPassword) {
+  //     Alert.alert('Error', 'Passwords do not match');
+  //     return;
+  //   }
+
+  //   // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   // if (!emailRegex.test(email)) {
+  //   //   Alert.alert('Error', 'Please enter a valid email address');
+  //   //   return;
+  //   // }
+  //   if (!userRole) {
+  //     Alert.alert('Error', 'Please select a user role');
+  //     return;
+  //   }
+  //   Alert.alert('Sign-Up Successful', 'Your account has been created');
+  //   navigation.navigate('SignInScreen');
+  //   //   try {
+  //   //     const data = await signUp(email, password, userRole);
+  //   //     if(data.statusCode == "200"){
+
+  //   //       Alert.alert('Sign-Up Successful', 'Your account has been created');
+  //   //       navigation.navigate('SignInScreen'); // Navigate to sign-in screen after successful sign-up
+  //   //     }else{
+  //   //       Alert.alert('Sign-Up Failed', data.error);
+  //   //     }
+  //   //   } catch (error) {
+  //   //     Alert.alert('Sign-Up Failed', 'An error occurred during sign-up');
+  //   //     console.error('Sign-Up Error:', error);
+  //   //   }
+  // };
   return <AuthScreen />;
 };
 

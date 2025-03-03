@@ -13,9 +13,9 @@ const ModuleCardsList = () => {
     <View style={styles.mainContainer}>
       {/* Top Section */}
       <View style={styles.headerContainer}>
-        <Text style={styles.greeting}>Good Morning, Azman</Text>
+        <Text style={styles.greeting}>Good Morning, Khadim</Text>
         <Text style={styles.projectTitle}>Summer Jacket Project</Text>
-        <Text style={styles.projectCost}>Cost: 500 USD</Text>
+        <Text style={styles.projectCost}>Cost: 505 USD</Text>
       </View>
 
       {/* Rounded Container for Modules */}
