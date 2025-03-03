@@ -1,59 +1,55 @@
-import { Picker } from "@react-native-picker/picker";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  Switch,
+  View,
   Text,
   TextInput,
-  Alert,
+  Switch,
+  FlatList,
   TouchableOpacity,
-  View
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import MockupDetailsGatheringStyles from "../../Styles/Screens/Exporter/MockupDetailsGatheringStyle";
-import {
-  fabricTypes,
-  labelTypes,
-  logoNumbers,
-  packagingTypes,
-  positionOptions,
-  productTypes,
-  sizeTypes,
-  typeOptions,
-} from "../../utils/Data/CostCalculation";
+import { Picker } from "@react-native-picker/picker";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import {
+  productTypes,
+  fabricTypes,
+  subFabricTypes,
+  sizeTypes,
+  logoNumbers,
+  positionOptions,
+  typeOptions,
+  labelTypes,
+  packagingTypes,
+} from "../../utils/Data/CostCalculation";
+import MockupDetailsGatheringStyles from "../../Styles/Screens/Exporter/MockupDetailsGatheringStyle";
 
 const { width, height } = getWindowDimensions();
 const styles = MockupDetailsGatheringStyles(width, height);
 
-const MockupDetailsGathering = ({ route, navigation }) => {
-  const { data } = route.params;
-
-  const [productType, setProductType] = useState(productTypes[0].value); // Sweat shirt
+const MockupDetailsGathering = ({ navigation }) => {
+  const [productType, setProductType] = useState(null);
   const [openProductType, setOpenProductType] = useState(false);
 
-  const [fabricType, setFabricType] = useState(fabricTypes[0].value); // Cotton
+  const [fabricType, setFabricType] = useState(null);
   const [openFabricType, setOpenFabricType] = useState(false);
 
-  const [sizes, setSizes] = useState([
-    { size: "M", quantity: 50 },
-    { size: "S", quantity: 70 },
-  ]);
-  const [availableSizes, setAvailableSizes] = useState(
-    sizeTypes.filter((size) => size.value !== "M" && size.value !== "S")
-  );
+  const [subFabricType, setSubFabricType] = useState(null);
+  const [openSubFabricType, setOpenSubFabricType] = useState(false);
+  const [availableSubFabricTypes, setAvailableSubFabricTypes] = useState([]);
+
+  const [sizes, setSizes] = useState([]);
+  const [availableSizes, setAvailableSizes] = useState(sizeTypes);
   const [openSizeDropdown, setOpenSizeDropdown] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
 
-  const [numberOfLogos, setNumberOfLogos] = useState(1);
-  const [selectedPositions, setSelectedPositions] = useState(["Chest"]);
-  const [selectedTypes, setSelectedTypes] = useState(["Screen Printing"]);
+  const [numberOfLogos, setNumberOfLogos] = useState(0);
+  const [selectedPositions, setSelectedPositions] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
-  const [patternRequired, setPatternRequired] = useState(true);
+  const [patternRequired, setPatternRequired] = useState(false);
   const [labelsRequired, setLabelsRequired] = useState(false);
   const [labelType, setLabelType] = useState(null);
-  const [tagCardsRequired, setTagCardsRequired] = useState(true);
+  const [tagCardsRequired, setTagCardsRequired] = useState(false);
   const [packagingRequired, setPackagingRequired] = useState(false);
   const [packagingType, setPackagingType] = useState(null);
 
@@ -95,10 +91,18 @@ const MockupDetailsGathering = ({ route, navigation }) => {
     setSelectedTypes(updatedTypes);
   };
 
-  const handleCalculateCost = async () => {
+  useEffect(() => {
+    if (fabricType) {
+      setAvailableSubFabricTypes(subFabricTypes[fabricType] || []);
+      setSubFabricType(null);
+    }
+  }, [fabricType]);
+
+  const handleSubmit = () => {
     const formData = {
       productType,
       fabricType,
+      subFabricType,
       sizes,
       numberOfLogos,
       logoDetails: selectedPositions.map((position, index) => ({
@@ -114,12 +118,12 @@ const MockupDetailsGathering = ({ route, navigation }) => {
     };
 
     console.log("Form Data:", formData);
-    setLoading(true);
+    // setLoading(true);
 
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    setLoading(false);
-    Alert.alert("Success", "Cost Calculated Successfully!");
-    navigation.navigate("CostEstimationBreakdown")
+    // await new Promise(resolve => setTimeout(resolve, 3000));
+    // setLoading(false);
+    // Alert.alert("Success", "Cost Calculated Successfully!");
+    // navigation.navigate("CostEstimationBreakdown")
   };
 
   return (
@@ -137,7 +141,7 @@ const MockupDetailsGathering = ({ route, navigation }) => {
             containerStyle={styles.dropdown}
             placeholder="Select product type"
             listMode="SCROLLVIEW"
-            zIndex={5000}
+            zIndex={10000}
           />
           <Text style={styles.label}>Fabric Type</Text>
           <DropDownPicker
@@ -151,6 +155,22 @@ const MockupDetailsGathering = ({ route, navigation }) => {
             listMode="SCROLLVIEW"
             zIndex={5000}
           />
+          {fabricType && availableSubFabricTypes.length > 0 && (
+            <>
+              <Text style={styles.label}>Sub-Fabric Type</Text>
+              <DropDownPicker
+                open={openSubFabricType}
+                value={subFabricType}
+                items={availableSubFabricTypes}
+                setOpen={setOpenSubFabricType}
+                setValue={setSubFabricType}
+                containerStyle={styles.dropdown}
+                placeholder="Select sub-fabric type"
+                listMode="SCROLLVIEW"
+                zIndex={10000}
+              />
+            </>
+          )}
           <Text style={styles.label}>Sizes and Quantities</Text>
           <FlatList
             data={sizes}
@@ -183,6 +203,7 @@ const MockupDetailsGathering = ({ route, navigation }) => {
           <TouchableOpacity onPress={addSize} style={styles.button}>
             <Text style={styles.buttonText}>Add Size</Text>
           </TouchableOpacity>
+
           <View style={styles.container}>
             <Text style={styles.label}>Number of Logos</Text>
             <View style={styles.pickerContainer}>
@@ -306,14 +327,13 @@ const MockupDetailsGathering = ({ route, navigation }) => {
             />
           )}
           <TouchableOpacity
-            onPress={handleCalculateCost}
+            onPress={() => {
+              handleSubmit();
+              navigation.navigate("CostEstimationBreakdown");
+            }}
             style={styles.buttonCalculateCost}
           >
-            {loading ? (
-              <ActivityIndicator size="small" color="#fff" />
-            ) : (
-              <Text style={styles.buttonTextculateCost}>Caclulate Cost</Text>
-            )}
+            <Text style={styles.buttonTextculateCost}>Caclulate Cost</Text>
           </TouchableOpacity>
         </View>
       )}

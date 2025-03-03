@@ -49,6 +49,11 @@ const CustomHeaderStyles = (width, height) =>
       marginLeft: 10,
       color: colors.background,
     },
+    tapMessage: {
+      color: colors.background, // Change color if needed
+      fontSize: height * 0.017,
+      fontWeight: "bold",
+    },
     headerLabelText: {
       color: colors.background,
       fontSize: height * 0.015,

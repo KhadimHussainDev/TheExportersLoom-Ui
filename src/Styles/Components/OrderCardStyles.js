@@ -14,12 +14,12 @@ const OrderCardStyles = (width, height) =>
       shadowRadius: 6,
       shadowOffset: { width: 0, height: 2 },
       elevation: 3,
-      height: height * 0.2, // Adjusted height for the card
+      height: height * 0.17, // Adjusted height for the card
     },
     cardContent: {
       flex: 1,
       paddingHorizontal: width * 0.04, // Adjusted padding based on width
-      paddingVertical: height * 0.01, // Adjusted padding based on height
+      paddingTop: height * 0.01,
     },
     header: {
       flexDirection: "row",

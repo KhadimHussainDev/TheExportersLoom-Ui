@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text } from "react-native";
 import { calculateOrderSummary } from "../../utils/helpers/orderUtils";
 import summaryOverviewStyles from "../../Styles/Components/summaryOverviewStyles";
+import getWindowDimensions from "../../utils/helpers/dimensions";
 
-import { Dimensions } from "react-native";
-const { width, height } = Dimensions.get("window");
+const { width, height } = getWindowDimensions();
 
 const styles = summaryOverviewStyles(width, height);
 

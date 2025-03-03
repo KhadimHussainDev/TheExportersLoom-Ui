@@ -1,12 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import OrderList from "./src/components/common/OrderList";
-import AppNavigator from "../ExporterLoom/src/Navigations/Navigators/AppNavigator";
+import { SafeAreaView, StyleSheet } from "react-native";
+import ExporterRequestList from "./src/Screens/manufacturer/ExporterRequestList";
+import ManufacturerRegistration from "./src/Screens/manufacturer/MachineRegisteration"; // Adjust the path accordingly
+import AppNavigator from "./src/Navigations/Navigators/AppNavigator";
 
 const App = () => {
   return (
     <SafeAreaView style={styles.wrapper}>
-      <ExporterRequestList />
+      <AppNavigator />
     </SafeAreaView>
   );
 };

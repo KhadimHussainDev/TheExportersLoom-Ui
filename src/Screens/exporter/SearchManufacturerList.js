@@ -4,7 +4,6 @@ import manufacturersData from "../../utils/Data/Manufacturers";
 import FilterButton from "../../components/common/FilterButton";
 import SearchNewManufacturerCard from "../../components/manufacturer/SearchNewManufacturerCard";
 import { SearchManufacturerStyle } from "../../Styles/Screens/Exporter/SearchManufacturerStyle";
-import { Dimensions } from "react-native";
 import labelsList from "../../utils/Data/LabelsList";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 
@@ -46,7 +45,7 @@ const SearchManufacturerList = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: "white" }]}>
       <View style={styles.fixedButtonRow}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <FilterButton
