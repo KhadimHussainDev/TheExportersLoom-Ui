@@ -1,20 +1,21 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import { Picker } from "@react-native-picker/picker";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
-  View,
+  Alert,
+  Image,
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  Alert,
+  View,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import AuthScreen from "./AuthScreen";
-import { AuthContext } from "../../context/providers/AuthContext";
-import getWindowDimensions from "../../utils/helpers/dimensions";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { IMAGES } from "../../utils/contants/images";
+import { AuthContext } from "../../context/providers/AuthContext";
+import { authService } from "../../services/authService";
 import createSignUpStyles from "../../Styles/Screens/SignUpStyle";
-import { ROLES } from "../../utils/Data/ROLES";
+import { ROLES } from "../../utils/constants";
+import { IMAGES } from "../../utils/contants/images";
+import getWindowDimensions from "../../utils/helpers/dimensions";
+import AuthScreen from "./AuthScreen";
 
 const { width, height } = getWindowDimensions();
 const styles = createSignUpStyles(width, height);
@@ -25,8 +26,10 @@ const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
+    // Validate inputs
     if (!email || !password || !confirmPassword || !userRole) {
       Alert.alert("Error", "All fields are required!");
       return;
@@ -37,16 +40,53 @@ const SignUpScreen = ({ navigation }) => {
       return;
     }
 
-    const signUpData = {
-      email,
-      password,
-      userRole,
-    };
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Error", "Please enter a valid email address");
+      return;
+    }
 
-    console.log("Sign Up Data:", JSON.stringify(signUpData, null, 2));
+    // Validate password strength
+    if (password.length < 6) {
+      Alert.alert("Error", "Password must be at least 6 characters long");
+      return;
+    }
 
-    Alert.alert("Success", "Account created successfully!");
-    navigation.replace("SignInScreen");
+    setLoading(true);
+
+    try {
+      // Call the sign-up service
+      const response = await authService.signUp(email, password, userRole);
+
+      // Check if there was an error
+      if (response.error) {
+        Alert.alert("Sign-Up Failed", response.error);
+        return;
+      }
+
+      // Success
+      Alert.alert(
+        "Success",
+        "Account created successfully! Please sign in with your new credentials.",
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.replace("SignInScreen")
+          }
+        ]
+      );
+    } catch (error) {
+      console.error("Sign-Up Error:", error);
+
+      if (error.message && error.message.includes("Network")) {
+        Alert.alert("Connection Error", "Please check your internet connection and try again");
+      } else {
+        Alert.alert("Sign-Up Failed", error.message || "An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Define CustomComponent inside useCallback so it doesn't recreate unnecessarily
@@ -70,8 +110,8 @@ const SignUpScreen = ({ navigation }) => {
             onValueChange={(itemValue) => setUserRole(itemValue)}
           >
             <Picker.Item label="Select User Role" value="" />
-            <Picker.Item label="Manufacturer" value={ROLES.manufacturer} />
-            <Picker.Item label="Exporter" value={ROLES.exporter} />
+            <Picker.Item label="Manufacturer" value={ROLES.MANUFACTURER} />
+            <Picker.Item label="Exporter" value={ROLES.EXPORTER} />
           </Picker>
         </View>
         <View style={styles.inputContainer}>
@@ -115,8 +155,14 @@ const SignUpScreen = ({ navigation }) => {
             onChangeText={setConfirmPassword}
           />
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSignUp}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? "Signing up..." : "Sign Up"}
+          </Text>
         </TouchableOpacity>
         <Text style={styles.ortext}>Or</Text>
         <TouchableOpacity style={styles.GoogleButton}>
@@ -125,44 +171,13 @@ const SignUpScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     );
-  }, [navigation, userRole, email, password, confirmPassword]);
+  }, [navigation, userRole, email, password, confirmPassword, loading]);
 
   useEffect(() => {
     setAuthType("Sign up");
     setCustomComponent(CustomComponent); // Pass function instead of JSX
   }, [setAuthType, setCustomComponent, CustomComponent]);
 
-  // const handleSignUp = async () => {
-  //   if (password !== confirmPassword) {
-  //     Alert.alert('Error', 'Passwords do not match');
-  //     return;
-  //   }
-
-  //   // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   // if (!emailRegex.test(email)) {
-  //   //   Alert.alert('Error', 'Please enter a valid email address');
-  //   //   return;
-  //   // }
-  //   if (!userRole) {
-  //     Alert.alert('Error', 'Please select a user role');
-  //     return;
-  //   }
-  //   Alert.alert('Sign-Up Successful', 'Your account has been created');
-  //   navigation.navigate('SignInScreen');
-  //   //   try {
-  //   //     const data = await signUp(email, password, userRole);
-  //   //     if(data.statusCode == "200"){
-
-  //   //       Alert.alert('Sign-Up Successful', 'Your account has been created');
-  //   //       navigation.navigate('SignInScreen'); // Navigate to sign-in screen after successful sign-up
-  //   //     }else{
-  //   //       Alert.alert('Sign-Up Failed', data.error);
-  //   //     }
-  //   //   } catch (error) {
-  //   //     Alert.alert('Sign-Up Failed', 'An error occurred during sign-up');
-  //   //     console.error('Sign-Up Error:', error);
-  //   //   }
-  // };
   return <AuthScreen />;
 };
 
