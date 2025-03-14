@@ -1,7 +1,7 @@
-import apiClient from './client';
+// import apiClient from './client';
 
-const estimateCost = (userContent) => {
-  return apiClient.post('/cost-estimation', { userContent });
-};
+// const estimateCost = (userContent) => {
+//   return apiClient.post('/cost-estimation', { userContent });
+// };
 
-export default estimateCost;
+// export default estimateCost;

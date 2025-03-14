@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import AboutMeSection from "../../components/common/AboutMeSection";
+import IconButton from "../../components/common/IconButton";
 import ProfileImage from "../../components/common/ProfileImage";
 import ProfileInfo from "../../components/common/ProfileInfo";
-import IconButton from "../../components/common/IconButton";
-import AboutMeSection from "../../components/common/AboutMeSection";
-import EditProfile from "./EditProfile";
 import ReviewsList from "../../components/common/ReviewsList";
+import { authService } from "../../services/authService";
+import { storageService } from "../../services/storageService";
 import { createProfileScreenStyles } from "../../Styles/Screens/ProfileScreenStyles";
-import * as ImagePicker from "expo-image-picker";
+import { STORAGE_KEYS } from "../../utils/constants";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import EditProfile from "./EditProfile";
 
 const { width, height } = getWindowDimensions();
 const styles = createProfileScreenStyles(width, height);
@@ -45,7 +48,42 @@ const ProfileScreen = ({ navigation }) => {
     };
 
     getPermission();
+
+    // Load user data from storage
+    const loadUserData = async () => {
+      try {
+        const userData = await storageService.get(STORAGE_KEYS.USER_DATA);
+        if (userData) {
+          if (userData.username) setName(userData.username);
+          if (userData.email) setEmail(userData.email);
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    };
+
+    loadUserData();
   }, []);
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Logout",
+          onPress: async () => {
+            await authService.logout(navigation);
+          },
+          style: "destructive"
+        }
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -98,6 +136,14 @@ const ProfileScreen = ({ navigation }) => {
       </View>
       <ReviewsList />
 
+      <TouchableOpacity
+        style={logoutStyles.logoutButton}
+        onPress={handleLogout}
+      >
+        <Ionicons name="log-out-outline" size={20} color="white" style={logoutStyles.logoutIcon} />
+        <Text style={logoutStyles.logoutText}>Logout</Text>
+      </TouchableOpacity>
+
       <EditProfile
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
@@ -121,5 +167,26 @@ const ProfileScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const logoutStyles = StyleSheet.create({
+  logoutButton: {
+    backgroundColor: '#e74c3c',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    borderRadius: 8,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  logoutText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  logoutIcon: {
+    marginRight: 8,
+  }
+});
 
 export default ProfileScreen;
