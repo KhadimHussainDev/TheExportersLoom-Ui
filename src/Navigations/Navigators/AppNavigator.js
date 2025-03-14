@@ -1,28 +1,34 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
 import { AuthProvider } from "../../context/providers/AuthContext";
+import AuthLoadingScreen from "../../Screens/auth/AuthLoadingScreen";
+import ForgetPassword from "../../Screens/auth/ForgetPassword";
 import SignInScreen from "../../Screens/auth/SignInScreen";
 import SignUpScreen from "../../Screens/auth/SignUpScreen";
-import ForgetPassword from "../../Screens/auth/ForgetPassword";
-import ExporterDashboardStack from "./ExporterDashboardStack";
-import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
+import Analytics from "../../Screens/Common/Analytics";
+import NeedHelpScreen from "../../Screens/Common/NeedHelpScreen";
+import ProfileScreen from "../../Screens/Common/ProfileScreen";
 import CostEstimationBreakdown from "../../Screens/exporter/CostEstimationBreakdown";
 import ManufacturerSelection from "../../Screens/exporter/ManufacturerSelection";
-import ProfileScreen from "../../Screens/Common/ProfileScreen";
-import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
-import Analytics from "../../Screens/Common/Analytics";
+import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
 import ModuleCardsList from "../../Screens/exporter/ModuleCardsList";
 import OverviewScreen from "../../Screens/exporter/OverviewScreen";
-import NeedHelpScreen from "../../Screens/Common/NeedHelpScreen";
+import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
+import ExporterDashboardStack from "./ExporterDashboardStack";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 const MainStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="AuthLoadingScreen">
+      <Stack.Screen
+        name="AuthLoadingScreen"
+        component={AuthLoadingScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="SignInScreen"
         component={SignInScreen}
