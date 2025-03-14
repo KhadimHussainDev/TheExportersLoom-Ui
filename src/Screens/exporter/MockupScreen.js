@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { costEstimationService } from "../../services/costEstimationService";
 import MockupScreenStyles from "../../Styles/Screens/Exporter/MockupScreenStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
-import estimateCost from "../../api/costEstimation";
 
 const { width, height } = getWindowDimensions();
 const styles = MockupScreenStyles(width, height);
@@ -12,23 +12,85 @@ const MockupScreen = ({ navigation }) => {
   // State variables for input fields
   const [projectDescription, setProjectDescription] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Function to handle cost estimation
-  const handleEstimateCost = () => {
-    // JSON object to store mockup details
-    const mockupData = {
-      projectDescription: projectDescription.trim(),
-      additionalDetails: additionalDetails.trim(),
-    };
+  const handleEstimateCost = async () => {
+    const userContent = `${projectDescription} ${additionalDetails}`;
+    if (!userContent.trim()) {
+      Alert.alert("Error", "Please enter project description");
+      return;
+    }
 
-    // Log the JSON data in console
-    console.log("Mockup Data:", JSON.stringify(mockupData, null, 2));
+    setLoading(true);
 
-    // Alert confirmation
-    Alert.alert("Success", "Your mockup details have been saved!");
+    try {
+      const response = await costEstimationService.estimateCost(userContent);
+      if (!response.data?.success) {
+        Alert.alert("Error", "Failed to estimate cost. Please try again.");
+        setLoading(false);
+        return;
+      }
 
-    // Navigate to next screen
-    navigation.navigate("MockupDetailsGathering");
+      console.log(response.data.data);
+      setLoading(false);
+      Alert.alert("Success", "Requirements Extracted Successfully!");
+
+      // the data will be of this format
+      // {
+      //   "fabricType": "<Extracted value or 'undefined'>",
+      //   "fabricSubType" : "<Extracted value or 'undefined'>",
+      //   "cuttingStyle" : "<Extracted value or 'undefined'>",
+      //   "labelType": "<Extracted value or 'undefined'>",
+      //   "labelsRequired": <true/false/undefined>,
+      //   "numberOfLogos": <Number or 'undefined'>,
+      //   "logoDetails": [
+      //     //Depens on numberOfLogos
+      //     {
+      //       "position": "<Extracted value or 'undefined'>",
+      //       "type": "<Extracted value or 'undefined'>"
+      //     },
+      //   ],
+      //   "packagingRequired": <true/false/undefined>,
+      //   "packagingType": "<Extracted value or 'undefined'>",
+      //   "patternRequired": <true/false/undefined>,
+      //   "productType": "<Extracted value or 'undefined'>",
+      //   "sizes": [
+      //     {
+      //       "quantity": "<Extracted value or 'undefined'>",
+      //       "size": "<Extracted value or 'undefined'>"
+      //     },
+      //     {
+      //       "quantity": "<Extracted value or 'undefined'>",
+      //       "size": "<Extracted value or 'undefined'>"
+      //     }
+      //   ],
+      //   "tagCardsRequired": <true/false/undefined>
+      // }
+      const mockupData = response.data?.data;
+      if (typeof mockupData === 'string') {
+
+        try {
+          const parsedData = JSON.parse(mockupData);
+          navigation.navigate("MockupDetailsGathering", { data: parsedData });
+        } catch (jsonError) {
+          throw new Error('Invalid data format received');
+        }
+      } else {
+        navigation.navigate("MockupDetailsGathering", { data: mockupData });
+      }
+    } catch (error) {
+      setLoading(false);
+
+      // Check if error is related to network connectivity
+      if (!navigator.onLine || error.message.includes('Network') || error.message.includes('connect')) {
+        Alert.alert(
+          "Connection Error",
+          "Please check your internet connection and try again." + error.message
+        );
+      } else {
+        Alert.alert("Error", error.message || "Something went wrong. Please try again.");
+      }
+    }
   };
 
   return (
@@ -63,8 +125,16 @@ const MockupScreen = ({ navigation }) => {
       />
 
       {/* Estimate Cost Button */}
-      <TouchableOpacity onPress={handleEstimateCost} style={styles.button}>
-        <Text style={styles.buttonText}>Estimate Cost</Text>
+      <TouchableOpacity
+        onPress={handleEstimateCost}
+        style={styles.button}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Estimate Cost</Text>
+        )}
       </TouchableOpacity>
     </View>
   );
