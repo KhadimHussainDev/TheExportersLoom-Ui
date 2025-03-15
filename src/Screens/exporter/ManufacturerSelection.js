@@ -27,7 +27,7 @@ const ManufacturerSelection = () => {
 
     if (buttons.price) sortedData.sort((a, b) => a.price - b.price);
     if (buttons.distance) sortedData.sort((a, b) => a.distance - b.distance);
-    if (buttons.rating) sortedData.sort((a, b) => a.rating - b.rating);
+    if (buttons.rating) sortedData.sort((a, b) => b.rating - a.rating);
     if (buttons.time) sortedData.sort((a, b) => a.days - b.days);
 
     if (!Object.values(buttons).some(Boolean)) {

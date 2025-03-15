@@ -150,16 +150,12 @@ export const productConfigurationService = {
    * Save data to storage
    * @param {string} key - Storage key
    * @param {any} data - Data to store
-   * @returns {Promise<boolean>} - Success status
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message properties
    */
   async saveToStorage(key, data) {
     try {
       const result = await storageService.save(key, data);
-      return {
-        success: result,
-        statusCode: result ? 200 : 500,
-        message: result ? 'Data saved successfully' : 'Failed to save data'
-      };
+      return result;
     } catch (error) {
       console.error('Error saving to storage:', error);
       return {
@@ -174,17 +170,12 @@ export const productConfigurationService = {
   /**
    * Get data from storage
    * @param {string} key - Storage key
-   * @returns {Promise<any>} - Retrieved data
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message, and data properties
    */
   async getFromStorage(key) {
     try {
       const data = await storageService.get(key);
-      return {
-        success: true,
-        statusCode: 200,
-        message: data ? 'Data retrieved successfully' : 'No data found',
-        data
-      };
+      return data;
     } catch (error) {
       console.error('Error getting from storage:', error);
       return {
@@ -198,16 +189,12 @@ export const productConfigurationService = {
 
   /**
    * Clear all storage
-   * @returns {Promise<boolean>} - Success status
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message properties
    */
   async clearStorage() {
     try {
       const result = await storageService.clearAll();
-      return {
-        success: result,
-        statusCode: result ? 200 : 500,
-        message: result ? 'Storage cleared successfully' : 'Failed to clear storage'
-      };
+      return result;
     } catch (error) {
       console.error('Error clearing storage:', error);
       return {

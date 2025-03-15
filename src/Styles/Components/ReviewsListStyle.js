@@ -5,51 +5,74 @@ const ReviewsListStyle = (width, height) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      paddingVertical: height * 0.01, // Adjust based on height
-      backgroundColor: colors.background, // Updated background color
+    },
+    listContainer: {
+      paddingBottom: 10,
     },
     card: {
       flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: colors.whiteborder, // Updated background color
-      padding: height * 0.015, // Adjust padding based on height
-      marginVertical: height * 0.005,
-      marginHorizontal: height * 0.001, // Adjust margin based on height
-      borderRadius: 8,
-      shadowColor: colors.Text, // Updated shadow color
-      shadowOffset: { width: 0, height: 2 },
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      padding: 12,
+      marginBottom: 10,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
       shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 4,
+      shadowRadius: 2,
+      elevation: 3,
     },
     profileImage: {
-      width: width * 0.13, // Adjust image size based on width
-      height: width * 0.13, // Maintain square ratio
-      borderRadius: (width * 0.13) / 2, // Circular image
-      marginRight: width * 0.03, // Adjust margin based on width
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      marginRight: 10,
     },
     textContainer: {
       flex: 1,
+      paddingRight: 30, // Make room for the rating
     },
     userName: {
       fontWeight: "bold",
-      fontSize: width * 0.045, // Adjust font size based on width
-      color: colors.Text, // Updated text color
+      fontSize: 14,
+      marginBottom: 2,
     },
     projectName: {
-      color: colors.Text, // Updated text color
-      marginVertical: height * 0.003, // Adjust margin based on height
-      fontSize: width * 0.04, // Adjust font size based on width
+      color: "#666",
+      fontSize: 12,
+      marginBottom: 1,
+    },
+    date: {
+      color: "#888",
+      fontSize: 10,
+      marginBottom: 3,
+      fontStyle: "italic",
     },
     comment: {
-      color: colors.PlaceholderText, // Updated text color
-      marginVertical: height * 0.003, // Adjust margin based on height
-      fontSize: width * 0.035, // Adjust font size based on width
+      fontSize: 12,
+      color: "#333",
+      marginTop: 2,
+      lineHeight: 16,
     },
     ratingContainer: {
-      flexDirection: "row",
+      position: "absolute",
+      top: 10,
+      right: 10,
+    },
+    emptyContainer: {
       alignItems: "center",
-      justifyContent: "flex-end",
+      justifyContent: "center",
+      padding: 20,
+      height: 100,
+      backgroundColor: colors.lightBackground || "#f5f5f5",
+      borderRadius: 8,
+    },
+    emptyText: {
+      fontSize: 14,
+      color: "#888",
+      fontStyle: "italic",
     },
   });
 

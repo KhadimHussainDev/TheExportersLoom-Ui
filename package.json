@@ -24,6 +24,7 @@
     "axios": "^1.8.3",
     "expo": "^52.0.36",
     "expo-checkbox": "^4.0.1",
+    "expo-image-manipulator": "^13.0.6",
     "expo-image-picker": "^16.0.6",
     "expo-status-bar": "~2.0.1",
     "formik": "^2.4.6",

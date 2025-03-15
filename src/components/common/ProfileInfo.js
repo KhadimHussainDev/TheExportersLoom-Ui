@@ -1,19 +1,32 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import { createProfileInfoStyles } from "../../Styles/Components/ProfileInfoStyles";
 
-const ProfileInfo = ({ name, email, phone, address, width, height }) => {
+const ProfileInfo = ({ name, email, phone, address, width, height, showPlaceholders = false }) => {
   const styles = createProfileInfoStyles(width, height);
+
+  const renderField = (value, placeholder, icon) => {
+    const isEmpty = !value || value.trim() === '';
+
+    if (isEmpty && showPlaceholders) {
+      return (
+        <View style={styles.placeholderContainer}>
+          {icon && <Ionicons name={icon} size={16} color="#999" style={styles.placeholderIcon} />}
+          <Text style={styles.placeholderText}>{placeholder}</Text>
+        </View>
+      );
+    }
+
+    return <Text style={isEmpty ? styles.emptyField : styles[icon === 'person' ? 'name' : 'infoText']}>{value}</Text>;
+  };
+
   return (
     <View style={styles.infoSection}>
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.email}>{email}</Text>
-      <Text style={styles.phone}>{phone}</Text>
-      <Text
-        style={[styles.address, { fontSize: address.length > 30 ? 12 : 14 }]}
-      >
-        {address}
-      </Text>
+      {renderField(name, "Add your name", "person")}
+      {renderField(email, "Add your email", "mail")}
+      {renderField(phone, "Add your phone number", "call")}
+      {renderField(address, "Add your address", "location")}
     </View>
   );
 };

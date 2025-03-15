@@ -9,6 +9,7 @@ export const IMAGES = {
   Stitching: require("../../assets/images/Stitching.png"),
   Packaging: require("../../assets/images/Packaging.png"),
   Washing: require("../../assets/images/Washing.png"),
+  Fabric: require("../../assets/images/Fabric.png"),
 };
 export const ROLES = {
   manufacturer: "Manufacturer",

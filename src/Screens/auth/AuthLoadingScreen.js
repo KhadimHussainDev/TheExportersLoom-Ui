@@ -31,8 +31,13 @@ const AuthLoadingScreen = ({ navigation }) => {
           const currentTime = Date.now() / 1000; // Convert to seconds
           if (decodedToken.exp && decodedToken.exp < currentTime) {
             // Token is expired, clear storage and navigate to login
-            await storageService.remove(STORAGE_KEYS.USER_TOKEN);
-            await storageService.remove(STORAGE_KEYS.USER_DATA);
+            const removeTokenResponse = await storageService.remove(STORAGE_KEYS.USER_TOKEN);
+            const removeUserDataResponse = await storageService.remove(STORAGE_KEYS.USER_DATA);
+
+            if (!removeTokenResponse.success || !removeUserDataResponse.success) {
+              console.error('Failed to clear expired token data');
+            }
+
             navigation.reset({
               index: 0,
               routes: [{ name: 'SignInScreen' }],
@@ -58,8 +63,13 @@ const AuthLoadingScreen = ({ navigation }) => {
         } catch (decodeError) {
           // Invalid token, clear storage and navigate to login
           console.error('Error decoding token:', decodeError);
-          await storageService.remove(STORAGE_KEYS.USER_TOKEN);
-          await storageService.remove(STORAGE_KEYS.USER_DATA);
+          const removeTokenResponse = await storageService.remove(STORAGE_KEYS.USER_TOKEN);
+          const removeUserDataResponse = await storageService.remove(STORAGE_KEYS.USER_DATA);
+
+          if (!removeTokenResponse.success || !removeUserDataResponse.success) {
+            console.error('Failed to clear invalid token data');
+          }
+
           navigation.reset({
             index: 0,
             routes: [{ name: 'SignInScreen' }],

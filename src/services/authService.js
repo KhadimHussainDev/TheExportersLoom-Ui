@@ -79,8 +79,13 @@ export const authService = {
   logout: async (navigation) => {
     try {
       // Clear auth tokens and user data from storage
-      await storageService.remove(STORAGE_KEYS.USER_TOKEN);
-      await storageService.remove(STORAGE_KEYS.USER_DATA);
+      const tokenRemoveResponse = await storageService.remove(STORAGE_KEYS.USER_TOKEN);
+      const userDataRemoveResponse = await storageService.remove(STORAGE_KEYS.USER_DATA);
+
+      // Check if both operations were successful
+      if (!tokenRemoveResponse.success || !userDataRemoveResponse.success) {
+        throw new Error('Failed to clear user session data');
+      }
 
       // If navigation is provided, navigate to the sign-in screen
       if (navigation) {
