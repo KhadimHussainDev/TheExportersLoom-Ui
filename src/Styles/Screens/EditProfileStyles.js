@@ -16,6 +16,31 @@ const EditProfileStyles = (width, height) => {
       textAlign: "center",
       color: colors.primary, // Updated color
     },
+    imagePickerContainer: {
+      alignSelf: 'center',
+      marginBottom: 20,
+      position: 'relative',
+    },
+    profileImage: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      borderWidth: 2,
+      borderColor: colors.primary,
+    },
+    editIconContainer: {
+      position: 'absolute',
+      bottom: 0,
+      right: 0,
+      backgroundColor: colors.primary,
+      borderRadius: 15,
+      width: 30,
+      height: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 2,
+      borderColor: colors.whiteborder,
+    },
     input: {
       borderWidth: 1,
       borderColor: colors.border, // Updated border color
@@ -50,6 +75,16 @@ const EditProfileStyles = (width, height) => {
     buttonText: {
       color: colors.whiteborder, // Updated text color
       fontWeight: "bold",
+    },
+    loadingContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    loadingText: {
+      marginTop: 10,
+      color: colors.primary,
+      fontSize: 14,
     },
   });
 };

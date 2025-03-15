@@ -31,7 +31,7 @@ const CostEstimationBreakdown = ({ navigation, route }) => {
             route.params.data.fabricSubCategory
           ),
           details: route.params.data.fabricPriceModules,
-          image: IMAGES.Cutting
+          image: IMAGES.Fabric
         });
       }
 

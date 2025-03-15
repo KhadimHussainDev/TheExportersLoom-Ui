@@ -131,15 +131,26 @@ const SignInScreen = ({ navigation }) => {
       const decodedToken = jwtDecode(response.data.accessToken);
       console.log("decodedToken", decodedToken);
       // Store the token in storage
-      await storageService.save(STORAGE_KEYS.USER_TOKEN, response.data.accessToken);
+      const tokenSaveResponse = await storageService.save(STORAGE_KEYS.USER_TOKEN, response.data.accessToken);
+      if (!tokenSaveResponse.success) {
+        Alert.alert("Error", "Failed to save authentication token");
+        setLoading(false);
+        return;
+      }
 
       // Store user data
-      await storageService.save(STORAGE_KEYS.USER_DATA, {
-        userId: decodedToken.userId || decodedToken.sub,
+      const userDataSaveResponse = await storageService.save(STORAGE_KEYS.USER_DATA, {
+        user_id: decodedToken.userId || decodedToken.sub,
         username: decodedToken.username,
         userType: decodedToken.userType,
         email: userCredentials.email
       });
+
+      if (!userDataSaveResponse.success) {
+        Alert.alert("Error", "Failed to save user data");
+        setLoading(false);
+        return;
+      }
 
       // Success message
       Alert.alert("Sign-In Successful", `Welcome ${decodedToken.username || 'User'}!`);

@@ -7,33 +7,40 @@ import IconButton from "../../components/common/IconButton";
 import ProfileImage from "../../components/common/ProfileImage";
 import ProfileInfo from "../../components/common/ProfileInfo";
 import ReviewsList from "../../components/common/ReviewsList";
+import SkeletonPlaceholder from "../../components/common/SkeletonPlaceholder";
 import { authService } from "../../services/authService";
-import { storageService } from "../../services/storageService";
+import { userService } from "../../services/userService";
 import { createProfileScreenStyles } from "../../Styles/Screens/ProfileScreenStyles";
-import { STORAGE_KEYS } from "../../utils/contants/constants";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import { extractBase64FromDataUri, isDataUri } from "../../utils/helpers/imageUtils";
 import EditProfile from "./EditProfile";
 
 const { width, height } = getWindowDimensions();
 const styles = createProfileScreenStyles(width, height);
 
 const ProfileScreen = ({ navigation }) => {
+  // State for profile data
   const [image, setImage] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [name, setName] = useState("Khadim Hussain");
-  const [email, setEmail] = useState("devKhadimHussain@gmail.com");
-  const [phone, setPhone] = useState("+923434052098");
-  const [address, setAddress] = useState(
-    "Muhala Harar China Chowk Sialkot, Pakistan"
-  );
-  const [aboutMe, setAboutMe] = useState(
-    "Amazing work, highly recommended! What are you doing nowadays? You do not even tell me what is happening."
-  );
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [aboutMe, setAboutMe] = useState("");
+  const [username, setUsername] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [cnic, setCnic] = useState("");
 
-  // Add missing states for username, companyName, and cnic
-  const [username, setUsername] = useState("azman123");
-  const [companyName, setCompanyName] = useState("Preeindustry");
-  const [cnic, setCnic] = useState("12345-6789012-3");
+  // State for reviews and stats
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [reviewsCount, setReviewsCount] = useState(0);
+  const [completionRate, setCompletionRate] = useState(0);
+
+  // Loading states
+  const [isLoading, setIsLoading] = useState(true);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+  const [reviewsLoaded, setReviewsLoaded] = useState(false);
 
   useEffect(() => {
     const getPermission = async () => {
@@ -48,23 +55,82 @@ const ProfileScreen = ({ navigation }) => {
     };
 
     getPermission();
-
-    // Load user data from storage
-    const loadUserData = async () => {
-      try {
-        const userDataResponse = await storageService.get(STORAGE_KEYS.USER_DATA);
-        if (userDataResponse.success && userDataResponse.data) {
-          const userData = userDataResponse.data;
-          if (userData.username) setName(userData.username);
-          if (userData.email) setEmail(userData.email);
-        }
-      } catch (error) {
-        console.error('Error loading user data:', error);
-      }
-    };
-
     loadUserData();
   }, []);
+
+  // Load user data from API
+  const loadUserData = async () => {
+    setIsLoading(true);
+    setProfileLoaded(false);
+    setReviewsLoaded(false);
+
+    try {
+      // Get user ID from storage
+      const userId = await userService.getCurrentUserId();
+
+      if (!userId) {
+        console.error('User ID not found in storage');
+        setIsLoading(false);
+        return;
+      }
+
+      // Fetch user profile
+      const profileResponse = await userService.getUserProfile(userId);
+      console.log('Profile response:', profileResponse);
+      if (profileResponse.success && profileResponse.data) {
+        const profileData = profileResponse.data;
+        setName(profileData.name || "");
+        setEmail(profileData.email || "");
+        setPhone(profileData.phoneNo || "");
+        setAddress(profileData.address || "");
+        setAboutMe(profileData.bio || "");
+        setUsername(profileData.username || "");
+        setCompanyName(profileData.companyName || "");
+        setCnic(profileData.cnic || "");
+
+        // Handle the picture which could be a base64 string or a URL
+        const picture = profileData.picture || null;
+
+        // If the picture is a data URI, extract just the base64 part
+        if (picture && isDataUri(picture)) {
+          setImage(extractBase64FromDataUri(picture));
+        } else {
+          setImage(picture);
+        }
+
+        setRating(profileData.averageRating || 0);
+        setProfileLoaded(true);
+      } else {
+        console.error('Failed to fetch profile data:', profileResponse.message);
+        Alert.alert('Error', 'Failed to load profile data');
+      }
+
+      // Fetch user reviews
+      const reviewsResponse = await userService.getUserReviews(userId);
+      if (reviewsResponse.success && reviewsResponse.data) {
+        // Sort reviews by date (newest first)
+        const sortedReviews = [...reviewsResponse.data].sort((a, b) => {
+          const dateA = new Date(a.reviewDate || 0);
+          const dateB = new Date(b.reviewDate || 0);
+          return dateB - dateA; // Descending order (newest first)
+        });
+
+        setReviews(sortedReviews);
+        setReviewsCount(sortedReviews.length);
+        setReviewsLoaded(true);
+      } else {
+        console.error('Failed to fetch reviews:', reviewsResponse.message);
+        setReviews([]);
+        setReviewsCount(0);
+        setReviewsLoaded(true);
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      Alert.alert('Error', 'An error occurred while loading your profile');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     Alert.alert(
@@ -86,6 +152,72 @@ const ProfileScreen = ({ navigation }) => {
     );
   };
 
+  // Render skeleton loading UI
+  const renderSkeletonLoading = () => (
+    <View style={styles.container}>
+      <View style={styles.profileSection}>
+        <SkeletonPlaceholder>
+          <SkeletonPlaceholder.Item width={80} height={80} borderRadius={40} />
+        </SkeletonPlaceholder>
+        <View style={{ marginLeft: 15, flex: 1 }}>
+          <SkeletonPlaceholder>
+            <SkeletonPlaceholder.Item width="70%" height={20} borderRadius={4} marginBottom={10} />
+            <SkeletonPlaceholder.Item width="90%" height={15} borderRadius={4} marginBottom={6} />
+            <SkeletonPlaceholder.Item width="60%" height={15} borderRadius={4} marginBottom={6} />
+            <SkeletonPlaceholder.Item width="80%" height={15} borderRadius={4} />
+          </SkeletonPlaceholder>
+        </View>
+      </View>
+
+      <View style={styles.statsSection}>
+        <SkeletonPlaceholder>
+          <SkeletonPlaceholder.Item width="30%" height={20} borderRadius={4} />
+        </SkeletonPlaceholder>
+        <SkeletonPlaceholder>
+          <SkeletonPlaceholder.Item width="30%" height={20} borderRadius={4} />
+        </SkeletonPlaceholder>
+        <SkeletonPlaceholder>
+          <SkeletonPlaceholder.Item width="30%" height={20} borderRadius={4} />
+        </SkeletonPlaceholder>
+      </View>
+
+      <View style={styles.verifications}>
+        {[1, 2, 3, 4, 5].map((_, index) => (
+          <SkeletonPlaceholder key={index}>
+            <SkeletonPlaceholder.Item width={40} height={40} borderRadius={20} />
+          </SkeletonPlaceholder>
+        ))}
+      </View>
+
+      <View style={{ marginVertical: 15 }}>
+        <SkeletonPlaceholder>
+          <SkeletonPlaceholder.Item width="40%" height={20} borderRadius={4} marginBottom={10} />
+          <SkeletonPlaceholder.Item width="100%" height={80} borderRadius={8} />
+        </SkeletonPlaceholder>
+      </View>
+
+      <View style={{ marginTop: 15 }}>
+        <SkeletonPlaceholder>
+          <SkeletonPlaceholder.Item width="40%" height={20} borderRadius={4} marginBottom={10} />
+          <SkeletonPlaceholder.Item width="100%" height={80} borderRadius={8} marginBottom={10} />
+          <SkeletonPlaceholder.Item width="100%" height={80} borderRadius={8} />
+        </SkeletonPlaceholder>
+      </View>
+    </View>
+  );
+
+  if (isLoading) {
+    return renderSkeletonLoading();
+  }
+
+  // Placeholder text for empty fields
+  const getPlaceholderText = (field, defaultText) => {
+    if (!field || field.trim() === '') {
+      return <Text style={styles.placeholderText}>{defaultText}</Text>;
+    }
+    return field;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileSection}>
@@ -96,12 +228,13 @@ const ProfileScreen = ({ navigation }) => {
           height={height}
         />
         <ProfileInfo
-          name={name}
-          email={email}
-          phone={phone}
-          address={address}
+          name={name || "Add your name"}
+          email={email || "Add your email"}
+          phone={phone || "Add your phone number"}
+          address={address || "Add your address"}
           width={width}
           height={height}
+          showPlaceholders={true}
         />
         <TouchableOpacity
           onPress={() => setIsModalVisible(true)}
@@ -112,9 +245,18 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.statsSection}>
-        <Text style={styles.statsText}>⭐ 5.0</Text>
-        <Text style={styles.statsText}>💬 0</Text>
-        <Text style={styles.statsText}>🚀 50%</Text>
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>{rating.toFixed(1)}</Text>
+          <Text style={styles.statLabel}>Rating</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>{reviewsCount}</Text>
+          <Text style={styles.statLabel}>Reviews</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statValue}>{completionRate}%</Text>
+          <Text style={styles.statLabel}>Completion</Text>
+        </View>
       </View>
 
       <View style={styles.verifications}>
@@ -130,12 +272,26 @@ const ProfileScreen = ({ navigation }) => {
         )}
       </View>
 
-      <AboutMeSection aboutMe={aboutMe} width={width} height={height} />
+      <AboutMeSection
+        aboutMe={aboutMe || "Tell us about yourself..."}
+        width={width}
+        height={height}
+        isEmpty={!aboutMe || aboutMe.trim() === ''}
+      />
 
       <View>
-        <Text style={styles.reviewText}>Reviews</Text>
+        <Text style={styles.reviewText}>Reviews ({reviewsCount})</Text>
       </View>
-      <ReviewsList />
+      {!reviewsLoaded ? (
+        <View style={styles.reviewsLoadingContainer}>
+          <SkeletonPlaceholder>
+            <SkeletonPlaceholder.Item width="100%" height={80} borderRadius={8} marginBottom={10} />
+            <SkeletonPlaceholder.Item width="100%" height={80} borderRadius={8} />
+          </SkeletonPlaceholder>
+        </View>
+      ) : (
+        <ReviewsList reviews={reviews} />
+      )}
 
       <TouchableOpacity
         style={logoutStyles.logoutButton}
@@ -164,6 +320,9 @@ const ProfileScreen = ({ navigation }) => {
         setCompanyName={setCompanyName}
         cnic={cnic}
         setCnic={setCnic}
+        onProfileUpdated={loadUserData}
+        image={image}
+        setImage={setImage}
       />
     </View>
   );
