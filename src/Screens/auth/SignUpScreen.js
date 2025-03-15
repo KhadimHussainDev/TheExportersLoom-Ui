@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { AuthContext } from "../../context/providers/AuthContext";
 import { authService } from "../../services/authService";
 import createSignUpStyles from "../../Styles/Screens/SignUpStyle";
-import { ROLES } from "../../utils/constants";
+import { ROLES } from "../../utils/contants/constants";
 import { IMAGES } from "../../utils/contants/images";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import AuthScreen from "./AuthScreen";
@@ -59,9 +59,9 @@ const SignUpScreen = ({ navigation }) => {
       // Call the sign-up service
       const response = await authService.signUp(email, password, userRole);
 
-      // Check if there was an error
-      if (response.error) {
-        Alert.alert("Sign-Up Failed", response.error);
+      // Check if the sign-up was successful
+      if (!response.success) {
+        Alert.alert("Sign-Up Failed", response.message || "Failed to create account");
         return;
       }
 

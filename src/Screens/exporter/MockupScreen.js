@@ -25,13 +25,14 @@ const MockupScreen = ({ navigation }) => {
 
     try {
       const response = await costEstimationService.estimateCost(userContent);
-      if (!response.data?.success) {
-        Alert.alert("Error", "Failed to estimate cost. Please try again.");
+
+      if (!response.success) {
+        Alert.alert("Error", response.message || "Failed to estimate cost. Please try again.");
         setLoading(false);
         return;
       }
 
-      console.log(response.data.data);
+      console.log(response.data);
       setLoading(false);
       Alert.alert("Success", "Requirements Extracted Successfully!");
 
@@ -66,7 +67,7 @@ const MockupScreen = ({ navigation }) => {
       //   ],
       //   "tagCardsRequired": <true/false/undefined>
       // }
-      const mockupData = response.data?.data;
+      const mockupData = response.data;
       if (typeof mockupData === 'string') {
 
         try {

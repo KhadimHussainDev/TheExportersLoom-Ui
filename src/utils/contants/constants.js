@@ -40,3 +40,18 @@ export const ROLES = {
   MANUFACTURER: 'Manufacturer',
   EXPORTER: 'Exporter'
 }; 
+
+// Hardcoded sizes
+export const SIZES = [
+  { label: 'S', value: 'S' },
+  { label: 'M', value: 'M' },
+  { label: 'L', value: 'L' },
+  { label: 'XL', value: 'XL' },
+];
+
+// Logo numbers array (0-5)
+export const LOGO_NUMBERS = Array.from({ length: 6 }, (_, i) => ({
+  label: i.toString(),
+  value: i.toString()
+}));
+
