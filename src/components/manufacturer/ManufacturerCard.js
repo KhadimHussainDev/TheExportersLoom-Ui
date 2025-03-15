@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
-import RatingStars from "../common/RatingStars";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import ManufacturerCardStyle from "../../Styles/Components/ManufacturerCardStyle";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import RatingStars from "../common/RatingStars";
 
 const { width, height } = getWindowDimensions();
 const styles = ManufacturerCardStyle(width, height);
@@ -15,15 +15,26 @@ const ManufacturerCard = ({
   price,
   rating,
   days,
+  moduleType,
+  moduleName,
 }) => {
   // Function to show alert dialog
   const handleChatPress = () => {
     Alert.alert(
       "Assign Module", // Title
-      "Would you like to assign a module to this manufacturer?", // Message
+      `Would you like to assign the ${moduleName || 'selected module'} to ${name}?`, // Message with module name
       [
         { text: "No", style: "cancel" },
-        { text: "Yes", onPress: () => console.log("Module Assigned") }, // Handle Yes action
+        {
+          text: "Yes",
+          onPress: () => {
+            console.log(`Module Assigned: ${moduleType} to ${name}`);
+            Alert.alert(
+              "Module Assigned",
+              `${moduleName || 'Module'} has been successfully assigned to ${name}.`
+            );
+          }
+        }, // Handle Yes action
       ]
     );
   };

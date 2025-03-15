@@ -196,8 +196,10 @@ const CostEstimationBreakdown = ({ navigation, route }) => {
         // Navigate to manufacturer selection with module details
         navigation.navigate("ManufacturerSelection", {
           moduleType: item.id,
-          moduleDetails: item.details,
-          moduleDescription: item.description
+          moduleName: item.leadingText,
+          moduleDescription: item.description,
+          modulePrice: item.cost,
+          moduleDetails: item.details
         });
       }}
     />
