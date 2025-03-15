@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, BackHandler, StyleSheet, View } from 'react-native';
 import { storageService } from '../../services/storageService';
-import { ROLES, STORAGE_KEYS } from '../../utils/constants';
+import { ROLES, STORAGE_KEYS } from '../../utils/contants/constants';
 
 const AuthLoadingScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -11,10 +11,10 @@ const AuthLoadingScreen = ({ navigation }) => {
     const checkAuth = async () => {
       try {
         // Retrieve the token from storage
-        const token = await storageService.get(STORAGE_KEYS.USER_TOKEN);
+        const tokenResponse = await storageService.get(STORAGE_KEYS.USER_TOKEN);
 
         // If no token exists, navigate to the auth screen
-        if (!token) {
+        if (!tokenResponse.success || !tokenResponse.data) {
           navigation.reset({
             index: 0,
             routes: [{ name: 'SignInScreen' }],
@@ -24,6 +24,7 @@ const AuthLoadingScreen = ({ navigation }) => {
 
         // Validate the token (check if it's expired)
         try {
+          const token = tokenResponse.data;
           const decodedToken = jwtDecode(token);
 
           // Check if token is expired
@@ -40,7 +41,8 @@ const AuthLoadingScreen = ({ navigation }) => {
           }
 
           // Token is valid, navigate to the appropriate dashboard
-          const userData = await storageService.get(STORAGE_KEYS.USER_DATA);
+          const userDataResponse = await storageService.get(STORAGE_KEYS.USER_DATA);
+          const userData = userDataResponse.success ? userDataResponse.data : null;
 
           if (userData && userData.userType === ROLES.MANUFACTURER) {
             navigation.reset({

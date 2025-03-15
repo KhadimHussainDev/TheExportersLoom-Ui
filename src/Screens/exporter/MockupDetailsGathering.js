@@ -13,26 +13,12 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { productConfigurationService } from "../../services/productConfigurationService";
 import { projectService } from "../../services/projectService";
 import MockupDetailsGatheringStyles from "../../Styles/Screens/Exporter/MockupDetailsGatheringStyle";
-import { CUTTING_STYLE, PROJECT_STATUS, STORAGE_KEYS } from "../../utils/constants";
+import { CUTTING_STYLE, LOGO_NUMBERS, PROJECT_STATUS, SIZES, STORAGE_KEYS } from "../../utils/contants/constants";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 
 const { width, height } = getWindowDimensions();
 const styles = MockupDetailsGatheringStyles(width, height);
 
-// Hardcoded sizes
-const SIZES = [
-  { label: 'S', value: 'S' },
-  { label: 'M', value: 'M' },
-  { label: 'L', value: 'L' },
-  { label: 'XL', value: 'XL' },
-  { label: 'XXL', value: 'XXL' }
-];
-
-// Logo numbers array (0-5)
-const LOGO_NUMBERS = Array.from({ length: 6 }, (_, i) => ({
-  label: i.toString(),
-  value: i.toString()
-}));
 
 const MockupDetailsGathering = ({ navigation, route }) => {
   const [productType, setProductType] = useState(null);
@@ -83,26 +69,31 @@ const MockupDetailsGathering = ({ navigation, route }) => {
       setLoading(true);
 
       // Check if data exists in storage
-      const storedData = await productConfigurationService.getFromStorage(STORAGE_KEYS.PRODUCT_CONFIGURATIONS);
+      const storedDataResponse = await productConfigurationService.getFromStorage(STORAGE_KEYS.PRODUCT_CONFIGURATIONS);
 
-      if (storedData) {
+      if (storedDataResponse.success && storedDataResponse.data) {
         // Use stored data
+        const storedData = storedDataResponse.data;
         setProductTypes(storedData.productTypes);
         setPrintingMethods(storedData.printingMethods);
         setLogoPositions(storedData.logoPositions);
         setIsDataLoaded(true);
       } else {
         // If no stored data, fetch from API
-        const data = await productConfigurationService.fetchAllProductConfigurations();
+        const configResponse = await productConfigurationService.fetchAllProductConfigurations();
 
-        // Store the fetched data
-        await productConfigurationService.saveToStorage(STORAGE_KEYS.PRODUCT_CONFIGURATIONS, data);
+        if (configResponse.success) {
+          // Store the fetched data
+          await productConfigurationService.saveToStorage(STORAGE_KEYS.PRODUCT_CONFIGURATIONS, configResponse.data);
 
-        // Update state with fetched data
-        setProductTypes(data.productTypes);
-        setPrintingMethods(data.printingMethods);
-        setLogoPositions(data.logoPositions);
-        setIsDataLoaded(true);
+          // Update state with fetched data
+          setProductTypes(configResponse.data.productTypes);
+          setPrintingMethods(configResponse.data.printingMethods);
+          setLogoPositions(configResponse.data.logoPositions);
+          setIsDataLoaded(true);
+        } else {
+          Alert.alert('Error', configResponse.message || 'Failed to fetch product configurations');
+        }
       }
     } catch (error) {
       Alert.alert('Error', 'Failed to fetch product configurations. Please try again.');
@@ -116,38 +107,44 @@ const MockupDetailsGathering = ({ navigation, route }) => {
   const fetchCategories = async (shirtType) => {
     try {
       setLoading(true);
-      const categories = await productConfigurationService.getCategories(shirtType);
-      setCategories(categories);
+      const response = await productConfigurationService.getCategories(shirtType);
 
-      let newFabricType = null;
-      let fabricTypeChanged = true;
+      if (response.success) {
+        setCategories(response.data);
 
-      // Auto-select fabric type if it exists in the route params
-      if (route.params?.data?.fabricType) {
-        const matchingFabricType = findMatchingValue(route.params.data.fabricType, categories);
-        if (matchingFabricType) {
-          newFabricType = matchingFabricType;
-          fabricTypeChanged = newFabricType !== fabricType;
+        let newFabricType = null;
+        let fabricTypeChanged = true;
+
+        // Auto-select fabric type if it exists in the route params
+        if (route.params?.data?.fabricType) {
+          const matchingFabricType = findMatchingValue(route.params.data.fabricType, response.data);
+          if (matchingFabricType) {
+            newFabricType = matchingFabricType;
+            fabricTypeChanged = newFabricType !== fabricType;
+          }
+        } else {
+          // Check if current fabric type is in the new categories
+          const matchingCurrentFabric = findMatchingValue(fabricType, response.data);
+          if (matchingCurrentFabric) {
+            newFabricType = fabricType; // Keep current fabric type
+            fabricTypeChanged = false;
+          }
+        }
+
+        // Update fabric type
+        setFabricType(newFabricType);
+
+        // If fabric type changed or was reset, clear subcategories
+        if (fabricTypeChanged) {
+          setSubFabricType(null);
+          setSubCategories([]);
+        } else if (newFabricType) {
+          // If fabric type didn't change and is valid, fetch subcategories
+          fetchSubcategories(newFabricType);
         }
       } else {
-        // Check if current fabric type is in the new categories
-        const matchingCurrentFabric = findMatchingValue(fabricType, categories);
-        if (matchingCurrentFabric) {
-          newFabricType = fabricType; // Keep current fabric type
-          fabricTypeChanged = false;
-        }
-      }
-
-      // Update fabric type
-      setFabricType(newFabricType);
-
-      // If fabric type changed or was reset, clear subcategories
-      if (fabricTypeChanged) {
-        setSubFabricType(null);
-        setSubCategories([]);
-      } else if (newFabricType) {
-        // If fabric type didn't change and is valid, fetch subcategories
-        fetchSubcategories(newFabricType);
+        console.error('Error fetching categories:', response.error);
+        Alert.alert('Error', 'Failed to fetch fabric types. Please try again.');
       }
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -161,21 +158,27 @@ const MockupDetailsGathering = ({ navigation, route }) => {
   const fetchSubcategories = async (category) => {
     try {
       setLoading(true);
-      const subCategories = await productConfigurationService.getSubcategories(category);
-      setSubCategories(subCategories);
+      const response = await productConfigurationService.getSubcategories(category);
 
-      // Auto-select sub-fabric type if it exists in the route params
-      if (route.params?.data?.fabricSubType) {
-        const matchingSubFabricType = findMatchingValue(route.params.data.fabricSubType, subCategories);
-        if (matchingSubFabricType) {
-          setSubFabricType(matchingSubFabricType);
+      if (response.success) {
+        setSubCategories(response.data);
+
+        // Auto-select sub-fabric type if it exists in the route params
+        if (route.params?.data?.fabricSubType) {
+          const matchingSubFabricType = findMatchingValue(route.params.data.fabricSubType, response.data);
+          if (matchingSubFabricType) {
+            setSubFabricType(matchingSubFabricType);
+          } else {
+            // Reset sub-fabric type if no match found
+            setSubFabricType(null);
+          }
         } else {
-          // Reset sub-fabric type if no match found
+          // Reset sub-fabric type when manually changing fabric type
           setSubFabricType(null);
         }
       } else {
-        // Reset sub-fabric type when manually changing fabric type
-        setSubFabricType(null);
+        console.error('Error fetching subcategories:', response.error);
+        Alert.alert('Error', 'Failed to fetch fabric subcategories. Please try again.');
       }
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -191,9 +194,9 @@ const MockupDetailsGathering = ({ navigation, route }) => {
 
   // Auto-select product type when data is loaded and productTypes are available
   useEffect(() => {
-    console.log("isDataLoaded", isDataLoaded)
-    console.log("productTypes", productTypes)
-    console.log("route.params.data.productType", route.params?.data)
+    // console.log("isDataLoaded", isDataLoaded)
+    // console.log("productTypes", productTypes)
+    // console.log("route.params.data.productType", route.params?.data)
     if (isDataLoaded && productTypes.length > 0 && route.params?.data?.productType) {
       console.log(route.params.data.productType)
       const matchingProductType = findMatchingValue(route.params.data.productType, productTypes);
@@ -222,7 +225,7 @@ const MockupDetailsGathering = ({ navigation, route }) => {
   useEffect(() => {
     if (isDataLoaded && route.params?.data) {
       const data = route.params.data;
-
+      console.log("data", data)
       // Pre-select sizes
       if (data.sizes && Array.isArray(data.sizes)) {
         const validSizes = data.sizes.filter(size =>
@@ -361,19 +364,38 @@ const MockupDetailsGathering = ({ navigation, route }) => {
         patternRequired,
         tagCardsRequired,
         sizes: sizes.map(size => ({
-          fabricSize: size.size,
+          size: size.size,
           quantity: parseInt(size.quantity)
         }))
       };
-      console.log(projectData)
-      const response = await projectService.createProject(projectData);
+      // console.log(projectData)
+
+      // Check if updating or creating
+      const isUpdating = route.params?.mode === "update" ||
+        route.params?.data?.isUpdating ||
+        route.params?.data?.updateExisting;
+
+      const projectId = route.params?.projectId || route.params?.data?.projectId;
+
+      let response;
+      if (isUpdating && projectId) {
+        console.log("Updating existing project with ID:", projectId);
+        // Call the update project API
+        response = await projectService.updateProject(projectId, projectData);
+      } else {
+        console.log("Creating new project");
+        // Call the create project API
+        response = await projectService.createProject(projectData);
+      }
+
       console.log("Response:", response);
 
       if (response.success) {
-        Alert.alert("Success", "Project created successfully! Cost: " + response.data.totalEstimatedCost);
-        navigation.navigate("CostEstimationBreakdown", { projectId: response.data.id });
+        Alert.alert("Success", response.message || "Project saved successfully");
+        navigation.navigate("CostEstimationBreakdown", { data: response.data });
       } else {
-        Alert.alert("Error", response.message || "Failed to create project");
+        const errorMsg = response.message || "Failed to process project";
+        Alert.alert("Error", errorMsg);
       }
     } catch (error) {
       console.error("Error creating project:", error);

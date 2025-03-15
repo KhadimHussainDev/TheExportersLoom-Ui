@@ -13,7 +13,7 @@ import { AuthContext } from "../../context/providers/AuthContext";
 import { authService } from "../../services/authService";
 import { storageService } from "../../services/storageService";
 import createSignInStyles from "../../Styles/Screens/SignInStyle";
-import { ROLES, STORAGE_KEYS } from "../../utils/constants";
+import { ROLES, STORAGE_KEYS } from "../../utils/contants/constants";
 import { IMAGES } from "../../utils/contants/images";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import AuthScreen from "./AuthScreen";
@@ -125,16 +125,16 @@ const SignInScreen = ({ navigation }) => {
         setLoading(false);
         return;
       }
-      console.log(response.data.accessToken);
+      console.log("accessToken", response.data.accessToken);
 
       // Decode the token
       const decodedToken = jwtDecode(response.data.accessToken);
-
+      console.log("decodedToken", decodedToken);
       // Store the token in storage
-      await storageService.set(STORAGE_KEYS.USER_TOKEN, response.data.accessToken);
+      await storageService.save(STORAGE_KEYS.USER_TOKEN, response.data.accessToken);
 
       // Store user data
-      await storageService.set(STORAGE_KEYS.USER_DATA, {
+      await storageService.save(STORAGE_KEYS.USER_DATA, {
         userId: decodedToken.userId || decodedToken.sub,
         username: decodedToken.username,
         userType: decodedToken.userType,

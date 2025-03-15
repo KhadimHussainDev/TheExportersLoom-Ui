@@ -31,6 +31,12 @@ const CustomModuleCardStyles = (width, height) =>
       fontSize: width * 0.035,
       color: colors.forgotPasswordText,
     },
+    descriptionText: {
+      fontSize: width * 0.03,
+      color: colors.Text,
+      marginTop: height * 0.01,
+      fontStyle: 'italic',
+    },
   });
 
 export default CustomModuleCardStyles;

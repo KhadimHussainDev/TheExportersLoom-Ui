@@ -10,7 +10,7 @@ import ReviewsList from "../../components/common/ReviewsList";
 import { authService } from "../../services/authService";
 import { storageService } from "../../services/storageService";
 import { createProfileScreenStyles } from "../../Styles/Screens/ProfileScreenStyles";
-import { STORAGE_KEYS } from "../../utils/constants";
+import { STORAGE_KEYS } from "../../utils/contants/constants";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 import EditProfile from "./EditProfile";
 
@@ -52,8 +52,9 @@ const ProfileScreen = ({ navigation }) => {
     // Load user data from storage
     const loadUserData = async () => {
       try {
-        const userData = await storageService.get(STORAGE_KEYS.USER_DATA);
-        if (userData) {
+        const userDataResponse = await storageService.get(STORAGE_KEYS.USER_DATA);
+        if (userDataResponse.success && userDataResponse.data) {
+          const userData = userDataResponse.data;
           if (userData.username) setName(userData.username);
           if (userData.email) setEmail(userData.email);
         }

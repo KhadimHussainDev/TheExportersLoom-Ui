@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { STORAGE_KEYS } from '../utils/constants';
+import { STORAGE_KEYS } from '../utils/contants/constants';
 
 export const storageService = {
   /**

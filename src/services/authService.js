@@ -1,8 +1,17 @@
-import { STORAGE_KEYS } from '../utils/constants';
+import { STORAGE_KEYS } from '../utils/contants/constants';
 import apiClient from './apiClient';
 import { storageService } from './storageService';
 
+/**
+ * Authentication service for handling login, signup, and user session management
+ */
 export const authService = {
+  /**
+   * Sign in a user
+   * @param {string} email - User email
+   * @param {string} password - User password
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message, and data properties
+   */
   signIn: async (email, password) => {
     try {
       const response = await apiClient.post('/users/login', {
@@ -11,23 +20,23 @@ export const authService = {
       });
       return response.data;
     } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Error signing in:', error.response.data);
-        console.error('Status:', error.response.status);
-        console.error('Headers:', error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('Error signing in: No response received', error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error signing in:', error.message);
-      }
-      throw error;
+      console.error('Error signing in:', error);
+      return error.response?.data || {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to sign in',
+        error: error.toString()
+      };
     }
   },
 
+  /**
+   * Sign up a new user
+   * @param {string} email - User email
+   * @param {string} password - User password
+   * @param {string} userType - Type of user (e.g., 'Exporter', 'Manufacturer')
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message, and data properties
+   */
   signUp: async (email, password, userType) => {
     try {
       const response = await apiClient.post('/users/signup', {
@@ -35,33 +44,38 @@ export const authService = {
         password,
         userType,
       });
-      console.log(response);
       return response.data;
     } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        let e = error.response.data.message;
-        if (Array.isArray(e)) {
-          e = e.join('\n');
-        } else if (typeof e !== 'string') {
-          e = String(e);
+      console.error('Error signing up:', error);
+      if (error.response?.data) {
+        // Format the backend error message for better display
+        let errorMessage = error.response.data.message;
+        if (Array.isArray(errorMessage)) {
+          errorMessage = errorMessage.join('\n');
         }
-        if (error.response.data.error) {
-          e += '\n' + error.response.data.error;
-        }
-        return { error: e, statusCode: error.response.status };
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('Error signing up: No response received', error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error signing up:', error.message);
+
+        return {
+          success: false,
+          statusCode: error.response.status,
+          message: errorMessage || 'Failed to sign up',
+          error: error.response.data.error
+        };
       }
-      throw error;
+
+      return {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to sign up',
+        error: error.toString()
+      };
     }
   },
 
+  /**
+   * Log out the current user
+   * @param {object} navigation - React Navigation object for redirecting after logout
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message properties
+   */
   logout: async (navigation) => {
     try {
       // Clear auth tokens and user data from storage
@@ -76,10 +90,19 @@ export const authService = {
         });
       }
 
-      return true;
+      return {
+        success: true,
+        statusCode: 200,
+        message: 'Logged out successfully'
+      };
     } catch (error) {
       console.error('Error logging out:', error);
-      return false;
+      return {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to log out',
+        error: error.toString()
+      };
     }
   }
 }; 
