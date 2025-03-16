@@ -14,12 +14,14 @@ const OrderCardStyles = (width, height) =>
       shadowRadius: 6,
       shadowOffset: { width: 0, height: 2 },
       elevation: 3,
-      height: height * 0.17, // Adjusted height for the card
+      height: height * 0.15, // Reduced height for the card
     },
     cardContent: {
       flex: 1,
       paddingHorizontal: width * 0.04, // Adjusted padding based on width
       paddingTop: height * 0.01,
+      paddingBottom: height * 0.01, // Added bottom padding
+      justifyContent: "space-between", // Space components evenly
     },
     header: {
       flexDirection: "row",
@@ -56,15 +58,15 @@ const OrderCardStyles = (width, height) =>
       fontWeight: "bold",
     },
     details: {
-      marginTop: height * 0.001, // Adjusted based on height
+      marginTop: height * 0.001, // Reduced margin
     },
     detailText: {
       fontSize: width * 0.03, // Adjusted font size based on width
       color: colors.Text, // Updated text color
     },
     progressContainer: {
-      marginTop: height * 0.01, // Adjusted based on height
-      alignItems: "flex-start",
+      marginTop: height * 0.005, // Reduced margin
+      width: "100%", // Ensure full width of parent
     },
     progressText: {
       fontSize: width * 0.03, // Adjusted font size based on width
@@ -73,11 +75,13 @@ const OrderCardStyles = (width, height) =>
     },
     progressBarContainer: {
       flexDirection: "row",
-      height: height * 0.01, // Adjusted height based on height
-      backgroundColor: colors.AdditonalDetailstextbox, // Updated background color
+      height: height * 0.008, // Slightly reduced height
+      backgroundColor: "#e0e0e0", // Light gray background for empty portion
       borderRadius: 4,
       overflow: "hidden",
-      width: "80%",
+      width: "100%", // Make it full width
+      borderWidth: 0.5,
+      borderColor: "#cccccc",
     },
     progressBar: {
       height: "100%",
@@ -86,7 +90,8 @@ const OrderCardStyles = (width, height) =>
       flexDirection: "row",
       justifyContent: "flex-end",
       alignItems: "center",
-      marginTop: height * 0.01, // Adjusted based on height
+      marginTop: height * 0.005, // Reduced margin
+      marginBottom: 0, // Ensure no bottom margin
     },
     daysLeft: {
       fontSize: width * 0.035, // Adjusted font size based on width
@@ -105,7 +110,7 @@ const OrderCardStyles = (width, height) =>
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
-      marginTop: height * 0.005, // Adjusted margin based on height
+      marginTop: height * 0.005, // Reduced margin
     },
   });
 

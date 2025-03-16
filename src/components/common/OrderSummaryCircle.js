@@ -1,16 +1,28 @@
 import React from "react";
-import { View, Text } from "react-native";
-import Svg, { G, Circle } from "react-native-svg";
-import { calculateOrderSummary } from "../../utils/helpers/orderUtils";
+import { Text, View } from "react-native";
+import Svg, { Circle, G } from "react-native-svg";
 import orderSummaryCircleStyles from "../../Styles/Components/orderSummaryCircleStyles";
+import { ROLES } from "../../utils/contants/constants";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 
 const { width, height } = getWindowDimensions();
 const styles = orderSummaryCircleStyles(width, height);
 
-const OrderSummaryCircle = () => {
+const OrderSummaryCircle = ({ statistics, userType }) => {
+  // Default values if statistics are not provided
+  const defaultStats = {
+    completedPercentage: 0,
+    ongoingPercentage: 0,
+    todoPercentage: 0,
+    total: 0,
+    completed: 0,
+    ongoing: 0,
+    todo: 0
+  };
+
+  // Use provided statistics or defaults
   const { completedPercentage, ongoingPercentage, todoPercentage, total } =
-    calculateOrderSummary();
+    statistics || defaultStats;
 
   const circleRadius = 50;
   const circleCircumference = 2 * Math.PI * circleRadius;
@@ -18,6 +30,10 @@ const OrderSummaryCircle = () => {
   const completedStroke = (completedPercentage / 100) * circleCircumference;
   const ongoingStroke = (ongoingPercentage / 100) * circleCircumference;
   const todoStroke = (todoPercentage / 100) * circleCircumference;
+
+  // Determine title based on user type
+  const isExporter = userType === ROLES.EXPORTER;
+  const title = isExporter ? "Total Modules" : "Total Orders";
 
   return (
     <View style={styles.circleContainer}>
@@ -55,7 +71,7 @@ const OrderSummaryCircle = () => {
         </G>
       </Svg>
       <Text style={styles.circleText}>{total}</Text>
-      <Text style={styles.circleSubtitle}>Total Modules</Text>
+      <Text style={styles.circleSubtitle}>{title}</Text>
     </View>
   );
 };

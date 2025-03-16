@@ -7,9 +7,25 @@ const ModuleCardsListStyles = (width, height) => {
       flex: 1,
       backgroundColor: colors.primary, // Background color for the top section
     },
+    headerBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.primary,
+      paddingHorizontal: width * 0.05,
+      paddingTop: height * 0.05,
+      paddingBottom: height * 0.01,
+    },
+    backButtonContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    backText: {
+      color: colors.whiteborder,
+      fontSize: width * 0.04,
+      marginLeft: width * 0.02,
+    },
     headerContainer: {
       padding: width * 0.05, // Use width for dynamic padding
-      paddingTop: height * 0.08, // Use height for extra space at the top (status bar)
       backgroundColor: colors.primary,
     },
     greeting: {
@@ -28,6 +44,31 @@ const ModuleCardsListStyles = (width, height) => {
       color: colors.whiteborder,
       fontWeight: "500",
     },
+    statusContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: height * 0.01,
+    },
+    statusLabel: {
+      fontSize: width * 0.04,
+      color: colors.whiteborder,
+      fontWeight: "500",
+    },
+    statusValue: {
+      fontSize: width * 0.04,
+      fontWeight: "700",
+    },
+    projectDetailsContainer: {
+      marginTop: height * 0.02,
+      padding: width * 0.03,
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      borderRadius: width * 0.02,
+    },
+    detailText: {
+      fontSize: width * 0.035,
+      color: colors.whiteborder,
+      marginBottom: height * 0.005,
+    },
     contentContainer: {
       flex: 1,
       backgroundColor: colors.background,
@@ -38,6 +79,40 @@ const ModuleCardsListStyles = (width, height) => {
     scrollContent: {
       paddingBottom: height * 0.05, // Dynamic padding for bottom space based on height
     },
+    centerContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: width * 0.05,
+    },
+    loadingText: {
+      fontSize: width * 0.04,
+      color: colors.primary,
+      marginTop: height * 0.02,
+      textAlign: 'center',
+    },
+    errorText: {
+      fontSize: width * 0.045,
+      color: colors.error,
+      textAlign: 'center',
+      marginBottom: height * 0.02,
+    },
+    emptyText: {
+      fontSize: width * 0.04,
+      color: colors.Text,
+      textAlign: 'center',
+    },
+    backButton: {
+      marginTop: height * 0.02,
+      padding: width * 0.03,
+      backgroundColor: colors.primary,
+      borderRadius: width * 0.02,
+    },
+    backButtonText: {
+      color: colors.whiteborder,
+      fontSize: width * 0.04,
+      fontWeight: '500',
+    }
   });
 };
 

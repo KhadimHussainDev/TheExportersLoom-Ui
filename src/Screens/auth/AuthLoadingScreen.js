@@ -52,7 +52,7 @@ const AuthLoadingScreen = ({ navigation }) => {
           if (userData && userData.userType === ROLES.MANUFACTURER) {
             navigation.reset({
               index: 0,
-              routes: [{ name: 'ManufacturerDashboardStack' }],
+              routes: [{ name: 'ProfileScreen' }],
             });
           } else {
             navigation.reset({

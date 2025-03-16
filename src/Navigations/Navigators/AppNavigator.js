@@ -18,6 +18,7 @@ import OverviewScreen from "../../Screens/exporter/OverviewScreen";
 import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
 import MachineRegisteration from "../../Screens/manufacturer/MachineRegisteration";
 import ExporterDashboardStack from "./ExporterDashboardStack";
+import SelectedModule from "../../Screens/exporter/SelectedModule";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -89,6 +90,11 @@ const MainStackNavigator = () => {
         name="MachineRegisteration"
         component={MachineRegisteration}
         options={{ headerShown: true, title: "Machine Registration" }}
+      />
+      <Stack.Screen
+        name="SelectedModule"
+        component={SelectedModule}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

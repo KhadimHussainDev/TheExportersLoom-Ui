@@ -15,6 +15,7 @@ import { projectService } from "../../services/projectService";
 import MockupDetailsGatheringStyles from "../../Styles/Screens/Exporter/MockupDetailsGatheringStyle";
 import { CUTTING_STYLE, LOGO_NUMBERS, PROJECT_STATUS, SIZES, STORAGE_KEYS } from "../../utils/contants/constants";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import { storageService } from "../../services/storageService";
 
 const { width, height } = getWindowDimensions();
 const styles = MockupDetailsGatheringStyles(width, height);
@@ -344,9 +345,35 @@ const MockupDetailsGathering = ({ navigation, route }) => {
 
     try {
       setLoading(true);
+      // Get the user ID from storage 
+      const userDataResponse = await storageService.get(STORAGE_KEYS.USER_DATA);
+      let userId;
+      
+      if (userDataResponse.success && userDataResponse.data && userDataResponse.data.user_id) {
+        userId = userDataResponse.data.user_id;
+        console.log("Retrieved user ID from storage:", userId);
+      } else {
+        console.warn("Could not retrieve user ID from storage");
+        setLoading(false);
+        Alert.alert(
+          "Authentication Required", 
+          "Please sign in to continue",
+          [
+            { 
+              text: "OK", 
+              onPress: () => navigation.reset({
+                index: 0,
+                routes: [{ name: 'SignInScreen' }],
+              })
+            }
+          ]
+        );
+        return;
+      }
+
 
       const projectData = {
-        userId: 23, // TODO: Get actual user ID from auth context
+        userId: userId, 
         status: PROJECT_STATUS.DRAFT,
         shirtType: productType,
         fabricCategory: fabricType,

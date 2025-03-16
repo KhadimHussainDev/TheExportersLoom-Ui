@@ -83,5 +83,45 @@ export const projectService = {
         error: error.toString()
       };
     }
+  },
+
+  /**
+   * Get projects for a specific user
+   * @param {number} userId - User ID
+   * @returns {Promise<object>} - Standard API response with user projects data
+   */
+  getUserProjects: async (userId) => {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.PROJECTS}?userId=${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching projects for user ${userId}:`, error);
+      return error.response?.data || {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to fetch user projects',
+        error: error.toString()
+      };
+    }
+  },
+
+  /**
+   * Get project statistics for a specific user
+   * @param {number} userId - User ID
+   * @returns {Promise<object>} - Standard API response with user project statistics
+   */
+  getUserProjectStatistics: async (userId) => {
+    try {
+      const response = await apiClient.get(`${API_ENDPOINTS.PROJECTS}/statistics/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching project statistics for user ${userId}:`, error);
+      return error.response?.data || {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to fetch user project statistics',
+        error: error.toString()
+      };
+    }
   }
 }; 
