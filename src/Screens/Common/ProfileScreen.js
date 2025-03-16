@@ -35,7 +35,7 @@ const ProfileScreen = ({ navigation }) => {
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(0);
   const [reviewsCount, setReviewsCount] = useState(0);
-  const [completionRate, setCompletionRate] = useState(0);
+  const [totalOrders, settotalOrders] = useState(0);
 
   // Loading states
   const [isLoading, setIsLoading] = useState(true);
@@ -76,7 +76,7 @@ const ProfileScreen = ({ navigation }) => {
 
       // Fetch user profile
       const profileResponse = await userService.getUserProfile(userId);
-      console.log('Profile response:', profileResponse);
+      // console.log('Profile response:', profileResponse);
       if (profileResponse.success && profileResponse.data) {
         const profileData = profileResponse.data;
         setName(profileData.name || "");
@@ -87,6 +87,7 @@ const ProfileScreen = ({ navigation }) => {
         setUsername(profileData.username || "");
         setCompanyName(profileData.companyName || "");
         setCnic(profileData.cnic || "");
+        settotalOrders(profileData.totalOrders || 0);
 
         // Handle the picture which could be a base64 string or a URL
         const picture = profileData.picture || null;
@@ -254,8 +255,8 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.statLabel}>Reviews</Text>
         </View>
         <View style={styles.statItem}>
-          <Text style={styles.statValue}>{completionRate}%</Text>
-          <Text style={styles.statLabel}>Completion</Text>
+          <Text style={styles.statValue}>{totalOrders}</Text>
+          <Text style={styles.statLabel}>Orders</Text>
         </View>
       </View>
 

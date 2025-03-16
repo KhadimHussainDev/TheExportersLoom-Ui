@@ -16,6 +16,7 @@ import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGatherin
 import ModuleCardsList from "../../Screens/exporter/ModuleCardsList";
 import OverviewScreen from "../../Screens/exporter/OverviewScreen";
 import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
+import MachineRegisteration from "../../Screens/manufacturer/MachineRegisteration";
 import ExporterDashboardStack from "./ExporterDashboardStack";
 
 const Drawer = createDrawerNavigator();
@@ -52,7 +53,7 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="ForgetPassword"
         component={ForgetPassword}
-        options={{ headerShown: true, title: "Forgot Password" }}
+        options={{ headerShown: true, title: "Reset Password" }}
       />
       <Stack.Screen
         name="SearchManufacturerList"
@@ -83,6 +84,11 @@ const MainStackNavigator = () => {
         name="ManufacturerSelection"
         component={ManufacturerSelection}
         options={{ headerShown: true, title: "Manufacturer Selection" }}
+      />
+      <Stack.Screen
+        name="MachineRegisteration"
+        component={MachineRegisteration}
+        options={{ headerShown: true, title: "Machine Registration" }}
       />
     </Stack.Navigator>
   );

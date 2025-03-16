@@ -61,6 +61,21 @@ const getForgetPasswordStyles = (width, height) =>
       fontWeight: "bold",
       color: colors.primary,
     },
+    errorText: {
+      color: 'red',
+      fontSize: width * 0.04,
+      marginBottom: height * 0.02,
+      textAlign: 'center',
+    },
+    linkButton: {
+      marginTop: height * 0.03,
+      padding: width * 0.02,
+    },
+    linkText: {
+      color: colors.primary,
+      fontSize: width * 0.04,
+      textDecorationLine: 'underline',
+    },
   });
 
 export default getForgetPasswordStyles;
