@@ -109,5 +109,51 @@ export const authService = {
         error: error.toString()
       };
     }
+  },
+
+  /**
+   * Request a password reset for a user
+   * @param {string} email - User email
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message properties
+   */
+  forgotPassword: async (email) => {
+    try {
+      const response = await apiClient.post('/users/forgot-password', { email });
+      return response.data;
+    } catch (error) {
+      console.error('Error requesting password reset:', error);
+      return error.response?.data || {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to request password reset',
+        error: error.toString()
+      };
+    }
+  },
+
+  /**
+   * Reset a user's password with a verification code
+   * @param {string} email - User email
+   * @param {string} resetToken - Verification code received via email
+   * @param {string} newPassword - New password
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message properties
+   */
+  resetPassword: async (email, resetToken, newPassword) => {
+    try {
+      const response = await apiClient.post('/users/reset-password', {
+        email,
+        resetToken,
+        newPassword
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      return error.response?.data || {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to reset password',
+        error: error.toString()
+      };
+    }
   }
 }; 
