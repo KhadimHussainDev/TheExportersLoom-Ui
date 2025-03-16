@@ -1,22 +1,29 @@
 import React from "react";
-import { ScrollView } from "react-native";
-import orderList from "../../utils/Data/Orders"; // Ensure this file contains your order data
-import OrderCard from "./OrderCard";
+import { ScrollView, Text, View } from "react-native";
 import OrderListStyles from "../../Styles/Components/OrderListStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import OrderCard from "./OrderCard";
 
 const { width, height } = getWindowDimensions();
 
 const styles = OrderListStyles(width, height);
 
-const OrderList = ({ navigation }) => {
+const OrderList = ({ orders = [], navigation }) => {
+  if (!orders || orders.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No orders found</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.container}>
-      {orderList.map((Order, index) => (
+      {orders.map((order, index) => (
         <OrderCard
-          key={index}
-          Order={Order}
-          onPress={() => navigation.navigate("ModuleCardsList")}
+          key={order.id || index}
+          Order={order}
+          onPress={() => navigation.navigate("ModuleCardsList", { orderId: order.id })}
         />
       ))}
     </ScrollView>

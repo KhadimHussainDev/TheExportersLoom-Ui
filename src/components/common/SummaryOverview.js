@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { calculateOrderSummary } from "../../utils/helpers/orderUtils";
+import { Text, View } from "react-native";
 import summaryOverviewStyles from "../../Styles/Components/summaryOverviewStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 
@@ -8,9 +7,17 @@ const { width, height } = getWindowDimensions();
 
 const styles = summaryOverviewStyles(width, height);
 
-const SummaryOverview = () => {
+const SummaryOverview = ({ statistics }) => {
+  // Default values if statistics are not provided
+  const defaultStats = {
+    completedPercentage: 0,
+    ongoingPercentage: 0,
+    todoPercentage: 0
+  };
+
+  // Use provided statistics or defaults
   const { completedPercentage, ongoingPercentage, todoPercentage } =
-    calculateOrderSummary();
+    statistics || defaultStats;
 
   return (
     <View style={styles.summaryOverview}>

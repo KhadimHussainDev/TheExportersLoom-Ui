@@ -11,7 +11,3 @@ export const IMAGES = {
   Washing: require("../../assets/images/Washing.png"),
   Fabric: require("../../assets/images/Fabric.png"),
 };
-export const ROLES = {
-  manufacturer: "Manufacturer",
-  exporter: "Exporter",
-};

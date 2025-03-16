@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import OrderCardStyles from "../../Styles/Components/OrderCardStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 
@@ -10,13 +10,32 @@ const styles = OrderCardStyles(width, height);
 
 const OrderCard = ({ Order, onPress }) => {
   const {
-    orderName,
-    customerName,
-    totalCost,
-    priority,
-    daysLeft,
-    modulesSummary,
-  } = Order;
+    orderId = "Unnamed Order",
+    exporterName = "Unknown Customer",
+    price = 0,
+    deadline = new Date(),
+    status = "pending",
+    completionPercentage = 0
+  } = Order || {};
+
+  // Calculate days left until deadline
+  const currentDate = new Date();
+  const deadlineDate = new Date(deadline);
+  const timeDiff = deadlineDate.getTime() - currentDate.getTime();
+  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  const isLate = daysDiff < 0;
+  const daysAbsolute = Math.abs(daysDiff);
+
+  // Determine priority based on days difference
+  let priority = "Medium";
+  if (isLate || daysDiff <= 3) {
+    priority = "High";
+  } else if (daysDiff >= 10) {
+    priority = "Low";
+  }
+
+  // Ensure completion percentage is within 0-100 range
+  const progress = Math.min(Math.max(completionPercentage, 0), 100);
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.card}>
@@ -24,13 +43,10 @@ const OrderCard = ({ Order, onPress }) => {
       <View style={styles.cardContent}>
         {/* Header Section */}
         <View style={styles.header}>
-          <Text style={styles.orderName}>{orderName}</Text>
+          <Text style={styles.orderName}>{orderId}</Text>
           <View style={styles.iconsLeft}>
             <TouchableOpacity style={styles.chatIcon}>
               <FontAwesome5 name="comment-alt" size={18} color="#004d66" />
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>3</Text>
-              </View>
             </TouchableOpacity>
             <MaterialIcons name="attach-file" size={20} color="#004d66" />
           </View>
@@ -38,9 +54,9 @@ const OrderCard = ({ Order, onPress }) => {
 
         {/* Details Section */}
         <View style={styles.details}>
-          <Text style={styles.detailText}>Customer Name: {customerName}</Text>
+          <Text style={styles.detailText}>Customer: {exporterName}</Text>
           <View style={styles.row}>
-            <Text style={styles.detailText}>Cost: {totalCost} $</Text>
+            <Text style={styles.detailText}>Cost: {price} $</Text>
             <Text style={styles.detailText}>
               Priority:{" "}
               <Text style={{ color: priority === "High" ? "red" : "green" }}>
@@ -48,55 +64,31 @@ const OrderCard = ({ Order, onPress }) => {
               </Text>
             </Text>
             <Text style={styles.detailText}>
-              Modules:{" "}
-              {modulesSummary.completed +
-                modulesSummary.ongoing +
-                modulesSummary.todo}
+              Status: {status}
             </Text>
           </View>
+        </View>
 
-          {/* Progress Section */}
-          <View style={styles.progressContainer}>
-            <Text style={styles.progressText}>
-              ✅ {modulesSummary.completed} Done &nbsp;&nbsp; 🔄{" "}
-              {modulesSummary.ongoing} In Progress &nbsp;&nbsp; ⏳{" "}
-              {modulesSummary.todo} To Do
-            </Text>
-            <View style={styles.progressBarContainer}>
-              <View
-                style={[
-                  styles.progressBar,
-                  {
-                    width: `${(modulesSummary.completed / 8) * 100}%`,
-                    backgroundColor: "#3cb371",
-                  },
-                ]}
-              />
-              <View
-                style={[
-                  styles.progressBar,
-                  {
-                    width: `${(modulesSummary.ongoing / 8) * 100}%`,
-                    backgroundColor: "#ffcc00",
-                  },
-                ]}
-              />
-              <View
-                style={[
-                  styles.progressBar,
-                  {
-                    width: `${(modulesSummary.todo / 8) * 100}%`,
-                    backgroundColor: "#cccccc",
-                  },
-                ]}
-              />
-            </View>
+        {/* Progress Section */}
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBarContainer}>
+            <View
+              style={[
+                styles.progressBar,
+                {
+                  width: `${progress}%`,
+                  backgroundColor: "#f6a018",
+                },
+              ]}
+            />
           </View>
         </View>
 
         {/* Footer Section */}
         <View style={styles.footer}>
-          <Text style={styles.daysLeft}>{daysLeft} days left</Text>
+          <Text style={[styles.daysLeft, isLate ? { color: 'red' } : {}]}>
+            {isLate ? `${daysAbsolute} days late` : `${daysAbsolute} days left`}
+          </Text>
         </View>
       </View>
 

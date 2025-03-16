@@ -159,7 +159,7 @@ const SignInScreen = ({ navigation }) => {
       if (decodedToken.userType === ROLES.MANUFACTURER) {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'ManufacturerDashboardStack' }],
+          routes: [{ name: 'Analytics' }],
         });
       } else {
         // For exporters or any other role
