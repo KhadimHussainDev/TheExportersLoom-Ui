@@ -1,22 +1,21 @@
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { Text, View } from "react-native";
 import ModuleDescriptionStyle from "../../Styles/Components/ModuleDescriptionStyle";
 import getWindowDimensions from "../../utils/helpers/dimensions";
 
 const { width, height } = getWindowDimensions();
 const styles = ModuleDescriptionStyle(width, height);
 
-const ModuleDescription = () => (
+const ModuleDescription = ({ moduleName, moduleDescription, modulePrice, moduleType }) => (
   <View style={styles.moduleContainer}>
     <Text style={styles.moduleTitle}>📦 Module Description</Text>
     <View style={styles.moduleContent}>
-      <Text style={styles.moduleHeading}>Selected Module</Text>
+      <Text style={styles.moduleHeading}>{moduleName || 'Selected Module'}</Text>
+      <Text style={styles.moduleSubHeading}>Type: {moduleType || 'Not Specified'}</Text>
       <Text style={styles.moduleSubHeading}>Status: Not Assigned</Text>
-      <Text style={styles.moduleSubHeading}>Total Cost: 50K</Text>
+      <Text style={styles.moduleSubHeading}>Total Cost: PKR {modulePrice ? modulePrice.toFixed(2) : '0.00'}</Text>
       <Text style={styles.moduleDetails}>
-        Create lorem ipsum — Check your app or web is working for properly with
-        different alphabets and character sets. Create Arabic, Hindi, Chinese
-        and more, filler text to better test your app or web.
+        {moduleDescription || 'No description available for this module.'}
       </Text>
     </View>
   </View>
