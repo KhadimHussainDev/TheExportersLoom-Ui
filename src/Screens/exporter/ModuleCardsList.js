@@ -12,6 +12,7 @@ import {
 import ModuleCard from "../../components/common/ModulesCard";
 import { projectService } from "../../services/projectService";
 import ModuleCardsListStyles from "../../Styles/Screens/Exporter/ModuleCardsListStyles";
+import ModuleData from "../../utils/Data/ModuleData";
 
 const ModuleCardsList = () => {
   const { width, height } = Dimensions.get("window");
@@ -20,7 +21,7 @@ const ModuleCardsList = () => {
   const route = useRoute();
 
   // Log route params for debugging
-  console.log("ModuleCardsList route params:", JSON.stringify(route.params, null, 2));
+  console.log("ModuleCardsList route params:", route.params.project);
 
   // Extract params from navigation or use defaults
   const {
@@ -29,7 +30,7 @@ const ModuleCardsList = () => {
     projectStatus = "Draft",
     projectBudget = 0,
     fromScreen = "Projects"
-  } = route.params || {};
+  } = route.params.project || {};
 
   const [isLoading, setIsLoading] = useState(true);
   const [project, setProject] = useState(null);
@@ -54,7 +55,6 @@ const ModuleCardsList = () => {
   useEffect(() => {
     // Set initial project data
     const initialProject = prepareInitialProjectData();
-
     // Fetch complete project details
     const fetchProjectDetails = async () => {
       try {
@@ -78,37 +78,69 @@ const ModuleCardsList = () => {
           const allModules = [];
 
           // Check each module type array and add to allModules if exists
-          if (response.data.roofingModules && response.data.roofingModules.length > 0) {
-            console.log(`Found ${response.data.roofingModules.length} roofing modules`);
-            allModules.push(...response.data.roofingModules.map(m => ({ ...m, type: 'roofing' })));
+          if (response.data.fabricPriceModules && response.data.fabricPriceModules.length > 0) {
+            console.log(`Found ${response.data.fabricPriceModules.length} fabric price modules`);
+            allModules.push(...response.data.fabricPriceModules.map(m => ({
+              ...m,
+              type: 'fabricPrice',
+              name: `${m.category} - ${m.subCategory}`,
+              cost: m.price
+            })));
           }
 
-          if (response.data.siteClearingModules && response.data.siteClearingModules.length > 0) {
-            console.log(`Found ${response.data.siteClearingModules.length} site clearing modules`);
-            allModules.push(...response.data.siteClearingModules.map(m => ({ ...m, type: 'siteClearing' })));
+          if (response.data.cuttings && response.data.cuttings.length > 0) {
+            console.log(`Found ${response.data.cuttings.length} cutting modules`);
+            allModules.push(...response.data.cuttings.map(m => ({
+              ...m,
+              type: 'cutting',
+              name: `Cutting (${m.cuttingStyle})`,
+              cost: m.cost
+            })));
           }
 
-          if (response.data.excavationModules && response.data.excavationModules.length > 0) {
-            console.log(`Found ${response.data.excavationModules.length} excavation modules`);
-            allModules.push(...response.data.excavationModules.map(m => ({ ...m, type: 'excavation' })));
+          if (response.data.logoPrintingModules && response.data.logoPrintingModules.length > 0) {
+            console.log(`Found ${response.data.logoPrintingModules.length} logo printing modules`);
+            allModules.push(...response.data.logoPrintingModules.map(m => ({
+              ...m,
+              type: 'logoPrinting',
+              name: `Logo Printing`,
+              cost: m.price
+            })));
           }
 
-          if (response.data.pavingModules && response.data.pavingModules.length > 0) {
-            console.log(`Found ${response.data.pavingModules.length} paving modules`);
-            allModules.push(...response.data.pavingModules.map(m => ({ ...m, type: 'paving' })));
+          if (response.data.stitchingModules && response.data.stitchingModules.length > 0) {
+            console.log(`Found ${response.data.stitchingModules.length} stitching modules`);
+            allModules.push(...response.data.stitchingModules.map(m => ({
+              ...m,
+              type: 'stitching',
+              name: `Stitching`,
+              cost: m.cost
+            })));
           }
 
-          // If no modules found, create default placeholder modules
+          if (response.data.packagingModules && response.data.packagingModules.length > 0) {
+            console.log(`Found ${response.data.packagingModules.length} packaging modules`);
+            allModules.push(...response.data.packagingModules.map(m => ({
+              ...m,
+              type: 'packaging',
+              name: `Packaging`,
+              cost: m.cost
+            })));
+          }
+
+          // Note: We're not displaying fabricQuantities modules as requested
+
+          // If no modules found, use ModuleData as default modules
           if (allModules.length === 0) {
-            console.log("No modules found in API response, creating default modules");
+            console.log("No modules found in API response, using ModuleData as default modules");
 
-            // Create placeholder modules for each type
-            const defaultModules = [
-              { id: 'default-roofing', name: 'Roofing Module', type: 'roofing', status: 'Draft', cost: 0 },
-              { id: 'default-siteClearing', name: 'Site Clearing Module', type: 'siteClearing', status: 'Draft', cost: 0 },
-              { id: 'default-excavation', name: 'Excavation Module', type: 'excavation', status: 'Draft', cost: 0 },
-              { id: 'default-paving', name: 'Paving Module', type: 'paving', status: 'Draft', cost: 0 }
-            ];
+            // Map ModuleData to our expected format
+            const defaultModules = ModuleData.map(module => ({
+              ...module,
+              type: module.leadingText.split(':')[1].trim().toLowerCase(),
+              name: module.middleText,
+              cost: module.cost
+            }));
 
             setModules(defaultModules);
           } else {
@@ -122,13 +154,13 @@ const ModuleCardsList = () => {
         console.error("Error fetching project:", err.message);
         setError(`Failed to load project: ${err.message}`);
 
-        // Create default modules if we have an error
-        const defaultModules = [
-          { id: 'default-roofing', name: 'Roofing Module', type: 'roofing', status: 'Draft', cost: 0 },
-          { id: 'default-siteClearing', name: 'Site Clearing Module', type: 'siteClearing', status: 'Draft', cost: 0 },
-          { id: 'default-excavation', name: 'Excavation Module', type: 'excavation', status: 'Draft', cost: 0 },
-          { id: 'default-paving', name: 'Paving Module', type: 'paving', status: 'Draft', cost: 0 }
-        ];
+        // Use ModuleData as default modules if we have an error
+        const defaultModules = ModuleData.map(module => ({
+          ...module,
+          type: module.leadingText.split(':')[1].trim().toLowerCase(),
+          name: module.middleText,
+          cost: module.cost
+        }));
 
         setModules(defaultModules);
       } finally {
@@ -140,8 +172,8 @@ const ModuleCardsList = () => {
   }, [projectId]);
 
   const formatCurrency = (amount) => {
-    if (amount === undefined || amount === null) return "$0.00";
-    return `$${parseFloat(amount).toFixed(2)} USD`;
+    if (amount === undefined || amount === null) return "PKR 0.00";
+    return `PKR ${parseFloat(amount).toFixed(2)}`;
   };
 
   const handleModulePress = (module) => {
@@ -152,6 +184,7 @@ const ModuleCardsList = () => {
       moduleType: module.type,
       moduleName: module.name,
       projectName: project?.name || projectName,
+      projectDetails: project
     });
   };
 
@@ -183,7 +216,7 @@ const ModuleCardsList = () => {
 
       {/* Project Details Section */}
       <View style={styles.headerContainer}>
-        <Text style={styles.projectTitle}>{project?.name || "Unnamed Project"}</Text>
+        <Text style={styles.projectTitle}>{project?.name || projectName}</Text>
         <Text style={styles.projectCost}>Cost: {formatCurrency(project?.totalEstimatedCost)}</Text>
         <View style={styles.statusContainer}>
           <Text style={styles.statusLabel}>Status: </Text>
@@ -200,6 +233,16 @@ const ModuleCardsList = () => {
             {project?.status || "Draft"}
           </Text>
         </View>
+        {project && (
+          <View style={styles.projectDetailsContainer}>
+            <Text style={styles.detailText}>Shirt Type: {project.shirtType || "N/A"}</Text>
+            <Text style={styles.detailText}>Fabric: {project.fabricCategory} - {project.fabricSubCategory}</Text>
+            <Text style={styles.detailText}>Cutting Style: {project.cuttingStyle || "N/A"}</Text>
+            <Text style={styles.detailText}>Labels Required: {project.labelsRequired ? "Yes" : "No"}</Text>
+            <Text style={styles.detailText}>Packaging Required: {project.packagingRequired ? "Yes" : "No"}</Text>
+            <Text style={styles.detailText}>Number of Logos: {project.numberOfLogos || 0}</Text>
+          </View>
+        )}
       </View>
 
       {/* Modules Section */}

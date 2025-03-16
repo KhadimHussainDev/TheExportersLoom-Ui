@@ -1,9 +1,9 @@
+import { Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import ModuleCardStyles from "../../Styles/Components/ModuleCardStyles";
 import { colors } from "../../Styles/Themes/colors";
-import { Feather } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 const styles = ModuleCardStyles(width, height);
@@ -44,9 +44,9 @@ const ModuleCard = ({ data, onPress }) => {
   // Format cost with fallback
   const formatCost = (cost) => {
     if (cost === undefined || cost === null || isNaN(parseFloat(cost))) {
-      return "$0.00";
+      return "PKR 0.00";
     }
-    return `$${parseFloat(cost).toFixed(2)}`;
+    return `PKR ${parseFloat(cost).toFixed(2)}`;
   };
 
   // Calculate progress percentage (0-100)
@@ -87,17 +87,35 @@ const ModuleCard = ({ data, onPress }) => {
     if (!type) return "Module";
 
     switch (type.toLowerCase()) {
-      case 'roofing': return 'Roofing';
-      case 'siteclearing': return 'Site Clearing';
-      case 'excavation': return 'Excavation';
-      case 'paving': return 'Paving';
+      case 'fabricprice': return 'Fabric Price';
+      case 'cutting': return 'Cutting';
+      case 'logoprinting': return 'Logo Printing';
+      case 'stitching': return 'Stitching';
+      case 'packaging': return 'Packaging';
+      case 'fabricquantity': return 'Fabric Quantity';
       default: return type.charAt(0).toUpperCase() + type.slice(1);
+    }
+  };
+
+  // Get icon name based on module type
+  const getIconName = (type) => {
+    if (!type) return "build";
+
+    switch (type.toLowerCase()) {
+      case 'fabricprice': return "style";
+      case 'cutting': return "content-cut";
+      case 'logoprinting': return "brush";
+      case 'stitching': return "gesture";
+      case 'packaging': return "inventory";
+      case 'fabricquantity': return "straighten";
+      default: return "build";
     }
   };
 
   const typeLabel = getTypeLabel(safeData.type);
   const backgroundColor = getBackgroundColor(safeData.status);
   const progressColor = getProgressColor(safeData.progress);
+  const iconName = getIconName(safeData.type);
 
   return (
     <TouchableOpacity
@@ -112,7 +130,7 @@ const ModuleCard = ({ data, onPress }) => {
           ) : (
             <View style={styles.image}>
               <Icon
-                name="home-repair-service"
+                name={iconName}
                 type="material"
                 size={width * 0.05}
                 color={colors.primary}
@@ -150,7 +168,7 @@ const ModuleCard = ({ data, onPress }) => {
       {expanded && (
         <View style={styles.body}>
           <Text style={styles.description}>
-            This is a {typeLabel.toLowerCase()} module for the project.
+            {getModuleDescription(safeData.type, data)}
           </Text>
           <View style={styles.footer}>
             <Text style={styles.cost}>Cost: {safeData.cost}</Text>
@@ -160,6 +178,29 @@ const ModuleCard = ({ data, onPress }) => {
       )}
     </TouchableOpacity>
   );
+};
+
+// Helper function to generate appropriate description based on module type
+const getModuleDescription = (type, data) => {
+  if (!type) return "Module details not available.";
+
+  switch (type.toLowerCase()) {
+    case 'fabricprice':
+      return `Fabric pricing for ${data.category || 'unknown'} - ${data.subCategory || 'unknown'} category.`;
+    case 'cutting':
+      return `Cutting module with ${data.cuttingStyle || 'standard'} style. Rate per shirt: PKR ${parseFloat(data.ratePerShirt || 0).toFixed(2)}.`;
+    case 'logoprinting':
+      const logoCount = data.logoDetails?.length || 0;
+      return `Logo printing module with ${logoCount} logo(s). ${logoCount > 0 ? `Position: ${data.logoDetails[0].logoPosition}, Style: ${data.logoDetails[0].printingStyle}` : ''}`;
+    case 'stitching':
+      return `Stitching module with rate per shirt: PKR ${parseFloat(data.ratePerShirt || 0).toFixed(2)}.`;
+    case 'packaging':
+      return `Packaging module for ${data.quantity || 0} items.`;
+    case 'fabricquantity':
+      return `Fabric quantity for ${data.shirtType || 'unknown'} shirt, size ${data.fabricSize || 'unknown'}.`;
+    default:
+      return `This is a ${type.toLowerCase()} module.`;
+  }
 };
 
 export default ModuleCard;

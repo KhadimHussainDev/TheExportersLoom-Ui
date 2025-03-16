@@ -150,15 +150,7 @@ const Analytics = ({ navigation }) => {
   const isExporter = userData && userData.userType &&
     userData.userType.toLowerCase() === ROLES.EXPORTER.toLowerCase();
 
-  // Add debug logging for projects/orders
-  if (isExporter) {
-    console.log("Analytics - Exporter data:", data);
-    if (data && data.length > 0) {
-      console.log("Analytics - First project ID:", data[0].id);
-    }
-  } else {
-    console.log("Analytics - Manufacturer orders:", data);
-  }
+
 
   return (
     <ScrollView

@@ -58,6 +58,17 @@ const ModuleCardsListStyles = (width, height) => {
       fontSize: width * 0.04,
       fontWeight: "700",
     },
+    projectDetailsContainer: {
+      marginTop: height * 0.02,
+      padding: width * 0.03,
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      borderRadius: width * 0.02,
+    },
+    detailText: {
+      fontSize: width * 0.035,
+      color: colors.whiteborder,
+      marginBottom: height * 0.005,
+    },
     contentContainer: {
       flex: 1,
       backgroundColor: colors.background,

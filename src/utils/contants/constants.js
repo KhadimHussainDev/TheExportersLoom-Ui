@@ -32,14 +32,21 @@ export const API_ENDPOINTS = {
   PROJECTS: '/projects',
   PRODUCT_CONFIGURATIONS: '/product-configurations',
   SUB_CATEGORIES: '/sub-categories',
-  AUTH: '/auth'
+  AUTH: '/auth',
+  BIDS: '/bids',
+  // Module-specific endpoints
+  CUTTING: '/cutting',
+  STITCHING: '/stitching',
+  LOGO_PRINTING: '/logo-printing',
+  FABRIC_PRICING: '/fabric-pricing',
+  PACKAGING: '/packaging'
 };
 
 // User Roles
 export const ROLES = {
   MANUFACTURER: 'Manufacturer',
   EXPORTER: 'Exporter'
-}; 
+};
 
 // Hardcoded sizes
 export const SIZES = [
@@ -54,4 +61,14 @@ export const LOGO_NUMBERS = Array.from({ length: 6 }, (_, i) => ({
   label: i.toString(),
   value: i.toString()
 }));
+
+// Module Types
+export const MODULE_TYPES = {
+  CUTTING: 'CuttingModule',
+  STITCHING: 'StitchingModule',
+  LOGO_PRINTING: 'LogoPrintingModule',
+  FABRIC_PRICING: 'FabricPricingModule',
+  PACKAGING: 'PackagingModule',
+  FABRIC_QUANTITY: 'FabricQuantity'
+};
 

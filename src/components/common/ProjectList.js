@@ -13,13 +13,13 @@ const ProjectList = ({ projects = [], navigation }) => {
 
   const handleProjectPress = (project) => {
     console.log("Navigating to ModuleCardsList with project:", project.id, project.name);
-    navigation.navigate("ModuleCardsList", {
+    navigation.navigate("ModuleCardsList",{project : {
       projectId: project.id,
       projectName: project.name,
       projectStatus: project.status,
       projectBudget: project.budget,
       fromScreen: "Analytics"
-    });
+    }});
   };
 
   if (!projects || projects.length === 0) {
