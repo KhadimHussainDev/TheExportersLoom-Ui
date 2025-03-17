@@ -12,14 +12,16 @@ const ProjectList = ({ projects = [], navigation }) => {
   console.log("ProjectList - Available projects:", projects.length);
 
   const handleProjectPress = (project) => {
-    console.log("Navigating to ModuleCardsList with project:", project.id, project.name);
-    navigation.navigate("ModuleCardsList",{project : {
-      projectId: project.id,
-      projectName: project.name,
-      projectStatus: project.status,
-      projectBudget: project.budget,
-      fromScreen: "Analytics"
-    }});
+    // console.log("Navigating to ModuleCardsList with project:", project.id, project.name);
+    navigation.navigate("ModuleCardsList", {
+      project: {
+        projectId: project.id,
+        projectName: project.name,
+        projectStatus: project.status,
+        projectBudget: project.budget,
+        fromScreen: "Analytics"
+      }
+    });
   };
 
   if (!projects || projects.length === 0) {

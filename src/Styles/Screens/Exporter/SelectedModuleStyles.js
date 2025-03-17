@@ -111,9 +111,23 @@ const SelectedModuleStyles = (width, height) => {
     },
     submitButtonText: {
       color: "#fff",
-      fontSize: 16,
-      fontWeight: "bold"
-    }
+      fontSize: width * 0.04,
+      fontWeight: "bold",
+    },
+    alreadyPostedContainer: {
+      backgroundColor: "#f0f0f0",
+      padding: width * 0.04,
+      borderRadius: 8,
+      marginTop: width * 0.04,
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: "#ddd",
+    },
+    alreadyPostedText: {
+      fontSize: width * 0.04,
+      color: "#666",
+      fontWeight: "500",
+    },
   });
 };
 

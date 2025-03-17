@@ -11,6 +11,7 @@ const CostEstimationBreakdown = ({ navigation, route }) => {
   const [projectData, setProjectData] = useState(null);
   const [moduleData, setModuleData] = useState([]);
 
+
   useEffect(() => {
     // Get project data from route params
     if (route.params?.data) {
@@ -95,7 +96,7 @@ const CostEstimationBreakdown = ({ navigation, route }) => {
         });
       }
 
-      console.log("Modules created:", modules); // Debug log
+      // console.log("Modules created:", modules); // Debug log
       setModuleData(modules);
     }
   }, [route.params]);
@@ -168,7 +169,7 @@ const CostEstimationBreakdown = ({ navigation, route }) => {
               })) || []
             };
 
-            console.log("Navigating to MockupDetailsGathering for project update, ID:", projectData.id);
+            // console.log("Navigating to MockupDetailsGathering for project update, ID:", projectData.id);
 
             // Navigate back to MockupDetailsGathering with the data for updating
             navigation.navigate("MockupDetailsGathering", {
@@ -182,6 +183,28 @@ const CostEstimationBreakdown = ({ navigation, route }) => {
             Recalculate Cost
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={CostEstimationBreakdownStyles.buttonModulePosting}
+          onPress={() => {
+            // console.log("Navigating to ModuleCardsList for project:", projectData.id);
+
+            // Navigate to ModuleCardsList with project data
+            navigation.navigate("ModuleCardsList", {
+              project: {
+                projectId: projectData.id,
+                projectName: projectData.name,
+                projectStatus: projectData.status,
+                projectBudget: projectData.totalEstimatedCost,
+                fromScreen: "CostEstimationBreakdown"
+              }
+            });
+          }}
+        >
+          <Text style={CostEstimationBreakdownStyles.buttonTextModulePosting}>
+            Continue to Module Posting
+          </Text>
+        </TouchableOpacity>
       </>
     );
   };
@@ -192,16 +215,16 @@ const CostEstimationBreakdown = ({ navigation, route }) => {
       leadingText={item.leadingText}
       trailingText={item.trailingText}
       description={item.description}
-      onPress={() => {
-        // Navigate to manufacturer selection with module details
-        navigation.navigate("ManufacturerSelection", {
-          moduleType: item.id,
-          moduleName: item.leadingText,
-          moduleDescription: item.description,
-          modulePrice: item.cost,
-          moduleDetails: item.details
-        });
-      }}
+      // onPress={() => {
+      //   // Navigate to manufacturer selection with module details
+      //   navigation.navigate("ManufacturerSelection", {
+      //     moduleType: item.id,
+      //     moduleName: item.leadingText,
+      //     moduleDescription: item.description,
+      //     modulePrice: item.cost,
+      //     moduleDetails: item.details
+      //   });
+      // }}
     />
   );
 

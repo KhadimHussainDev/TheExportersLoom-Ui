@@ -14,7 +14,8 @@ const OrderCardStyles = (width, height) =>
       shadowRadius: 6,
       shadowOffset: { width: 0, height: 2 },
       elevation: 3,
-      height: height * 0.15, // Reduced height for the card
+      height: "auto", // Changed to auto height to accommodate expandable content
+      minHeight: height * 0.15, // Minimum height for the card
     },
     cardContent: {
       flex: 1,
@@ -63,6 +64,34 @@ const OrderCardStyles = (width, height) =>
     detailText: {
       fontSize: width * 0.03, // Adjusted font size based on width
       color: colors.Text, // Updated text color
+    },
+    moduleToggle: {
+      textDecorationLine: "underline",
+      color: colors.primary,
+    },
+    moduleDetailsContainer: {
+      marginTop: height * 0.01,
+      marginBottom: height * 0.01,
+      backgroundColor: "rgba(240, 240, 240, 0.5)",
+      borderRadius: 8,
+      padding: width * 0.02,
+      borderWidth: 0.5,
+      borderColor: "#e0e0e0",
+    },
+    moduleItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: height * 0.005,
+    },
+    moduleIndicator: {
+      width: width * 0.02,
+      height: width * 0.02,
+      borderRadius: (width * 0.02) / 2,
+      marginRight: width * 0.02,
+    },
+    moduleText: {
+      fontSize: width * 0.03,
+      color: colors.Text,
     },
     progressContainer: {
       marginTop: height * 0.005, // Reduced margin

@@ -169,10 +169,10 @@ const EditProfile = ({
         profileData.picture = extractBase64FromDataUri(localImage);
       }
 
-      console.log('Updating profile with data:', {
-        ...profileData,
-        picture: profileData.picture ? 'base64_image_data' : null
-      });
+      // console.log('Updating profile with data:', {
+      //   ...profileData,
+      //   picture: profileData.picture ? 'base64_image_data' : null
+      // });
 
       // Update profile
       const response = await userService.updateUserProfile(userId, profileData);
