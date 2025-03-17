@@ -41,7 +41,6 @@ export const storageService = {
     try {
       const data = await AsyncStorage.getItem(key);
       const parsedData = data ? JSON.parse(data) : null;
-
       return {
         success: true,
         statusCode: 200,
