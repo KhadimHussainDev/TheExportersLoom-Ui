@@ -199,7 +199,7 @@ const MockupDetailsGathering = ({ navigation, route }) => {
     // console.log("productTypes", productTypes)
     // console.log("route.params.data.productType", route.params?.data)
     if (isDataLoaded && productTypes.length > 0 && route.params?.data?.productType) {
-      console.log(route.params.data.productType)
+      // console.log(route.params.data.productType)
       const matchingProductType = findMatchingValue(route.params.data.productType, productTypes);
       if (matchingProductType) {
         setProductType(matchingProductType);
@@ -226,7 +226,7 @@ const MockupDetailsGathering = ({ navigation, route }) => {
   useEffect(() => {
     if (isDataLoaded && route.params?.data) {
       const data = route.params.data;
-      console.log("data", data)
+      // console.log("data", data)
       // Pre-select sizes
       if (data.sizes && Array.isArray(data.sizes)) {
         const validSizes = data.sizes.filter(size =>
@@ -351,9 +351,9 @@ const MockupDetailsGathering = ({ navigation, route }) => {
       
       if (userDataResponse.success && userDataResponse.data && userDataResponse.data.user_id) {
         userId = userDataResponse.data.user_id;
-        console.log("Retrieved user ID from storage:", userId);
+        // console.log("Retrieved user ID from storage:", userId);
       } else {
-        console.warn("Could not retrieve user ID from storage");
+        // console.warn("Could not retrieve user ID from storage");
         setLoading(false);
         Alert.alert(
           "Authentication Required", 
@@ -406,16 +406,16 @@ const MockupDetailsGathering = ({ navigation, route }) => {
 
       let response;
       if (isUpdating && projectId) {
-        console.log("Updating existing project with ID:", projectId);
+        // console.log("Updating existing project with ID:", projectId);
         // Call the update project API
         response = await projectService.updateProject(projectId, projectData);
       } else {
-        console.log("Creating new project");
+        // console.log("Creating new project");
         // Call the create project API
         response = await projectService.createProject(projectData);
       }
 
-      console.log("Response:", response);
+      // console.log("Response:", response);
 
       if (response.success) {
         Alert.alert("Success", response.message || "Project saved successfully");

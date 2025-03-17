@@ -60,7 +60,7 @@ const ProfileImage = ({ image, setImage, width, height }) => {
         const base64Image = await processImage(result.assets[0].uri);
         setImage(base64Image);
       } else {
-        console.log("Image pick canceled");
+        // console.log("Image pick canceled");
       }
     } catch (error) {
       console.error("Error picking image:", error);

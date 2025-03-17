@@ -125,11 +125,11 @@ const SignInScreen = ({ navigation }) => {
         setLoading(false);
         return;
       }
-      console.log("accessToken", response.data.accessToken);
+      // console.log("accessToken", response.data.accessToken);
 
       // Decode the token
       const decodedToken = jwtDecode(response.data.accessToken);
-      console.log("decodedToken", decodedToken);
+      // console.log("decodedToken", decodedToken);
       // Store the token in storage
       const tokenSaveResponse = await storageService.save(STORAGE_KEYS.USER_TOKEN, response.data.accessToken);
       if (!tokenSaveResponse.success) {

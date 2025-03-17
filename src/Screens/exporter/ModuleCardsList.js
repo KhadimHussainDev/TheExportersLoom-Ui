@@ -21,7 +21,7 @@ const ModuleCardsList = () => {
   const route = useRoute();
 
   // Log route params for debugging
-  console.log("ModuleCardsList route params:", route.params.project);
+  // console.log("ModuleCardsList route params:", route.params.project);
 
   // Extract params from navigation or use defaults
   const {
@@ -62,14 +62,14 @@ const ModuleCardsList = () => {
         setError(null);
 
         // Log the projectId we're fetching
-        console.log(`Fetching project with ID: ${projectId}`);
+        // console.log(`Fetching project with ID: ${projectId}`);
 
         if (!projectId) {
           throw new Error("Project ID is missing");
         }
 
         const response = await projectService.getProjectById(projectId);
-        console.log("Project API response:", JSON.stringify(response, null, 2));
+        // console.log("Project API response:", JSON.stringify(response, null, 2));
 
         if (response?.data) {
           setProject(response.data);
@@ -79,7 +79,7 @@ const ModuleCardsList = () => {
 
           // Check each module type array and add to allModules if exists
           if (response.data.fabricPriceModules && response.data.fabricPriceModules.length > 0) {
-            console.log(`Found ${response.data.fabricPriceModules.length} fabric price modules`);
+            // console.log(`Found ${response.data.fabricPriceModules.length} fabric price modules`);
             allModules.push(...response.data.fabricPriceModules.map(m => ({
               ...m,
               type: 'fabricPrice',
@@ -89,7 +89,7 @@ const ModuleCardsList = () => {
           }
 
           if (response.data.cuttings && response.data.cuttings.length > 0) {
-            console.log(`Found ${response.data.cuttings.length} cutting modules`);
+            // console.log(`Found ${response.data.cuttings.length} cutting modules`);
             allModules.push(...response.data.cuttings.map(m => ({
               ...m,
               type: 'cutting',
@@ -99,7 +99,7 @@ const ModuleCardsList = () => {
           }
 
           if (response.data.logoPrintingModules && response.data.logoPrintingModules.length > 0) {
-            console.log(`Found ${response.data.logoPrintingModules.length} logo printing modules`);
+            // console.log(`Found ${response.data.logoPrintingModules.length} logo printing modules`);
             allModules.push(...response.data.logoPrintingModules.map(m => ({
               ...m,
               type: 'logoPrinting',
@@ -109,7 +109,7 @@ const ModuleCardsList = () => {
           }
 
           if (response.data.stitchingModules && response.data.stitchingModules.length > 0) {
-            console.log(`Found ${response.data.stitchingModules.length} stitching modules`);
+            // console.log(`Found ${response.data.stitchingModules.length} stitching modules`);
             allModules.push(...response.data.stitchingModules.map(m => ({
               ...m,
               type: 'stitching',
@@ -119,7 +119,7 @@ const ModuleCardsList = () => {
           }
 
           if (response.data.packagingModules && response.data.packagingModules.length > 0) {
-            console.log(`Found ${response.data.packagingModules.length} packaging modules`);
+            // console.log(`Found ${response.data.packagingModules.length} packaging modules`);
             allModules.push(...response.data.packagingModules.map(m => ({
               ...m,
               type: 'packaging',
@@ -132,7 +132,7 @@ const ModuleCardsList = () => {
 
           // If no modules found, use ModuleData as default modules
           if (allModules.length === 0) {
-            console.log("No modules found in API response, using ModuleData as default modules");
+            // console.log("No modules found in API response, using ModuleData as default modules");
 
             // Map ModuleData to our expected format
             const defaultModules = ModuleData.map(module => ({
@@ -144,7 +144,7 @@ const ModuleCardsList = () => {
 
             setModules(defaultModules);
           } else {
-            console.log(`Setting ${allModules.length} total modules`);
+            // console.log(`Setting ${allModules.length} total modules`);
             setModules(allModules);
           }
         } else {
@@ -177,12 +177,13 @@ const ModuleCardsList = () => {
   };
 
   const handleModulePress = (module) => {
-    console.log("Module pressed:", module);
+    // console.log("Module pressed:", module);
     navigation.navigate("SelectedModule", {
       projectId,
       moduleId: module.id,
       moduleType: module.type,
       moduleName: module.name,
+      moduleStatus: module.status,
       projectName: project?.name || projectName,
       projectDetails: project
     });

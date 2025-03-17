@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { colors } from "../../Themes/colors";
 
 const { width, height } = Dimensions.get("window");
@@ -47,6 +47,20 @@ const CostEstimationBreakdownStyles = StyleSheet.create({
   },
   buttonTextculateCost: {
     color: colors.Text,
+    fontWeight: "bold",
+    fontSize: height * 0.02,
+  },
+  buttonModulePosting: {
+    backgroundColor: colors.primary,
+    padding: height * 0.015,
+    borderRadius: width * 0.04,
+    alignItems: "center",
+    marginBottom: height * 0.04,
+    marginRight: width * 0.04,
+    marginLeft: width * 0.04,
+  },
+  buttonTextModulePosting: {
+    color: "#fff",
     fontWeight: "bold",
     fontSize: height * 0.02,
   },

@@ -28,7 +28,7 @@ const ManufacturerCard = ({
         {
           text: "Yes",
           onPress: () => {
-            console.log(`Module Assigned: ${moduleType} to ${name}`);
+            // console.log(`Module Assigned: ${moduleType} to ${name}`);
             Alert.alert(
               "Module Assigned",
               `${moduleName || 'Module'} has been successfully assigned to ${name}.`

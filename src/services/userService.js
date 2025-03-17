@@ -75,7 +75,7 @@ export const userService = {
     try {
       const userDataResponse = await storageService.get(STORAGE_KEYS.USER_DATA);
       if (userDataResponse.success && userDataResponse.data) {
-        console.log("userDataResponse.data", userDataResponse.data);
+        // console.log("userDataResponse.data", userDataResponse.data);
         return userDataResponse.data.user_id;
       }
       return null;

@@ -32,7 +32,7 @@ const MockupScreen = ({ navigation }) => {
         return;
       }
 
-      console.log(response.data);
+      // console.log(response.data);
       setLoading(false);
       Alert.alert("Success", "Requirements Extracted Successfully!");
 

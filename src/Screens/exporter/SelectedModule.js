@@ -16,7 +16,7 @@ import {
 import SelectedModuleStyles from "../../Styles/Screens/Exporter/SelectedModuleStyles";
 import { bidService } from "../../services/bidService";
 import { MODULE_DESCRIPTIONS } from "../../utils/Data/moduleDescriptions";
-import { MODULE_TYPES, STORAGE_KEYS } from "../../utils/contants/constants";
+import { MODULE_TYPES, PROJECT_STATUS, STORAGE_KEYS } from "../../utils/contants/constants";
 
 const { width, height } = Dimensions.get("window");
 const styles = SelectedModuleStyles(width, height);
@@ -31,6 +31,7 @@ const SelectedModule = () => {
     moduleId,
     moduleType,
     moduleName,
+    moduleStatus,
     projectName,
     projectDetails
   } = route.params || {};
@@ -170,12 +171,11 @@ const SelectedModule = () => {
       Alert.alert("Error", "Module type is missing");
       return;
     }
-
     setIsLoading(true);
 
     try {
       const backendModuleType = mapModuleType(moduleType);
-      console.log(`Posting module as bid: ${backendModuleType} with ID ${moduleId}`);
+      // console.log(`Posting module as bid: ${backendModuleType} with ID ${moduleId}`);
 
       const response = await bidService.postModuleAsBid(backendModuleType, moduleId);
 
@@ -245,17 +245,25 @@ const SelectedModule = () => {
               Price: PKR {parseFloat(moduleInfo.price).toFixed(2)}
             </Text>
 
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={handlePostModule}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <Text style={styles.submitButtonText}>Post Module as Bid</Text>
-              )}
-            </TouchableOpacity>
+            {moduleStatus === PROJECT_STATUS.POSTED ? (
+              <View style={styles.alreadyPostedContainer}>
+                <Text style={styles.alreadyPostedText}>
+                  This module has already been posted.
+                </Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={handlePostModule}
+                disabled={isLoading || moduleStatus === PROJECT_STATUS.POSTED}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#fff" size="small" />
+                ) : (
+                  <Text style={styles.submitButtonText}>Post Module as Bid</Text>
+                )}
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </ScrollView>

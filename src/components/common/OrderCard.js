@@ -56,7 +56,7 @@ const OrderCard = ({ Order, onPress }) => {
         <View style={styles.details}>
           <Text style={styles.detailText}>Customer: {exporterName}</Text>
           <View style={styles.row}>
-            <Text style={styles.detailText}>Cost: {price} $</Text>
+            <Text style={styles.detailText}>Cost: PKR {price}</Text>
             <Text style={styles.detailText}>
               Priority:{" "}
               <Text style={{ color: priority === "High" ? "red" : "green" }}>

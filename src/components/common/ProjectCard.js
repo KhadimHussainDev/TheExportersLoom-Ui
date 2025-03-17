@@ -1,5 +1,5 @@
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import OrderCardStyles from "../../Styles/Components/OrderCardStyles";
 import { PROJECT_STATUS } from "../../utils/contants/constants";
@@ -10,12 +10,20 @@ const { width, height } = getWindowDimensions();
 const styles = OrderCardStyles(width, height);
 
 const ProjectCard = ({ project, onPress }) => {
+  // State to track if module details are expanded
+  const [showModuleDetails, setShowModuleDetails] = useState(false);
+
   // Add console.log for debugging
   const handlePress = () => {
-    console.log("Project card clicked:", project.id);
+    // console.log("Project card clicked:", project.id);
     if (onPress) {
       onPress();
     }
+  };
+
+  // Toggle module details visibility
+  const toggleModuleDetails = () => {
+    setShowModuleDetails(!showModuleDetails);
   };
 
   // Extract data with default values
@@ -26,6 +34,8 @@ const ProjectCard = ({ project, onPress }) => {
     status = PROJECT_STATUS.DRAFT,
     budget = 0,
     completedModules = 0,
+    ongoingModules = 0,
+    todoModules = 0,
     totalModules = 0,
     progress = 0
   } = project || {};
@@ -78,10 +88,30 @@ const ProjectCard = ({ project, onPress }) => {
                 {status}
               </Text>
             </Text>
-            <Text style={styles.detailText}>
-              Modules: {completedModules}/{totalModules}
-            </Text>
+            <TouchableOpacity onPress={toggleModuleDetails}>
+              <Text style={[styles.detailText, styles.moduleToggle]}>
+                Modules: {completedModules}/{totalModules} {showModuleDetails ? '▲' : '▼'}
+              </Text>
+            </TouchableOpacity>
           </View>
+
+          {/* Module Details Section - Expandable */}
+          {showModuleDetails && (
+            <View style={styles.moduleDetailsContainer}>
+              <View style={styles.moduleItem}>
+                <View style={[styles.moduleIndicator, { backgroundColor: '#3cb371' }]} />
+                <Text style={styles.moduleText}>Completed: {completedModules}</Text>
+              </View>
+              <View style={styles.moduleItem}>
+                <View style={[styles.moduleIndicator, { backgroundColor: '#ffcc00' }]} />
+                <Text style={styles.moduleText}>Ongoing: {ongoingModules}</Text>
+              </View>
+              <View style={styles.moduleItem}>
+                <View style={[styles.moduleIndicator, { backgroundColor: '#4da6ff' }]} />
+                <Text style={styles.moduleText}>Todo: {todoModules}</Text>
+              </View>
+            </View>
+          )}
 
           {/* Progress Section */}
           <View style={styles.progressContainer}>

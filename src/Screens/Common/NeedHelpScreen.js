@@ -34,7 +34,7 @@ const NeedHelpScreen = () => {
     };
 
     // Log the JSON data in console
-    console.log("Complaint Data:", JSON.stringify(complaintData, null, 2));
+    // console.log("Complaint Data:", JSON.stringify(complaintData, null, 2));
 
     // Alert confirmation
     Alert.alert(

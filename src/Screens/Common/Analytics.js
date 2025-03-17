@@ -27,10 +27,10 @@ const Analytics = ({ navigation }) => {
   const fetchUserData = async () => {
     try {
       const userDataResponse = await storageService.get(STORAGE_KEYS.USER_DATA);
-      console.log("User data response:", userDataResponse);
+      // console.log("User data response:", userDataResponse);
 
       if (userDataResponse.success && userDataResponse.data) {
-        console.log("Found user data:", userDataResponse.data);
+        // console.log("Found user data:", userDataResponse.data);
         setUserData(userDataResponse.data);
       } else {
         setError('User data not found. Please log in again.');
@@ -47,7 +47,7 @@ const Analytics = ({ navigation }) => {
   // Fetch analytics data
   const fetchAnalyticsData = async () => {
     if (!userData || !userData.user_id) {
-      console.log("Missing userData or userData.user_id, returning early");
+      // console.log("Missing userData or userData.user_id, returning early");
       return;
     }
 
@@ -58,13 +58,13 @@ const Analytics = ({ navigation }) => {
     const isExporter = userData.userType &&
       userData.userType.toLowerCase() === ROLES.EXPORTER.toLowerCase();
 
-    console.log(`User is ${isExporter ? 'exporter' : 'manufacturer'}`);
+    // console.log(`User is ${isExporter ? 'exporter' : 'manufacturer'}`);
 
     try {
       if (isExporter) {
         // Fetch exporter-specific projects
         const projectsResponse = await projectService.getUserProjects(userData.user_id);
-        console.log("User projects response:", projectsResponse);
+        // console.log("User projects response:", projectsResponse);
         if (projectsResponse.success) {
           setData(projectsResponse.data || []);
         } else {
@@ -74,7 +74,7 @@ const Analytics = ({ navigation }) => {
 
         // Fetch exporter-specific project statistics
         const statsResponse = await projectService.getUserProjectStatistics(userData.user_id);
-        console.log("User project statistics response:", statsResponse);
+        // console.log("User project statistics response:", statsResponse);
         if (statsResponse.success) {
           setStatistics(statsResponse.data || {});
         } else {
@@ -84,7 +84,7 @@ const Analytics = ({ navigation }) => {
       } else {
         // Fetch manufacturer-specific orders
         const ordersResponse = await orderService.getUserOrders(userData.user_id);
-        console.log("User orders response:", ordersResponse);
+        // console.log("User orders response:", ordersResponse);
         if (ordersResponse.success) {
           setData(ordersResponse.data || []);
         } else {
@@ -94,7 +94,7 @@ const Analytics = ({ navigation }) => {
 
         // Fetch manufacturer-specific order statistics
         const statsResponse = await orderService.getUserOrderStatistics(userData.user_id);
-        console.log("User statistics response:", statsResponse);
+        // console.log("User statistics response:", statsResponse);
         if (statsResponse.success) {
           setStatistics(statsResponse.data || {});
         } else {
@@ -103,7 +103,7 @@ const Analytics = ({ navigation }) => {
         }
       }
     } catch (err) {
-      console.error('Error fetching analytics data:', err);
+      // console.error('Error fetching analytics data:', err);
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
