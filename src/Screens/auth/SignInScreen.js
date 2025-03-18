@@ -137,10 +137,9 @@ const SignInScreen = ({ navigation }) => {
         setLoading(false);
         return;
       }
-
       // Store user data
       const userDataSaveResponse = await storageService.save(STORAGE_KEYS.USER_DATA, {
-        user_id: decodedToken.userId || decodedToken.sub,
+        user_id: decodedToken.user_id || decodedToken.userId || decodedToken.sub,
         username: decodedToken.username,
         userType: decodedToken.userType,
         email: userCredentials.email

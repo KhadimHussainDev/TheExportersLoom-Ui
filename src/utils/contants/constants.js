@@ -34,7 +34,7 @@ export const API_ENDPOINTS = {
   PRODUCT_CONFIGURATIONS: '/product-configurations',
   SUB_CATEGORIES: '/sub-categories',
   AUTH: '/auth',
-  BIDS: '/bids',
+  BIDS: '/bid',
   // Module-specific endpoints
   CUTTING: '/cutting',
   STITCHING: '/stitching',
