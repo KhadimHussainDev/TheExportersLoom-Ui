@@ -1,44 +1,67 @@
-// styles/components/ModuleDescriptionStyle.js
-import { StyleSheet } from "react-native";
-import { colors } from "../Themes/colors";
+import { StyleSheet } from 'react-native';
 
-const ModuleDescriptionStyle = (width, height) =>
-  StyleSheet.create({
-    moduleContainer: {
-      padding: height * 0.03,
-      backgroundColor: colors.AdditonalDetailstextbox,
-      borderRadius: height * 0.012,
+const ModuleDescriptionStyle = (width, height) => {
+  return StyleSheet.create({
+    container: {
+      backgroundColor: '#fff',
+      padding: 15,
+      margin: 10,
+      borderRadius: 12,
+      elevation: 3,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
     },
-    moduleTitle: {
-      fontSize: height * 0.02,
-      fontWeight: "bold",
-      marginBottom: height * 0.025,
-      color: colors.primary,
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 15,
+      paddingBottom: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
     },
-    moduleContent: {
-      borderWidth: 1,
-      borderColor: colors.border,
-      padding: height * 0.02,
-      borderRadius: height * 0.012,
-      backgroundColor: colors.background,
+    headerText: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: '#2c3e50',
+      marginLeft: 10,
     },
-    moduleHeading: {
-      fontSize: height * 0.02,
-      fontWeight: "bold",
-      marginBottom: height * 0.012,
-      color: colors.Text,
+    content: {
+      paddingHorizontal: 5,
     },
-    moduleSubHeading: {
-      fontSize: height * 0.015,
-      fontWeight: "bold",
-      marginLeft: width * 0.08,
-      color: colors.Text,
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
     },
-    moduleDetails: {
-      marginTop: height * 0.025,
-      fontSize: height * 0.015,
-      color: colors.Text,
+    label: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: '#666',
+      width: 100,
+    },
+    value: {
+      fontSize: 15,
+      color: '#2c3e50',
+      flex: 1,
+    },
+    priceValue: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: '#2ecc71',
+      flex: 1,
+    },
+    descriptionContainer: {
+      marginTop: 5,
+    },
+    description: {
+      fontSize: 14,
+      color: '#34495e',
+      marginTop: 5,
+      lineHeight: 20,
     },
   });
+};
 
 export default ModuleDescriptionStyle;

@@ -10,15 +10,16 @@ import SignUpScreen from "../../Screens/auth/SignUpScreen";
 import Analytics from "../../Screens/Common/Analytics";
 import NeedHelpScreen from "../../Screens/Common/NeedHelpScreen";
 import ProfileScreen from "../../Screens/Common/ProfileScreen";
+import UserProfileScreen from "../../Screens/Common/UserProfileScreen";
 import CostEstimationBreakdown from "../../Screens/exporter/CostEstimationBreakdown";
 import ManufacturerSelection from "../../Screens/exporter/ManufacturerSelection";
 import MockupDetailsGathering from "../../Screens/exporter/MockupDetailsGathering";
 import ModuleCardsList from "../../Screens/exporter/ModuleCardsList";
 import OverviewScreen from "../../Screens/exporter/OverviewScreen";
 import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
+import SelectedModule from "../../Screens/exporter/SelectedModule";
 import MachineRegisteration from "../../Screens/manufacturer/MachineRegisteration";
 import ExporterDashboardStack from "./ExporterDashboardStack";
-import SelectedModule from "../../Screens/exporter/SelectedModule";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -95,6 +96,11 @@ const MainStackNavigator = () => {
         name="SelectedModule"
         component={SelectedModule}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{ headerShown: true, title: "User Profile" }}
       />
     </Stack.Navigator>
   );

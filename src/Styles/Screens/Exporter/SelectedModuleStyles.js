@@ -65,9 +65,9 @@ const SelectedModuleStyles = (width, height) => {
       marginBottom: 10
     },
     detailText: {
-      fontSize: 14,
-      color: "#333",
-      marginBottom: 8
+      fontSize: 16,
+      marginBottom: 10,
+      color: '#333',
     },
     bidFormContainer: {
       backgroundColor: "#fff",
@@ -127,6 +127,73 @@ const SelectedModuleStyles = (width, height) => {
       fontSize: width * 0.04,
       color: "#666",
       fontWeight: "500",
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 20,
+      gap: 10,
+    },
+    button: {
+      flex: 1,
+      padding: 12,
+      borderRadius: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    editButton: {
+      backgroundColor: '#4a90e2',
+    },
+    saveButton: {
+      backgroundColor: '#28a745',
+    },
+    cancelButton: {
+      backgroundColor: '#dc3545',
+    },
+    viewResponsesButton: {
+      backgroundColor: '#6c757d',
+    },
+    postedBidDetails: {
+      backgroundColor: '#fff',
+      padding: 15,
+      borderRadius: 8,
+      marginTop: 10,
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    bidForm: {
+      width: '100%',
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 8,
+      padding: 12,
+      marginBottom: 15,
+      fontSize: 16,
+      backgroundColor: '#fff',
+    },
+    textArea: {
+      height: 100,
+      textAlignVertical: 'top',
+    },
+    label: {
+      fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 8,
+      color: '#333',
+    },
+    inactiveText: {
+      color: '#dc3545',
+      fontWeight: '600',
     },
   });
 };
