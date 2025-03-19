@@ -10,4 +10,6 @@ export const IMAGES = {
   Packaging: require("../../assets/images/Packaging.png"),
   Washing: require("../../assets/images/Washing.png"),
   Fabric: require("../../assets/images/Fabric.png"),
+  NoImage: require("../../assets/images/NoImage.png"),
+  Profile: require("../../assets/images/Profile.png"),
 };

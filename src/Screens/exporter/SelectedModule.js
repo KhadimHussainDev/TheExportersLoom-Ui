@@ -10,6 +10,7 @@ import {
   Platform,
   ScrollView,
   Text,
+  TextInput,
   TouchableOpacity,
   View
 } from "react-native";
@@ -38,27 +39,45 @@ const SelectedModule = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [moduleInfo, setModuleInfo] = useState({
+  const [associatedBid, setAssociatedBid] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [bidData, setBidData] = useState({
+    title: moduleName || "",
     description: getDefaultDescription(moduleType, projectDetails),
     price: getModulePrice(moduleType, projectDetails),
   });
 
-  // Get user data from AsyncStorage
+  // Get user data and check for existing bid
   useEffect(() => {
-    const getUserData = async () => {
+    const initializeData = async () => {
       try {
+        // Get user data
         const userDataString = await AsyncStorage.getItem(STORAGE_KEYS.USER_DATA);
         if (userDataString) {
           const userData = JSON.parse(userDataString);
           setUserData(userData);
         }
+
+        // Check if module is already posted as a bid
+        if (moduleId) {
+          const backendModuleType = mapModuleType(moduleType);
+          const response = await bidService.getBidByModuleId(moduleId, backendModuleType);
+          if (response.success) {
+            setAssociatedBid(response.data);
+            setBidData({
+              title: response.data.title,
+              description: response.data.description,
+              price: response.data.price.toString(),
+            });
+          }
+        }
       } catch (error) {
-        console.error("Error getting user data:", error);
+        console.error("Error initializing data:", error);
       }
     };
 
-    getUserData();
-  }, []);
+    initializeData();
+  }, [moduleId, moduleType]);
 
   // Helper function to get default description based on module type
   function getDefaultDescription(type, projectDetails) {
@@ -160,6 +179,72 @@ const SelectedModule = () => {
     });
   };
 
+  // Handle updating the bid
+  const handleUpdateBid = async () => {
+    if (!associatedBid?.bid_id) {
+      Alert.alert("Error", "No bid found to update");
+      return;
+    }
+
+    if (!bidData.title.trim() || !bidData.description.trim() || !bidData.price) {
+      Alert.alert("Error", "Please fill in all fields");
+      return;
+    }
+
+    if (isNaN(parseFloat(bidData.price)) || parseFloat(bidData.price) <= 0) {
+      Alert.alert("Error", "Please enter a valid price");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const updateData = {
+        title: bidData.title.trim(),
+        description: bidData.description.trim(),
+        price: parseFloat(bidData.price)
+      };
+
+      const response = await bidService.editBid(associatedBid.bid_id, updateData);
+
+      if (response.success) {
+        setIsEditing(false);
+        Alert.alert(
+          "Success",
+          "Bid updated successfully!",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Refresh the bid data
+                const fetchBid = async () => {
+                  const backendModuleType = mapModuleType(moduleType);
+                  const refreshResponse = await bidService.getBidByModuleId(moduleId, backendModuleType);
+                  if (refreshResponse.success) {
+                    setAssociatedBid(refreshResponse.data);
+                    setBidData({
+                      title: refreshResponse.data.title,
+                      description: refreshResponse.data.description,
+                      price: refreshResponse.data.price.toString(),
+                    });
+                  }
+                };
+                fetchBid();
+              }
+            }
+          ]
+        );
+      } else {
+        Alert.alert("Error", response.message || "Failed to update bid");
+      }
+    } catch (error) {
+      console.error("Error updating bid:", error);
+      Alert.alert("Error", "An unexpected error occurred while updating the bid");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Handle posting the module as a bid
   const handlePostModule = async () => {
     if (!moduleId) {
@@ -171,13 +256,30 @@ const SelectedModule = () => {
       Alert.alert("Error", "Module type is missing");
       return;
     }
+
+    if (!bidData.title.trim() || !bidData.description.trim() || !bidData.price) {
+      Alert.alert("Error", "Please fill in all fields");
+      return;
+    }
+
+    if (isNaN(parseFloat(bidData.price)) || parseFloat(bidData.price) <= 0) {
+      Alert.alert("Error", "Please enter a valid price");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       const backendModuleType = mapModuleType(moduleType);
-      // console.log(`Posting module as bid: ${backendModuleType} with ID ${moduleId}`);
+      const createBidData = {
+        moduleId: moduleId,
+        title: bidData.title.trim(),
+        description: bidData.description.trim(),
+        price: parseFloat(bidData.price),
+        moduleType: backendModuleType,
+      };
 
-      const response = await bidService.postModuleAsBid(backendModuleType, moduleId);
+      const response = await bidService.createBid(createBidData);
 
       if (response.success) {
         Alert.alert(
@@ -186,7 +288,21 @@ const SelectedModule = () => {
           [
             {
               text: "OK",
-              onPress: navigateToExporterDashboard
+              onPress: () => {
+                // Refresh the bid data to show the newly created bid
+                const fetchBid = async () => {
+                  const refreshResponse = await bidService.getBidByModuleId(moduleId, backendModuleType);
+                  if (refreshResponse.success) {
+                    setAssociatedBid(refreshResponse.data);
+                    setBidData({
+                      title: refreshResponse.data.title,
+                      description: refreshResponse.data.description,
+                      price: refreshResponse.data.price.toString(),
+                    });
+                  }
+                };
+                fetchBid();
+              }
             }
           ]
         );
@@ -195,10 +311,24 @@ const SelectedModule = () => {
       }
     } catch (error) {
       console.error("Error posting module as bid:", error);
-      Alert.alert("Error", "An unexpected error occurred. Please try again.");
+      Alert.alert("Error", "An unexpected error occurred while posting the bid");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Navigate to bid responses
+  const navigateToBidResponses = () => {
+    if (!associatedBid || !userData) return;
+
+    navigation.navigate('ManufacturerSelection', {
+      bidId: associatedBid.bid_id,
+      bidTitle: associatedBid.title,
+      bidDescription: associatedBid.description,
+      bidPrice: parseFloat(associatedBid.price),
+      moduleType: moduleType,
+      exporterId: userData.user_id
+    });
   };
 
   return (
@@ -231,38 +361,145 @@ const SelectedModule = () => {
           </View>
 
           <View style={styles.bidFormContainer}>
-            <Text style={styles.sectionTitle}>Post Module as Bid</Text>
-            <Text style={styles.infoText}>
-              Posting this module will make it available for manufacturers to bid on.
-              The module's status will be updated to "Posted".
+            <Text style={styles.sectionTitle}>
+              {associatedBid ? 'Posted Bid Details' : 'Post Module as Bid'}
             </Text>
 
-            <Text style={styles.descriptionText}>
-              {moduleInfo.description}
-            </Text>
+            {associatedBid ? (
+              // Show posted bid details with edit option
+              <View style={styles.postedBidDetails}>
+                {isEditing && associatedBid.status === PROJECT_STATUS.ACTIVE ? (
+                  // Edit form - only show if bid is active
+                  <View style={styles.bidForm}>
+                    <Text style={styles.label}>Title</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={bidData.title}
+                      onChangeText={(text) => setBidData(prev => ({ ...prev, title: text }))}
+                      placeholder="Enter bid title"
+                    />
 
-            <Text style={styles.priceText}>
-              Price: PKR {parseFloat(moduleInfo.price).toFixed(2)}
-            </Text>
+                    <Text style={styles.label}>Description</Text>
+                    <TextInput
+                      style={[styles.input, styles.textArea]}
+                      value={bidData.description}
+                      onChangeText={(text) => setBidData(prev => ({ ...prev, description: text }))}
+                      placeholder="Enter bid description"
+                      multiline
+                      numberOfLines={4}
+                    />
 
-            {moduleStatus === PROJECT_STATUS.POSTED ? (
-              <View style={styles.alreadyPostedContainer}>
-                <Text style={styles.alreadyPostedText}>
-                  This module has already been posted.
-                </Text>
+                    <Text style={styles.label}>Price (PKR)</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={bidData.price}
+                      onChangeText={(text) => setBidData(prev => ({ ...prev, price: text }))}
+                      keyboardType="numeric"
+                      placeholder="Enter price"
+                    />
+
+                    <View style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={[styles.button, styles.cancelButton]}
+                        onPress={() => {
+                          setIsEditing(false);
+                          // Reset form data to original bid data
+                          setBidData({
+                            title: associatedBid.title,
+                            description: associatedBid.description,
+                            price: associatedBid.price.toString(),
+                          });
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Text style={styles.buttonText}>Cancel</Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={[styles.button, styles.saveButton]}
+                        onPress={handleUpdateBid}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <ActivityIndicator color="#fff" size="small" />
+                        ) : (
+                          <Text style={styles.buttonText}>Save Changes</Text>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  // View mode
+                  <>
+                    <Text style={styles.detailText}>Title: {bidData.title}</Text>
+                    <Text style={styles.detailText}>Description: {bidData.description}</Text>
+                    <Text style={styles.detailText}>Price: PKR {parseFloat(bidData.price).toFixed(2)}</Text>
+                    <Text style={[styles.detailText, associatedBid.status === PROJECT_STATUS.INACTIVE && styles.inactiveText]}>
+                      Status: {associatedBid.status === PROJECT_STATUS.ACTIVE ? 'Active' : 'inActive'}
+                    </Text>
+
+                    {associatedBid.status === PROJECT_STATUS.ACTIVE && (
+                      <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                          style={[styles.button, styles.editButton]}
+                          onPress={() => setIsEditing(true)}
+                        >
+                          <Text style={styles.buttonText}>Edit Bid</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          style={[styles.button, styles.viewResponsesButton]}
+                          onPress={navigateToBidResponses}
+                        >
+                          <Text style={styles.buttonText}>View Responses</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </>
+                )}
               </View>
             ) : (
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={handlePostModule}
-                disabled={isLoading || moduleStatus === PROJECT_STATUS.POSTED}
-              >
-                {isLoading ? (
-                  <ActivityIndicator color="#fff" size="small" />
-                ) : (
-                  <Text style={styles.submitButtonText}>Post Module as Bid</Text>
-                )}
-              </TouchableOpacity>
+              // Show bid creation form
+              <View style={styles.bidForm}>
+                <Text style={styles.label}>Title</Text>
+                <TextInput
+                  style={styles.input}
+                  value={bidData.title}
+                  onChangeText={(text) => setBidData(prev => ({ ...prev, title: text }))}
+                  placeholder="Enter bid title"
+                />
+
+                <Text style={styles.label}>Description</Text>
+                <TextInput
+                  style={[styles.input, styles.textArea]}
+                  value={bidData.description}
+                  onChangeText={(text) => setBidData(prev => ({ ...prev, description: text }))}
+                  placeholder="Enter bid description"
+                  multiline
+                  numberOfLines={4}
+                />
+
+                <Text style={styles.label}>Price (PKR)</Text>
+                <TextInput
+                  style={styles.input}
+                  value={bidData.price}
+                  onChangeText={(text) => setBidData(prev => ({ ...prev, price: text }))}
+                  keyboardType="numeric"
+                  placeholder="Enter price"
+                />
+
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={handlePostModule}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <ActivityIndicator color="#fff" size="small" />
+                  ) : (
+                    <Text style={styles.submitButtonText}>Post Module as Bid</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
             )}
           </View>
         </View>

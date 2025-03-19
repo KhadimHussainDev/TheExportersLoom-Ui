@@ -12,7 +12,7 @@ export const bidService = {
    */
   createBid: async (bidData) => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.BIDS, bidData);
+      const response = await apiClient.post('/bid', bidData);
       return response.data;
     } catch (error) {
       console.error('Error creating bid:', error);
@@ -267,6 +267,58 @@ export const bidService = {
         success: false,
         statusCode: 500,
         message: error.message || 'Failed to fetch bid with responses',
+        error: error.toString()
+      };
+    }
+  },
+
+  /**
+   * Get bid by moduleId and moduleType
+   * @param {number} moduleId - The ID of the module
+   * @param {string} moduleType - The type of the module
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message, and data properties
+   */
+  getBidByModuleId: async (moduleId, moduleType) => {
+    try {
+      const response = await apiClient.get(`/bid/module/${moduleId}?moduleType=${moduleType}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error getting bid by moduleId:', error);
+      // If the error is 404, return a formatted response
+      if (error.response?.status === 404) {
+        return {
+          success: false,
+          statusCode: 404,
+          message: 'No bid found for this module',
+          data: null
+        };
+      }
+      return error.response?.data || {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to get bid',
+        error: error.toString()
+      };
+    }
+  },
+
+  /**
+   * Edit an existing bid
+   * @param {number} bidId - The ID of the bid to edit
+   * @param {object} bidData - The updated bid data (title, description, price)
+   * @returns {Promise<object>} - Standard API response with success, statusCode, message, and data properties
+   */
+  editBid: async (bidId, bidData) => {
+    try {
+      console.log(bidData);
+      const response = await apiClient.put(`/bid/${bidId}`, bidData);
+      return response.data;
+    } catch (error) {
+      console.error('Error editing bid:', error.response?.data);
+      return error.response?.data || {
+        success: false,
+        statusCode: 500,
+        message: error.message || 'Failed to edit bid',
         error: error.toString()
       };
     }
