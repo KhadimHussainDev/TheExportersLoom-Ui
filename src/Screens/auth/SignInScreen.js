@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
@@ -117,11 +117,17 @@ const SignInScreen = ({ navigation }) => {
       }
 
       // Call the sign-in service
-      const response = await authService.signIn(userCredentials.email, userCredentials.password);
+      const response = await authService.signIn(
+        userCredentials.email,
+        userCredentials.password
+      );
 
       // Check if response contains access token
       if (!response.success) {
-        Alert.alert("Sign-In Failed", response.message || "Invalid credentials");
+        Alert.alert(
+          "Sign-In Failed",
+          response.message || "Invalid credentials"
+        );
         setLoading(false);
         return;
       }
@@ -131,19 +137,26 @@ const SignInScreen = ({ navigation }) => {
       const decodedToken = jwtDecode(response.data.accessToken);
       // console.log("decodedToken", decodedToken);
       // Store the token in storage
-      const tokenSaveResponse = await storageService.save(STORAGE_KEYS.USER_TOKEN, response.data.accessToken);
+      const tokenSaveResponse = await storageService.save(
+        STORAGE_KEYS.USER_TOKEN,
+        response.data.accessToken
+      );
       if (!tokenSaveResponse.success) {
         Alert.alert("Error", "Failed to save authentication token");
         setLoading(false);
         return;
       }
       // Store user data
-      const userDataSaveResponse = await storageService.save(STORAGE_KEYS.USER_DATA, {
-        user_id: decodedToken.user_id || decodedToken.userId || decodedToken.sub,
-        username: decodedToken.username,
-        userType: decodedToken.userType,
-        email: userCredentials.email
-      });
+      const userDataSaveResponse = await storageService.save(
+        STORAGE_KEYS.USER_DATA,
+        {
+          user_id:
+            decodedToken.user_id || decodedToken.userId || decodedToken.sub,
+          username: decodedToken.username,
+          userType: decodedToken.userType,
+          email: userCredentials.email,
+        }
+      );
 
       if (!userDataSaveResponse.success) {
         Alert.alert("Error", "Failed to save user data");
@@ -152,28 +165,37 @@ const SignInScreen = ({ navigation }) => {
       }
 
       // Success message
-      Alert.alert("Sign-In Successful", `Welcome ${decodedToken.username || 'User'}!`);
+      Alert.alert(
+        "Sign-In Successful",
+        `Welcome ${decodedToken.username || "User"}!`
+      );
 
       // Reset navigation stack to prevent going back to login screen
       if (decodedToken.userType === ROLES.MANUFACTURER) {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Analytics' }],
+          routes: [{ name: "ManufacturerDashboardSatck" }],
         });
       } else {
         // For exporters or any other role
         navigation.reset({
           index: 0,
-          routes: [{ name: 'ExporterDashboardStack' }],
+          routes: [{ name: "ExporterDashboardStack" }],
         });
       }
     } catch (error) {
       console.error("Sign-In Error:", error);
 
       if (error.message && error.message.includes("Network")) {
-        Alert.alert("Connection Error", "Please check your internet connection and try again");
+        Alert.alert(
+          "Connection Error",
+          "Please check your internet connection and try again"
+        );
       } else {
-        Alert.alert("Sign-In Failed", error.message || "An unexpected error occurred");
+        Alert.alert(
+          "Sign-In Failed",
+          error.message || "An unexpected error occurred"
+        );
       }
     } finally {
       setLoading(false);

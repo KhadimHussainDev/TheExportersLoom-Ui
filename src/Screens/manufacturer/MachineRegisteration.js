@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import MapView, { Marker } from "react-native-maps";
 import {
   businessDomains,
   serviceTypeOptions,
@@ -23,6 +24,19 @@ export default function ManufacturerRegistration() {
   const [dailyOutput, setDailyOutput] = useState("");
   const [pastProjectsDescription, setPastProjectsDescription] = useState("");
 
+  // New Fields
+  const [machineType, setMachineType] = useState("");
+  const [machineModel, setMachineModel] = useState("");
+  const [location, setLocation] = useState("");
+  const [availabilityStatus, setAvailabilityStatus] = useState(true);
+  const [hourlyRate, setHourlyRate] = useState("");
+  const [machineDescription, setMachineDescription] = useState("");
+
+  const [selectedLocation, setSelectedLocation] = useState({
+    latitude: 32.4922,
+    longitude: 74.531,
+  });
+
   const handleBusinessDomainChange = (itemValue) => {
     setSelectedBusinessDomain(itemValue);
     setServiceTypes(
@@ -31,13 +45,12 @@ export default function ManufacturerRegistration() {
         return acc;
       }, {}) || {}
     );
-    setSelectedMachines({}); // Reset machine selection
+    setSelectedMachines({});
   };
 
   const toggleCheckbox = (key) => {
     setServiceTypes({ ...serviceTypes, [key]: !serviceTypes[key] });
 
-    // Reset machines when service type is unchecked
     if (serviceTypes[key]) {
       setSelectedMachines((prevMachines) => {
         const updatedMachines = { ...prevMachines };
@@ -47,7 +60,6 @@ export default function ManufacturerRegistration() {
     }
   };
 
-  // Calculate monthly output (26 working days)
   const monthlyOutput = dailyOutput
     ? (parseInt(dailyOutput) * 26).toString()
     : "";
@@ -92,6 +104,87 @@ export default function ManufacturerRegistration() {
       <Text style={styles.label}>Monthly Output</Text>
       <TextInput style={styles.input} value={monthlyOutput} editable={false} />
 
+      {/* Machine Fields */}
+      <Text style={styles.label}>Machine Type</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter Machine Type"
+        value={machineType}
+        onChangeText={setMachineType}
+      />
+
+      <Text style={styles.label}>Machine Model</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter Machine Model"
+        value={machineModel}
+        onChangeText={setMachineModel}
+      />
+
+      {/* Map for Location */}
+      <Text style={styles.label}>Select Location (Tap on Map)</Text>
+      <View style={styles.mapContainer}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: 32.4922,
+            longitude: 74.531,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+          onPress={(e) => {
+            const coords = e.nativeEvent.coordinate;
+            setSelectedLocation(coords);
+            setLocation(
+              `Lat: ${coords.latitude.toFixed(
+                5
+              )}, Lng: ${coords.longitude.toFixed(5)}`
+            );
+          }}
+        >
+          <Marker coordinate={selectedLocation} />
+        </MapView>
+      </View>
+      <Text style={styles.label}>Selected Coordinates</Text>
+      <TextInput style={styles.input} value={location} editable={false} />
+
+      <Text style={styles.label}>Availability Status</Text>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}
+      >
+        <TouchableOpacity
+          onPress={() => setAvailabilityStatus(!availabilityStatus)}
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: 12,
+            backgroundColor: availabilityStatus ? "#FFB703" : "#E6E6E6",
+            marginRight: 10,
+          }}
+        />
+        <Text style={{ fontSize: 14, color: "#4B4B4B" }}>
+          {availabilityStatus ? "Available" : "Unavailable"}
+        </Text>
+      </View>
+
+      <Text style={styles.label}>Hourly Rate (USD)</Text>
+      <TextInput
+        style={styles.input}
+        keyboardType="decimal-pad"
+        placeholder="Enter Hourly Rate"
+        value={hourlyRate}
+        onChangeText={setHourlyRate}
+      />
+
+      <Text style={styles.label}>Machine Description</Text>
+      <TextInput
+        style={[styles.input, { height: 100, textAlignVertical: "top" }]}
+        multiline
+        placeholder="Enter Description"
+        value={machineDescription}
+        onChangeText={setMachineDescription}
+      />
+
       <ImagePickerCarousel
         labelText="To Pick the Machine Images"
         buttonText="Select Machine Images"
@@ -127,19 +220,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#FFFFFF", // Light background
+    backgroundColor: "#FFFFFF",
   },
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#4B4B4B", // Darker text
+    color: "#4B4B4B",
     marginBottom: 6,
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: "#BFBFBF", // Light border
+    borderColor: "#BFBFBF",
     borderRadius: 8,
-    backgroundColor: "#F8F8F8", // Light gray background
+    backgroundColor: "#F8F8F8",
     marginBottom: 12,
   },
   picker: {
@@ -154,7 +247,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F8F8",
     marginBottom: 12,
     fontSize: 14,
-    color: "#333", // Darker text
+    color: "#333",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -163,13 +256,13 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   cancelButton: {
-    backgroundColor: "#E6E6E6", // Light gray
+    backgroundColor: "#E6E6E6",
     paddingVertical: 12,
     paddingHorizontal: 50,
     borderRadius: 8,
   },
   submitButton: {
-    backgroundColor: "#FFB703", // Golden yellow
+    backgroundColor: "#FFB703",
     paddingVertical: 12,
     paddingHorizontal: 50,
     borderRadius: 8,
@@ -179,5 +272,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  mapContainer: {
+    height: 200,
+    borderRadius: 8,
+    overflow: "hidden",
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#BFBFBF",
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
 });

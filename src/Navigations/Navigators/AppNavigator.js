@@ -20,6 +20,7 @@ import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerLis
 import SelectedModule from "../../Screens/exporter/SelectedModule";
 import MachineRegisteration from "../../Screens/manufacturer/MachineRegisteration";
 import ExporterDashboardStack from "./ExporterDashboardStack";
+import ManufacturerDashboardSatck from "./ManufacturerDashboardSatck";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -45,6 +46,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="ExporterDashboardStack"
         component={ExporterDashboardStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ManufacturerDashboardSatck"
+        component={ManufacturerDashboardSatck}
         options={{ headerShown: false }}
       />
       <Stack.Screen
