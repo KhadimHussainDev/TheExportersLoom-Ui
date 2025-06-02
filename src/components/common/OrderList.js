@@ -19,13 +19,28 @@ const OrderList = ({ orders = [], navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      {orders.map((order, index) => (
-        <OrderCard
-          key={order.id || index}
-          Order={order}
-          onPress={() => navigation.navigate("ModuleCardsList", { orderId: order.id })}
-        />
-      ))}
+      {orders.map((order, index) => {
+        // Process order data to ensure all required fields are available
+        const processedOrder = {
+          ...order,
+          orderId: order.orderId || order.id || `Order-${index}`,
+          exporterName: order.exporterName || (order.exporter && order.exporter.name) || "Unknown Customer",
+          exporterId: order.exporterId || (order.exporter && order.exporter.user_id),
+        };
+        
+        // Navigate to order details when clicking on the card
+        const handleOrderPress = () => {
+          navigation.navigate("ModuleCardsList", { orderId: processedOrder.orderId });
+        };
+        
+        return (
+          <OrderCard
+            key={processedOrder.orderId || index}
+            Order={processedOrder}
+            onPress={handleOrderPress}
+          />
+        );
+      })}
     </ScrollView>
   );
 };

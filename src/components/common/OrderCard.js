@@ -3,15 +3,19 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import OrderCardStyles from "../../Styles/Components/OrderCardStyles";
 import getWindowDimensions from "../../utils/helpers/dimensions";
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = getWindowDimensions();
 
 const styles = OrderCardStyles(width, height);
 
 const OrderCard = ({ Order, onPress }) => {
+  const navigation = useNavigation();
+  
   const {
     orderId = "Unnamed Order",
     exporterName = "Unknown Customer",
+    exporterId = null,
     price = 0,
     deadline = new Date(),
     status = "pending",
@@ -36,6 +40,21 @@ const OrderCard = ({ Order, onPress }) => {
 
   // Ensure completion percentage is within 0-100 range
   const progress = Math.min(Math.max(completionPercentage, 0), 100);
+  
+  // Handle chat icon press - navigate directly to chat
+  const handleChatPress = (e) => {
+    e.stopPropagation(); // Prevent triggering the card's onPress
+    
+    if (exporterId) {
+      navigation.navigate('ChatScreen', {
+        receiverId: exporterId,
+        receiverName: exporterName,
+        orderId: orderId
+      });
+    } else {
+      console.error('No exporter ID available for chat');
+    }
+  };
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.card}>
@@ -45,7 +64,7 @@ const OrderCard = ({ Order, onPress }) => {
         <View style={styles.header}>
           <Text style={styles.orderName}>{orderId}</Text>
           <View style={styles.iconsLeft}>
-            <TouchableOpacity style={styles.chatIcon}>
+            <TouchableOpacity style={styles.chatIcon} onPress={handleChatPress}>
               <FontAwesome5 name="comment-alt" size={18} color="#004d66" />
             </TouchableOpacity>
             <MaterialIcons name="attach-file" size={20} color="#004d66" />

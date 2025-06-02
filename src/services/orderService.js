@@ -1,4 +1,6 @@
 import apiClient from './apiClient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { STORAGE_KEYS } from '../utils/contants/constants';
 
 /**
  * Order service for handling order-related API operations
@@ -97,6 +99,52 @@ export const orderService = {
         success: false,
         statusCode: 500,
         message: error.message || 'Failed to fetch user order statistics',
+        error: error.toString()
+      };
+    }
+  },
+  
+  /**
+   * Create a new order from a bid
+   * @param {Object} orderData - Order data including bidId, exporterId, manufacturerId, machineId, etc.
+   * @returns {Promise<object>} - Standard API response with order data
+   */
+  createOrder: async (orderData) => {
+    try {
+      console.log('📦 Creating order with data:', orderData);
+      
+      // Check for authentication
+      const token = await AsyncStorage.getItem(STORAGE_KEYS.USER_TOKEN);
+      if (!token) {
+        console.error('❌ Authentication required for creating an order');
+        return {
+          success: false,
+          statusCode: 401,
+          message: 'Authentication required',
+          error: 'No authentication token found'
+        };
+      }
+      
+      const response = await apiClient.post('/orders', orderData, {
+        headers: {
+          'Authorization': `Bearer ${token}` // Explicitly add token to ensure it's included
+        }
+      });
+      
+      console.log('✅ Order created successfully:', response.data);
+      
+      return {
+        success: response.data.statusCode === 201,
+        statusCode: response.data.statusCode,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error) {
+      console.error('❌ Error creating order:', error);
+      return {
+        success: false,
+        statusCode: error.response?.status || 500,
+        message: error.response?.data?.message || 'Failed to create order',
         error: error.toString()
       };
     }

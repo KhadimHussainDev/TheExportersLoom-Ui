@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,30 +7,45 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import MapView, { Marker } from "react-native-maps";
 import ImagePickerCarousel from "../../components/manufacturer/ImagePickerCarousel";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, CommonActions } from "@react-navigation/native";
 import { machineService } from "../../services/machineService";
 import { MACHINE_TYPES } from "../../utils/contants/machineConstants";
 
-export default function ManufacturerRegistration() {
+const EditMachine = () => {
   const navigation = useNavigation();
-
-  // Machine Fields (matching backend schema)
-  const [machineType, setMachineType] = useState("");
-  const [machineModel, setMachineModel] = useState("");
-  const [location, setLocation] = useState("");
-  const [availabilityStatus, setAvailabilityStatus] = useState(true);
-  const [hourlyRate, setHourlyRate] = useState("");
-  const [machineDescription, setMachineDescription] = useState("");
-  const [machineImage, setMachineImage] = useState("");
+  const route = useRoute();
+  const { machine } = route.params;
+  
+  const [machineType, setMachineType] = useState(machine.machine_type || "");
+  const [machineModel, setMachineModel] = useState(machine.machine_model || "");
+  const [location, setLocation] = useState(machine.location || "");
+  const [availabilityStatus, setAvailabilityStatus] = useState(
+    machine.availability_status !== undefined ? machine.availability_status : true
+  );
+  const [hourlyRate, setHourlyRate] = useState(
+    machine.hourly_rate ? machine.hourly_rate.toString() : ""
+  );
+  const [machineDescription, setMachineDescription] = useState(machine.description || "");
+  const [machineImage, setMachineImage] = useState(machine.machine_image || "");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [selectedLocation, setSelectedLocation] = useState({
-    latitude: 32.4922,
-    longitude: 74.531,
+  // Parse the location string to get coordinates (assuming format is "Lat: XX.XXXXX, Lng: XX.XXXXX")
+  const [selectedLocation, setSelectedLocation] = useState(() => {
+    if (machine.location) {
+      const locationMatch = machine.location.match(/Lat: ([-\d.]+), Lng: ([-\d.]+)/);
+      if (locationMatch && locationMatch.length >= 3) {
+        return {
+          latitude: parseFloat(locationMatch[1]),
+          longitude: parseFloat(locationMatch[2]),
+        };
+      }
+    }
+    return { latitude: 32.4922, longitude: 74.531 };
   });
 
   // Handle image selection from the ImagePickerCarousel
@@ -38,13 +53,21 @@ export default function ManufacturerRegistration() {
     setMachineImage(imageUri);
   };
 
-  const handleSubmit = async () => {
+  // Navigate back to the machines tab
+  const navigateToMachinesTab = () => {
+    // First navigate to the main tab navigator
+    navigation.navigate('Analytics', {
+      screen: 'Machines' // Navigate to the Machines tab specifically
+    });
+  };
+
+  const handleUpdate = async () => {
     try {
       setIsLoading(true);
       
       // Validate required fields
       if (!machineType || !machineModel || !location || !hourlyRate || !machineDescription || !machineImage) {
-        Alert.alert("Error", "All machine fields are required");
+        Alert.alert("Error", "All fields are required");
         setIsLoading(false);
         return;
       }
@@ -57,24 +80,31 @@ export default function ManufacturerRegistration() {
         availability_status: availabilityStatus,
         hourly_rate: parseFloat(hourlyRate),
         description: machineDescription,
-        machine_image: machineImage, // This should be a URL or base64 string
+        machine_image: machineImage,
       };
 
-      // Use the machine service to register the machine
-      const response = await machineService.registerMachine(machineData);
+      // Use the machine service to update the machine
+      const response = await machineService.updateMachine(machine.machine_id, machineData);
 
       if (response.success) {
-        Alert.alert("Success", "Machine registered successfully!");
-        // Navigate to machine management page
-        navigation.navigate("ManufacturerMachines");
+        Alert.alert(
+          "Success", 
+          "Machine updated successfully!",
+          [
+            { 
+              text: "OK", 
+              onPress: () => navigateToMachinesTab()
+            }
+          ]
+        );
       } else {
-        Alert.alert("Error", response.message || "Failed to register machine");
+        Alert.alert("Error", response.message || "Failed to update machine");
       }
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error("Update error:", error);
       Alert.alert(
         "Error",
-        "An unexpected error occurred while registering the machine"
+        "An unexpected error occurred while updating the machine"
       );
     } finally {
       setIsLoading(false);
@@ -83,7 +113,7 @@ export default function ManufacturerRegistration() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Register Machine</Text>
+      <Text style={styles.header}>Edit Machine</Text>
       
       <Text style={styles.label}>Machine Type *</Text>
       <View style={styles.pickerContainer}>
@@ -113,8 +143,8 @@ export default function ManufacturerRegistration() {
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 32.4922,
-            longitude: 74.531,
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
           }}
@@ -171,30 +201,42 @@ export default function ManufacturerRegistration() {
         onChangeText={setMachineDescription}
       />
 
+      <Text style={styles.label}>Machine Image *</Text>
+      <View style={styles.currentImageContainer}>
+        <Text style={styles.currentImageText}>Current Image URL:</Text>
+        <Text style={styles.imageUrl} numberOfLines={1}>
+          {machineImage}
+        </Text>
+      </View>
+
       <ImagePickerCarousel
-        labelText="Machine Images *"
-        buttonText="Select Machine Images"
+        labelText="Select New Machine Image"
+        buttonText="Change Image"
         onImageSelected={handleImageSelected}
       />
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
           style={styles.cancelButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigateToMachinesTab()}
         >
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          style={[styles.submitButton, isLoading && styles.disabledButton]}
-          onPress={handleSubmit}
+          style={[styles.updateButton, isLoading && styles.disabledButton]}
+          onPress={handleUpdate}
           disabled={isLoading}
         >
-          <Text style={styles.buttonText}>{isLoading ? "Submitting..." : "Submit"}</Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <Text style={styles.buttonText}>Update Machine</Text>
+          )}
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -236,34 +278,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 16,
-    marginBottom: 40,
-  },
-  cancelButton: {
-    backgroundColor: "#E6E6E6",
-    paddingVertical: 12,
-    paddingHorizontal: 50,
-    borderRadius: 8,
-  },
-  submitButton: {
-    backgroundColor: "#FFB703",
-    paddingVertical: 12,
-    paddingHorizontal: 50,
-    borderRadius: 8,
-  },
-  disabledButton: {
-    backgroundColor: "#cccccc",
-    opacity: 0.7,
-  },
-  buttonText: {
-    color: "#4B4B4B",
-    fontSize: 14,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   mapContainer: {
     height: 200,
     borderRadius: 8,
@@ -275,4 +289,54 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  currentImageContainer: {
+    marginBottom: 12,
+    padding: 12,
+    backgroundColor: "#F8F8F8",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#BFBFBF",
+  },
+  currentImageText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#666666",
+    marginBottom: 4,
+  },
+  imageUrl: {
+    fontSize: 12,
+    color: "#4B4B4B",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 16,
+    marginBottom: 40,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: "#E6E6E6",
+    paddingVertical: 12,
+    alignItems: "center",
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  updateButton: {
+    flex: 2,
+    backgroundColor: "#4CAF50",
+    paddingVertical: 12,
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  disabledButton: {
+    backgroundColor: "#cccccc",
+    opacity: 0.7,
+  },
+  buttonText: {
+    color: "#333333",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
 });
+
+export default EditMachine; 
