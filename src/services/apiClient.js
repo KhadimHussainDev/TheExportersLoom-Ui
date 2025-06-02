@@ -1,13 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { API_BASE_URL, STORAGE_KEYS } from '../utils/contants/constants';
+import { STORAGE_KEYS } from '../utils/contants/constants';
 import { storageService } from './storageService';
+import { API_URL } from '../config/config';
 
+// Configure axios instance with default settings
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 15000, // 15 seconds timeout
 });
 
 // Add a request interceptor to include the authentication token
@@ -25,6 +28,7 @@ apiClient.interceptors.request.use(
         console.warn('No authentication token found. Request will be unauthenticated.');
       }
 
+      console.log(`API Request: ${config.method.toUpperCase()} ${config.url}`);
       return config;
     } catch (error) {
       console.error('Error adding auth token to request:', error);
@@ -38,10 +42,14 @@ apiClient.interceptors.request.use(
 
 // Add a response interceptor to handle authentication errors
 apiClient.interceptors.response.use(
-  response => response,
+  response => {
+    console.log(`API Response: ${response.status} for ${response.config.url}`);
+    return response;
+  },
   async error => {
     if (error.response) {
-      const { status } = error.response;
+      const { status, config } = error.response;
+      console.error(`API Error: ${status} for ${config.url}`, error.response.data);
 
       if (status === 401) {
         console.error('Authentication failed. Token might be invalid or expired.');
@@ -63,6 +71,12 @@ apiClient.interceptors.response.use(
           console.error('Server error. Please try again later.');
           break;
       }
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('No response received:', error.request);
+    } else {
+      // Something happened in setting up the request
+      console.error('Request error:', error.message);
     }
 
     return Promise.reject(error);

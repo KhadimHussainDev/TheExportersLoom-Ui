@@ -9,22 +9,36 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
-const ImagePickerCarousel = ({ labelText, buttonText }) => {
+const ImagePickerCarousel = ({ labelText, buttonText, onImageSelected }) => {
   const [selectedImages, setSelectedImages] = useState([]);
 
   // Function to pick images
   const pickImages = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true,
-      quality: 1,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+        quality: 0.8,
+        base64: true, // Get base64 string representation
+      });
 
-    if (!result.canceled) {
-      setSelectedImages([
-        ...selectedImages,
-        ...result.assets.map((img) => img.uri),
-      ]);
+      if (!result.canceled && result.assets.length > 0) {
+        const newImages = result.assets.map((img) => img.uri);
+        setSelectedImages([...selectedImages, ...newImages]);
+        
+        // For backend integration, we'll use the first image
+        // In a real app, you might want to handle multiple images differently
+        const firstImage = result.assets[0];
+        
+        // If we have a callback function, pass the first image as a base64 string
+        if (onImageSelected && firstImage) {
+          // For simplicity, we're just passing the URI
+          // In a real app, you'd typically convert this to base64 or upload to cloud storage
+          onImageSelected(firstImage.uri);
+        }
+      }
+    } catch (error) {
+      console.error("Error picking images:", error);
     }
   };
 

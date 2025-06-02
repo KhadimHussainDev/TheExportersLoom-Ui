@@ -5,6 +5,9 @@ import BottomTabs from "../../components/common/CustomBottomTab";
 import CustomHeader from "../../components/common/CustomHeader";
 import CustomBottomTabManufacturer from "../../components/common/CustomBottomTabManufacturer";
 import CustomHeaderManufacturer from "../../components/common/CustomHeaderManufacturer";
+import ManufacturerRegistration from "../../Screens/manufacturer/MachineRegisteration";
+import ManufacturerMachines from "../../Screens/manufacturer/ManufacturerMachines";
+import EditMachine from "../../Screens/manufacturer/EditMachine";
 
 const Stack = createStackNavigator();
 
@@ -57,6 +60,59 @@ const ManufacturerDashboardSatck = ({ navigation }) => {
               rightIconName="user-circle"
               onLefttIconPress={() => navigation.toggleDrawer()}
               onRightIconPress={() => navigation.navigate("ProfileScreen")}
+            />
+          ),
+        }}
+      />
+      
+      {/* Machine Registration and Management Screens */}
+      <Stack.Screen
+        name="ManufacturerRegistration"
+        component={ManufacturerRegistration}
+        options={{
+          header: () => (
+            <CustomHeaderManufacturer
+              navigation={navigation}
+              title="Register Machine"
+              leftIconName="arrow-left"
+              rightIconName="question-circle"
+              onLefttIconPress={() => navigation.goBack()}
+              onRightIconPress={() => {
+                // Show help information about machine registration
+                alert("Register your machines to offer services to exporters.");
+              }}
+            />
+          ),
+        }}
+      />
+      
+      <Stack.Screen
+        name="ManufacturerMachines"
+        component={ManufacturerMachines}
+        options={{
+          header: () => (
+            <CustomHeaderManufacturer
+              navigation={navigation}
+              title="My Machines"
+              leftIconName="arrow-left"
+              rightIconName="plus"
+              onLefttIconPress={() => navigation.goBack()}
+              onRightIconPress={() => navigation.navigate("ManufacturerRegistration")}
+            />
+          ),
+        }}
+      />
+      
+      <Stack.Screen
+        name="EditMachine"
+        component={EditMachine}
+        options={{
+          header: () => (
+            <CustomHeaderManufacturer
+              navigation={navigation}
+              title="Edit Machine"
+              leftIconName="arrow-left"
+              onLefttIconPress={() => navigation.goBack()}
             />
           ),
         }}
