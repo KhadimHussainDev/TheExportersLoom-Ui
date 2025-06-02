@@ -8,6 +8,8 @@ import ForgetPassword from "../../Screens/auth/ForgetPassword";
 import SignInScreen from "../../Screens/auth/SignInScreen";
 import SignUpScreen from "../../Screens/auth/SignUpScreen";
 import Analytics from "../../Screens/Common/Analytics";
+import ChatScreen from "../../Screens/Common/ChatScreen";
+import ChatContactsScreen from "../../Screens/Common/ChatContactsScreen";
 import NeedHelpScreen from "../../Screens/Common/NeedHelpScreen";
 import ProfileScreen from "../../Screens/Common/ProfileScreen";
 import UserProfileScreen from "../../Screens/Common/UserProfileScreen";
@@ -19,6 +21,7 @@ import OverviewScreen from "../../Screens/exporter/OverviewScreen";
 import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerList";
 import SelectedModule from "../../Screens/exporter/SelectedModule";
 import MachineRegisteration from "../../Screens/manufacturer/MachineRegisteration";
+import NotificationsScreen from "../../Screens/manufacturer/NotificationsScreen";
 import ExporterDashboardStack from "./ExporterDashboardStack";
 import ManufacturerDashboardSatck from "./ManufacturerDashboardSatck";
 
@@ -104,6 +107,16 @@ const MainStackNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="ChatScreen"
+        component={ChatScreen}
+        options={{ headerShown: true, title: "Chat" }}
+      />
+      <Stack.Screen
+        name="ChatContactsScreen"
+        component={ChatContactsScreen}
+        options={{ headerShown: true, title: "Messages" }}
+      />
+      <Stack.Screen
         name="UserProfileScreen"
         component={UserProfileScreen}
         options={{ headerShown: true, title: "User Profile" }}
@@ -116,7 +129,19 @@ const AppNavigator = () => {
   return (
     <AuthProvider>
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="MainStackNavigator">
+        <Drawer.Navigator 
+          initialRouteName="MainStackNavigator"
+          screenOptions={{
+            drawerStyle: {
+              backgroundColor: '#ffffff',
+              width: 280,
+            },
+            drawerLabelStyle: {
+              fontSize: 16,
+            },
+            drawerActiveTintColor: '#013240',
+          }}
+        >
           <Drawer.Screen
             name="MainStackNavigator"
             component={MainStackNavigator}
@@ -126,6 +151,16 @@ const AppNavigator = () => {
             name="OverviewScreen"
             component={OverviewScreen}
             options={{ headerShown: true, title: "Overview" }}
+          />
+          <Drawer.Screen
+            name="NotificationsDrawer"
+            component={NotificationsScreen}
+            options={{ headerShown: true, title: "Notifications" }}
+          />
+          <Drawer.Screen
+            name="MessagesDrawer"
+            component={ChatContactsScreen}
+            options={{ headerShown: true, title: "Messages" }}
           />
           <Drawer.Screen
             name="NeedHelpScreen"

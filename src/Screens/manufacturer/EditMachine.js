@@ -12,7 +12,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import MapView, { Marker } from "react-native-maps";
 import ImagePickerCarousel from "../../components/manufacturer/ImagePickerCarousel";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, CommonActions } from "@react-navigation/native";
 import { machineService } from "../../services/machineService";
 import { MACHINE_TYPES } from "../../utils/contants/machineConstants";
 
@@ -53,6 +53,14 @@ const EditMachine = () => {
     setMachineImage(imageUri);
   };
 
+  // Navigate back to the machines tab
+  const navigateToMachinesTab = () => {
+    // First navigate to the main tab navigator
+    navigation.navigate('Analytics', {
+      screen: 'Machines' // Navigate to the Machines tab specifically
+    });
+  };
+
   const handleUpdate = async () => {
     try {
       setIsLoading(true);
@@ -79,8 +87,16 @@ const EditMachine = () => {
       const response = await machineService.updateMachine(machine.machine_id, machineData);
 
       if (response.success) {
-        Alert.alert("Success", "Machine updated successfully!");
-        navigation.navigate("ManufacturerMachines");
+        Alert.alert(
+          "Success", 
+          "Machine updated successfully!",
+          [
+            { 
+              text: "OK", 
+              onPress: () => navigateToMachinesTab()
+            }
+          ]
+        );
       } else {
         Alert.alert("Error", response.message || "Failed to update machine");
       }
@@ -202,7 +218,7 @@ const EditMachine = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
           style={styles.cancelButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigateToMachinesTab()}
         >
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>

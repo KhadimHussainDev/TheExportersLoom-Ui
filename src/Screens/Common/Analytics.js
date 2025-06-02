@@ -150,8 +150,6 @@ const Analytics = ({ navigation }) => {
   const isExporter = userData && userData.userType &&
     userData.userType.toLowerCase() === ROLES.EXPORTER.toLowerCase();
 
-
-
   return (
     <ScrollView
       style={styles.container}
@@ -179,10 +177,6 @@ const Analytics = ({ navigation }) => {
       ) : (
         <OrderList orders={data} navigation={navigation} />
       )}
-
-      <View style={styles.textRow}>
-        <Text>Notifications</Text>
-      </View>
     </ScrollView>
   );
 };

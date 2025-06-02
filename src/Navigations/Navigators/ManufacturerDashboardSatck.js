@@ -8,6 +8,8 @@ import CustomHeaderManufacturer from "../../components/common/CustomHeaderManufa
 import ManufacturerRegistration from "../../Screens/manufacturer/MachineRegisteration";
 import ManufacturerMachines from "../../Screens/manufacturer/ManufacturerMachines";
 import EditMachine from "../../Screens/manufacturer/EditMachine";
+import NotificationsScreen from "../../Screens/manufacturer/NotificationsScreen";
+import ProfileScreen from "../../Screens/Common/ProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -57,9 +59,41 @@ const ManufacturerDashboardSatck = ({ navigation }) => {
               navigation={navigation}
               title="Dashboard"
               leftIconName="bars"
-              rightIconName="user-circle"
+              rightIconName="user"
               onLefttIconPress={() => navigation.toggleDrawer()}
               onRightIconPress={() => navigation.navigate("ProfileScreen")}
+            />
+          ),
+        }}
+      />
+      
+      {/* Profile Screen */}
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          header: () => (
+            <CustomHeaderManufacturer
+              navigation={navigation}
+              title="My Profile"
+              leftIconName="arrow-left"
+              onLefttIconPress={() => navigation.goBack()}
+            />
+          ),
+        }}
+      />
+      
+      {/* Notifications Screen */}
+      <Stack.Screen
+        name="NotificationsScreen"
+        component={NotificationsScreen}
+        options={{
+          header: () => (
+            <CustomHeaderManufacturer
+              navigation={navigation}
+              title="Notifications"
+              leftIconName="arrow-left"
+              onLefttIconPress={() => navigation.goBack()}
             />
           ),
         }}

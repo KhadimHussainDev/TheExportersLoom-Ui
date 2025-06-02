@@ -11,7 +11,7 @@ import SearchManufacturerList from "../../Screens/exporter/SearchManufacturerLis
 import Analytics from "../../Screens/Common/Analytics";
 import ManufacturerRegistration from "../../Screens/manufacturer/MachineRegisteration";
 import ManufacturerMachines from "../../Screens/manufacturer/ManufacturerMachines";
-import ExporterRequestList from "../../Screens/manufacturer/ExporterRequestList";
+import WorkOpportunities from "../../Screens/manufacturer/ExporterRequestList";
 
 const Tab = createBottomTabNavigator();
 const { width, height } = getWindowDimensions();
@@ -66,8 +66,8 @@ const CustomBottomTabManufacturer = () => (
           iconName = "home";
         } else if (route.name === "Chats") {
           iconName = "comments";
-        } else if (route.name === "Requests") {
-          iconName = "inbox";
+        } else if (route.name === "Work") {
+          iconName = "briefcase";
         } else if (route.name === "Register") {
           iconName = "industry";
         } else if (route.name === "Machines") {
@@ -86,7 +86,7 @@ const CustomBottomTabManufacturer = () => (
   >
     <Tab.Screen name="Home" component={Analytics} />
     <Tab.Screen name="Chats" component={ChatsScreen} />
-    <Tab.Screen name="Requests" component={ExporterRequestList} />
+    <Tab.Screen name="Work" component={WorkOpportunities} />
     <Tab.Screen name="Machines" component={ManufacturerMachines} />
     <Tab.Screen name="Register" component={ManufacturerRegistration} />
   </Tab.Navigator>

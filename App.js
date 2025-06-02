@@ -3,12 +3,15 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import ExporterRequestList from "./src/Screens/manufacturer/ExporterRequestList";
 import ManufacturerRegistration from "./src/Screens/manufacturer/MachineRegisteration"; // Adjust the path accordingly
 import AppNavigator from "./src/Navigations/Navigators/AppNavigator";
+import { NotificationProvider } from "./src/context/NotificationContext";
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.wrapper}>
-      <AppNavigator />
-    </SafeAreaView>
+    <NotificationProvider>
+      <SafeAreaView style={styles.wrapper}>
+        <AppNavigator />
+      </SafeAreaView>
+    </NotificationProvider>
   );
 };
 
